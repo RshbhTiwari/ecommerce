@@ -29,9 +29,6 @@ function NavSearchIcon() {
         setIsSearchOpen(!isSearchOpen);
     };
 
-
-
-
     return (
         <>
             <div className="relative">
