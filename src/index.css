@@ -11,3 +11,92 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bread_crumb {
+  border-bottom: 2px solid transparent;
+  border-image: linear-gradient(0.25turn, #00A762, #072320);
+  border-image-slice: 1;
+}
+
+.bread_crumb a {
+  text-decoration: none;
+}
+
+.bread_crumb a:hover,
+.bread_crumb a:focus {
+  text-decoration: none;
+  color: #072320;
+}
+
+.navbar {
+  background-color: #072320;
+  position: sticky;
+  top: 0;
+  width: 100%;
+}
+
+.show_box {
+  opacity: 0;
+  backdrop-filter: blur(2px);
+  transform: translateY(141px);
+  transition: transform 600ms ease-in-out, opacity 600ms ease-in-out;
+}
+
+.group:hover .show_box {
+  opacity: 100;
+  transform: translateY(85px);
+}
+
+/* sidebar_scrollbar_design */
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+
+
+
+
+@media only screen and (max-width: 992px) {
+  .logindrop {
+    --tw-translate-x: -50%;
+    left: 50%;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+}
+
+.search_zindex {
+  --tw-translate-y: -17%;
+}
+
+.bg_img_user {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+@media only screen and (max-width: 640px) {
+  .right_shop_btn {
+    margin-right: 0px !important;
+  }
+
+  .left_shop_btn {
+    margin-left: 0px !important;
+  }
+}
+
+/* .category_hover{
+  opacity: 0.5;
+  transform: translateY(20px);
+  transition: all .5s ease-in-out;
+  visibility: hidden;
+}
+.shopclass:hover .category_hover{
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(200);
+} */
