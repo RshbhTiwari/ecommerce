@@ -1,0 +1,78 @@
+/* Customize carousel styles as needed */
+.slick-prev,
+.slick-next {
+    color: #000;
+    /* Change arrow color */
+}
+
+.slick-dots li button:before {
+    color: #000;
+    /* Change dot color */
+}
+
+.responsive-image {
+    max-width: 100%;
+    height: auto;
+}
+
+.card_gradient {
+    width: 100%;
+    top: 40px;
+    backdrop-filter: blur(2px);
+    background: linear-gradient(0.25turn, #072320, #072320, #072320b5, #ffffff45);
+}
+
+.card_btn_box{
+    bottom: 18px;
+    width: 90%;
+    display: flex;
+    justify-content: end;
+}
+
+.left_right_shop_btn{
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+}
+.left_shop_btn{
+    margin-left: -20px;
+    border: 1px solid #072320;
+}
+.right_shop_btn{
+    margin-right: -20px;
+    border: 1px solid #072320;
+}
+
+.left_right_btn{
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+}
+.left_btn{
+    margin-left: -13px;
+    border: 2px solid #072320;
+}
+
+.right_btn{
+    margin-right: -13px;
+    border: 2px solid #072320;
+}
+
+
+.bg_image{
+    background-image: url('../../../assets/home/banner.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+@media only screen and (max-width:1023px) {
+    .left_btn{
+        margin-left: -8px;
+    }
+    .right_btn {
+        margin-right: -8px;}
+    .cashback_box{
+        padding-left: 20px;
+    }
+}
+.slick-next {display: none !important;}
