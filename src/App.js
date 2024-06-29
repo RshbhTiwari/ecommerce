@@ -5,11 +5,13 @@ import Login from "./pages/login";
 import Signup from "./pages/signup";
 import Forgotpassword from "./pages/forgotpassword";
 import Home from "./pages";
+import Contact from "./pages/contact";
 import UserAccount from "./pages/useraccount";
 import Updateaccount from "./pages/updateaccount";
 import Addressbook from "./pages/addressbook";
 import AddAddressBook from "./pages/addaddressbook";
 import EditAddressBook from "./pages/editaddressbook";
+
 
 function App() {
   return (
@@ -19,7 +21,7 @@ function App() {
         <Routes>
 
         <Route exact path="/" element={<Home />} />
-
+        <Route path="/contact" element={<Contact />} />
 
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />

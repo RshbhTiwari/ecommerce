@@ -1,0 +1,46 @@
+.bg_linear {
+    background-image: linear-gradient(#00A762, #072320);
+}
+
+.bg_contact_image {
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.glass_effect {
+    background-color: #ffffff0f;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, .1);
+    backdrop-filter: blur(2px);
+}
+
+
+
+.input_box {
+    padding: 2px 0px;
+    border-bottom: 2px solid #00A762;
+    font-family: "Lora", 'serif';
+}
+.code_input{
+    color: #ffffff;
+    padding: 2px 0px;
+    border-bottom: 2px solid #ffffff;
+    font-family: "Lora", 'serif'
+}
+.code_input:focus{
+    outline: none;
+    border-bottom: 2px solid #00A762;
+}
+
+.code_input:active{
+    color: #ffffffff;
+}
+
+.input_box:focus {
+    outline: none;
+    border-bottom: 2px solid #072320;
+}
+
+.input_box:active {
+    color: #333;
+}
