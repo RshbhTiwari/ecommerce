@@ -12,6 +12,9 @@ import Blog from "./pages/blog";
 import DetailsBlog from "./pages/detailsblog";
 import Cart from "./pages/cart";
 import Checkout from "./pages/checkout";
+import Wishlist from "./pages/wishlist";
+import Orders from "./pages/orders";
+import OrdersDetails from "./pages/ordersdetails";
 import UserAccount from "./pages/useraccount";
 import Updateaccount from "./pages/updateaccount";
 import Addressbook from "./pages/addressbook";
@@ -32,7 +35,7 @@ function App() {
           <Route path="/shop/:id" element={<ShopDetails />} />
           <Route path="/blog" element={<Blog />} />
           <Route exact path="/blog/:id" element={<DetailsBlog />} />
-          
+
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/forgotpassword" element={<Forgotpassword />} />
@@ -44,6 +47,10 @@ function App() {
 
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
+
+          <Route path="/my-account/wishlist" element={<Wishlist />} />
+          <Route path="/my-account/orders" element={<Orders />} />
+          <Route path="/my-account/orders/:id" element={<OrdersDetails />} />
         </Routes>
       </BrowserRouter>
       <Footer />
