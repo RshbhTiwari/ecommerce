@@ -1,0 +1,20 @@
+.nav_width_box {
+    width: 450px;
+}
+
+@media only screen and (max-width: 992px) {
+
+    .nav_width_box,
+    .nav_box {
+        justify-content: center;
+    }
+
+    .delivery_content,
+    .company_logo {
+        display: none;
+    }
+}
+
+.dropgrid .slick-prev{
+    display: none !important;
+}

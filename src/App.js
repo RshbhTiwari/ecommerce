@@ -1,9 +1,9 @@
-// import { Navbar } from "./pages/components/basic/navbar";
+import { Navbar } from "./pages/components/basic/navbar";
 import { Footer } from "./pages/components/basic/footer";
 function App() {
   return (
     <>
-      {/* <Navbar /> */}
+      <Navbar />
       <Footer />
     </>
   );
