@@ -1,0 +1,40 @@
+/* Slider thumbnail styling */
+.slider-thumbnail {
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
+}
+.slider-image-container.active{
+    border: 2px solid transparent;
+}
+/* Change border color on hover */
+.slider-thumbnail:hover {
+    border-color: #072320; /* Adjust color as needed */
+}
+.group{
+    padding: 0px 10px !important;
+}
+
+.quantity_btn{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    margin-bottom: 4px;
+    padding: 4px 6px;
+    min-width: 96px;
+    max-width: 116px;
+    border-radius: 8px;
+    border: 1px solid #00A762;
+}
+.btn_plus,
+.btn_minus{
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+    transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    padding: 5px;
+    font-size: 1.125rem;
+    background-color: transparent;
+    color: rgba(145, 158, 171, 0.8);
+}
