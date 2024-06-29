@@ -10,6 +10,8 @@ import Shop from "./pages/shop";
 import ShopDetails from "./pages/shopdetails";
 import Blog from "./pages/blog";
 import DetailsBlog from "./pages/detailsblog";
+import Cart from "./pages/cart";
+import Checkout from "./pages/checkout";
 import UserAccount from "./pages/useraccount";
 import Updateaccount from "./pages/updateaccount";
 import Addressbook from "./pages/addressbook";
@@ -30,7 +32,7 @@ function App() {
           <Route path="/shop/:id" element={<ShopDetails />} />
           <Route path="/blog" element={<Blog />} />
           <Route exact path="/blog/:id" element={<DetailsBlog />} />
-
+          
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/forgotpassword" element={<Forgotpassword />} />
@@ -39,6 +41,9 @@ function App() {
           <Route path="/my-account/address-book" element={<Addressbook />} />
           <Route path="/my-account/add-address" element={<AddAddressBook />} />
           <Route path="/my-account/edit-address/:id" element={<EditAddressBook />} />
+
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
         </Routes>
       </BrowserRouter>
       <Footer />
