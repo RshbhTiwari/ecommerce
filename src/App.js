@@ -6,10 +6,10 @@ import Signup from "./pages/signup";
 import Forgotpassword from "./pages/forgotpassword";
 import Home from "./pages";
 import Contact from "./pages/contact";
-
 import Shop from "./pages/shop";
 import ShopDetails from "./pages/shopdetails";
-
+import Blog from "./pages/blog";
+import DetailsBlog from "./pages/detailsblog";
 import UserAccount from "./pages/useraccount";
 import Updateaccount from "./pages/updateaccount";
 import Addressbook from "./pages/addressbook";
@@ -24,12 +24,12 @@ function App() {
       <BrowserRouter>
         <Routes>
 
-        <Route exact path="/" element={<Home />} />
-        <Route path="/contact" element={<Contact />} />
-
-        <Route path="/shop" element={<Shop />} />
+          <Route exact path="/" element={<Home />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/shop" element={<Shop />} />
           <Route path="/shop/:id" element={<ShopDetails />} />
-
+          <Route path="/blog" element={<Blog />} />
+          <Route exact path="/blog/:id" element={<DetailsBlog />} />
 
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
