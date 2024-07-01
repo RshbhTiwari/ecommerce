@@ -2,8 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../utils/axios";
 
 const initialState = {
-    categorys: [],
-    onecategory: {},
+    isLoading: false,
+    error: null,
+    categories: [], // corrected spelling from 'categorys' to 'categories'
+    oneCategory: {}, // corrected from 'onecategory' to 'oneCategory'
 };
 
 const header = {
@@ -14,46 +16,58 @@ const jsonheader = {
     "Content-type": "application/json",
 };
 
-const Slice = createSlice({
-    name: "Category",
+const categorySlice = createSlice({
+    name: "category",
     initialState,
     reducers: {
-        //  GET ALL Category
-        getAllCategorySuccess(state, action) {
-            state.categorys = action.payload;
+        startLoading(state) {
+            state.isLoading = true;
+            state.error = null; // Reset error state on loading start
         },
-
-        //  GET one Category
-        getOneCategoryuccess(state, action) {
-            state.onecategory = action.payload;
+        hasError(state, action) {
+            state.isLoading = false;
+            state.error = action.payload;
+        },
+        getAllCategoriesSuccess(state, action) {
+            state.isLoading = false;
+            state.categories = action.payload;
+        },
+        getOneCategorySuccess(state, action) {
+            state.isLoading = false;
+            state.oneCategory = action.payload;
         },
     },
 });
 
-export default Slice.reducer;
+export const {
+    startLoading,
+    hasError,
+    getAllCategoriesSuccess,
+    getOneCategorySuccess,
+} = categorySlice.actions;
 
-// GET ALL Category
-export function getAllCategory() {
-    return async (dispatch) => {
-        try {
-            const response = await axios.get("/products");
-            dispatch(Slice.actions.getAllCategorySuccess(response.data.products));
-        } catch (error) {
-            console.log(error);
-        }
-    };
-}
+export default categorySlice.reducer;
 
-// GET one Category
-export function getOneCategory(id) {
-    return async (dispatch) => {
-        try {
-            const response = await axios.get("/products/" + id, {
-                headers: jsonheader,
-            });
-            dispatch(Slice.actions.getOneCategoryuccess(response.data));
-        } catch (error) {
-            console.log(error);
-        }
-    };
-}
+// Thunk action to fetch all categories
+export const fetchAllCategories = () => async (dispatch) => {
+    try {
+        dispatch(startLoading());
+        const response = await axios.get("/categories");
+        dispatch(getAllCategoriesSuccess(response.data));
+    } catch (error) {
+        console.error("Error fetching categories:", error.response.data.message);
+        dispatch(hasError(error?.response?.data?.message));
+    }
+};
+
+// Thunk action to fetch one category by id
+export const fetchOneCategory = (id) => async (dispatch) => {
+    try {
+        dispatch(startLoading());
+        const response = await axios.get(`/categories/${id}`);
+        dispatch(getOneCategorySuccess(response.data));
+    } catch (error) {
+        console.error("Error fetching category:", error);
+        dispatch(hasError(error));
+    }
+};
