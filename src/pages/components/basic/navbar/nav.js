@@ -14,15 +14,35 @@ import carouselcarddata from "../../../../data/carouselcarddata";
 import comLogo from '../../../../assets/header/tastydaily-0556409248.webp';
 import { HiMiniXMark } from "react-icons/hi2";
 import { HiBars3 } from "react-icons/hi2";
+import {
+    fetchAllCategories,
+    startLoading,
+    hasError,
+} from "../../../../redux/slices/category";
+import { useDispatch, useSelector } from 'react-redux';
+import { ErrorPages } from '../ErrorPages';
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
 export default function Nav() {
+    const dispatch = useDispatch();
     const path = window.location.pathname;
-
     const [showDropdown, setShowDropdown] = useState(false);
+    const [allCategoriesData, setAllCategoriesData] = useState([]);
+    const { isLoading, error, categories } = useSelector(
+        (state) => state.category
+    );
+    useEffect(() => {
+        dispatch(fetchAllCategories());
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (categories?.length) {
+            setAllCategoriesData(categories);
+        }
+    }, [categories]);
 
     const handleMouseEnter = (item) => {
         if (item.name === 'Shop') {
@@ -90,10 +110,30 @@ export default function Nav() {
                                                             <div className="grid grid-cols-12 gap-4  ">
 
                                                                 <div className='sm:col-span-6 col-span-12'>
-                                                                    {categoriescarddata.map((row, index) => (
-                                                                        <h5 className='font-dm py-2 cursor-pointer text-white text-wrap'>{row.title}</h5>
-                                                                    ))
-                                                                    }
+
+                                                                    {isLoading ? (
+                                                                        <>
+                                                                            {categoriescarddata.map((row, index) => (
+                                                                                <div className="animate-pulse py-2">
+                                                                                    <div className="h-4 w-20 bg-gray-300 rounded-full mb-2"></div>
+                                                                                </div>
+                                                                            ))
+                                                                            }
+                                                                        </>
+                                                                    ) : error ? (
+                                                                        <div className="flex h-full items-center justify-center">
+                                                                            <p className="text-center  font-dm text-white text-sm  capitalize">
+                                                                                Sorry, but nothing matched your search terms. Please try again.
+                                                                            </p>
+                                                                        </div>
+                                                                    ) : (
+                                                                        <>
+                                                                            {categoriescarddata.map((row, index) => (
+                                                                                <h5 className='font-dm py-2 cursor-pointer text-white text-wrap' key={index}>{row.title}</h5>
+                                                                            ))
+                                                                            }
+                                                                        </>
+                                                                    )}
                                                                 </div>
 
                                                                 <div className='sm:col-span-6 col-span-12 dropgrid'>
@@ -134,7 +174,7 @@ export default function Nav() {
                                         <span className="absolute -inset-0.5" />
                                         <span className="sr-only">Open main menu</span>
                                         {open ? (
-                                            <HiMiniXMark  className="block h-6 w-6" aria-hidden="true" />
+                                            <HiMiniXMark className="block h-6 w-6" aria-hidden="true" />
                                         ) : (
                                             <HiBars3 className="block h-6 w-6" aria-hidden="true" />
                                         )}

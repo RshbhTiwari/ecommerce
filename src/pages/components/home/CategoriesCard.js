@@ -196,7 +196,7 @@ const CategoriesCard = () => {
 
     return (
         <div className="relative">
-            {isLoading == false ? (
+            {isLoading ? (
                 <div className="grid grid-cols-5 gap-4">
                     {[...Array(5)].map((_, index) => (
                         <div key={index} className="animate-pulse">
@@ -210,6 +210,7 @@ const CategoriesCard = () => {
                 </div>
             ) : error ? (
                 <ErrorPages
+                    // massage={error}
                     massage="Sorry, but nothing matched your search terms. Please try again."
                     height="250px"
                 />
