@@ -22,6 +22,8 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { ErrorPages } from '../ErrorPages';
 
+const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
+
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
@@ -109,11 +111,11 @@ export default function Nav() {
 
                                                             <div className="grid grid-cols-12 gap-4  ">
 
-                                                                <div className='sm:col-span-6 col-span-12'>
+                                                                <div className='sm:col-span-6 col-span-12 flex flex-col justify-center'>
 
                                                                     {isLoading ? (
                                                                         <>
-                                                                            {categoriescarddata.map((row, index) => (
+                                                                            {allCategoriesData.map((row, index) => (
                                                                                 <div className="animate-pulse py-2">
                                                                                     <div className="h-4 w-20 bg-gray-300 rounded-full mb-2"></div>
                                                                                 </div>
@@ -128,8 +130,8 @@ export default function Nav() {
                                                                         </div>
                                                                     ) : (
                                                                         <>
-                                                                            {categoriescarddata.map((row, index) => (
-                                                                                <h5 className='font-dm py-2 cursor-pointer text-white text-wrap' key={index}>{row.title}</h5>
+                                                                            {allCategoriesData.map((row, index) => (
+                                                                                <h5 className='font-dm py-1 cursor-pointer text-white text-wrap' key={index}>{row?.name}</h5>
                                                                             ))
                                                                             }
                                                                         </>
@@ -137,19 +139,38 @@ export default function Nav() {
                                                                 </div>
 
                                                                 <div className='sm:col-span-6 col-span-12 dropgrid'>
-
-                                                                    <Slider {...settings} className='mt-7' >
-                                                                        {carouselcarddata.map((item, index) => (
-                                                                            <div key={index} className='rounded-lg flex items-center justify-center '>
-                                                                                <img
-                                                                                    src={item.image}
-                                                                                    alt="image"
-                                                                                    className="cursor-pointer w-full h-full rounded-lg"
-                                                                                />
+                                                                    {isLoading ? (
+                                                                        <><div className='p-4 bg-[#00A762] mt-6 rounded-lg flex items-center justify-center ' >
+                                                                            <div className="animate-pulse shadow rounded-md">
+                                                                                <div className="w-[75px] h-[75px] bg-gray-300 mx-auto rounded-lg"></div>
                                                                             </div>
-                                                                        ))}
-                                                                    </Slider>
+                                                                        </div>
+                                                                        </>
+                                                                    ) : error ? (
+                                                                        <div className="flex h-full items-center justify-center">
+                                                                            <p className="text-center  font-dm text-white text-sm  capitalize">
+                                                                                Sorry, but nothing matched your search terms. Please try again.
+                                                                            </p>
+                                                                        </div>
+                                                                    ) : (
+                                                                        <>
+                                                                            <Slider {...settings} className='mt-2' >
+                                                                                {allCategoriesData.map((item, index) => (
+                                                                                    <div className='p-4 bg-[#00A762] rounded-lg' key={index} >
+                                                                                        <div className='rounded-lg flex items-center justify-center '>
+                                                                                            <img
+                                                                                                src={BASE_IMAGE_URL + item?.thumbnail_image}
+                                                                                                alt="image"
+                                                                                                className="cursor-pointer w-full h-full rounded-lg"
+                                                                                            />
+                                                                                        </div>
 
+                                                                                    </div>
+
+                                                                                ))}
+                                                                            </Slider>
+                                                                        </>
+                                                                    )}
                                                                 </div>
                                                             </div>
 

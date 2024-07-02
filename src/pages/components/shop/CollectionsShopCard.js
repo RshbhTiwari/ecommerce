@@ -45,10 +45,10 @@ class CollectionsShopCard extends React.Component {
                 {shopcarddata.map((item, index) => (
                     <div className='group'>
                         <div className='group
-          flex flex-col justify-center relative h-full items-center rounded-br-lg  rounded-tl-lg
-            border-2 border-[#072320]' key={index}>
+                              flex flex-col justify-center relative h-full items-center rounded-br-lg  rounded-tl-lg
+                                border-2 border-[#072320]' key={index}>
 
-                            <div className=' flex justify-center items-center bg-[#00A762] rounded-br-lg rounded-tl-lg mx-2 my-2 relative '>
+                            <div className='flex justify-center items-center bg-[#00A762] rounded-br-lg rounded-tl-lg mx-2 my-2 relative '>
 
 
                                 <div className='w-3/4  relative overflow-hidden'>

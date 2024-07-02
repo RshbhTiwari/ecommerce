@@ -64,10 +64,24 @@ export const fetchAllCategories = () => async (dispatch) => {
 export const fetchOneCategory = (id) => async (dispatch) => {
     try {
         dispatch(startLoading());
-        const response = await axios.get(`/categories/${id}`);
-        dispatch(getOneCategorySuccess(response.data));
+        const response = await axios.get(`/category/${id}`);
+        dispatch(getOneCategorySuccess(response.data.data));
     } catch (error) {
         console.error("Error fetching category:", error);
         dispatch(hasError(error));
     }
 };
+
+
+// export function fetchOneCategory(id) {
+//     return async (dispatch) => {
+//       try {
+//         dispatch(startLoading());
+//         const response = await axios.get('/categories/' + id, { headers: header });
+//         dispatch(categorySlice.actions.getOneCategorySuccess(response.data));
+//       } catch (error) {
+//         console.error("Error fetching category:", error);
+//         dispatch(categorySlice.actions.hasError(error));
+//       }
+//     };
+//   }

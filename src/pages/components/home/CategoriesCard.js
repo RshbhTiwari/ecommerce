@@ -34,7 +34,8 @@ const CategoriesCard = () => {
         }
     }, [categories]);
 
-    console.log("allCategoriesData", categories.map((item) => BASE_IMAGE_URL + item?.thumbnail_image));
+    console.log("categories",categories)
+
 
     const settings = {
         dots: false,
@@ -75,9 +76,9 @@ const CategoriesCard = () => {
             {isLoading ? (
                 <div className="grid grid-cols-5 gap-4">
                     {[...Array(5)].map((_, index) => (
-                        <div key={index} className="animate-pulse">
-                            <div className="flex flex-col items-center justify-center rounded-lg p-3 border-2 border-[#07232052]">
-                                <div className="w-[75px] h-[75px] bg-gray-300 mb-2 mx-auto"></div>
+                        <div key={index} className="animate-pulse border border-blue-200 shadow rounded-md">
+                            <div className="flex flex-col items-center justify-center rounded-lg p-3 ">
+                                <div className="w-[75px] h-[75px] bg-gray-300 mb-2 mx-auto rounded-lg"></div>
                                 <div className="h-4 w-20 bg-gray-300 rounded-full mb-2"></div>
                                 <div className="h-4 w-32 bg-gray-300 rounded-full"></div>
                             </div>

@@ -20,6 +20,7 @@ import Updateaccount from "./pages/updateaccount";
 import Addressbook from "./pages/addressbook";
 import AddAddressBook from "./pages/addaddressbook";
 import EditAddressBook from "./pages/editaddressbook";
+import DetailsCategories from "./pages/detailscategories";
 
 
 function App() {
@@ -35,6 +36,8 @@ function App() {
           <Route path="/shop/:id" element={<ShopDetails />} />
           <Route path="/blog" element={<Blog />} />
           <Route exact path="/blog/:id" element={<DetailsBlog />} />
+
+          <Route exact path="/categories/:id" element={<DetailsCategories />} />
 
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
