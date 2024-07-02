@@ -33,14 +33,14 @@ const ProductSingleContentPage = () => {
                 <HeadingBanner title={ShopsingleData.title} color='#072320' />
             </div>
 
-            <div className="mb-4"><h2 class="text-[#00A762] font-dm text-lg capitalize sm:text-left text-center font-medium">${ShopsingleData.price}</h2></div>
+            <div className="mb-4"><h2 className="text-[#00A762] font-dm text-lg capitalize sm:text-left text-center font-medium">${ShopsingleData.price}</h2></div>
 
             <div className="mb-8"> <Paragraph title={ShopsingleData.subtitle} textAlign='left' /></div>
 
 
             <div className="mb-8 flex items-center sm:justify-start justify-center">
                 <div className="">
-                    <h2 class="text-[#00A762] font-dm text-lg capitalize font-medium">Quantity</h2>
+                    <h2 className="text-[#00A762] font-dm text-lg capitalize font-medium">Quantity</h2>
                 </div>
 
                 <div className="quantity_btn ml-4" name="quantity">
@@ -64,7 +64,7 @@ const ProductSingleContentPage = () => {
 
             <div className="flex items-center justify-between">
                 <div className="">
-                    <h2 class="text-[#00A762] font-dm text-lg capitalize font-medium">Share on :</h2>
+                    <h2 className="text-[#00A762] font-dm text-lg capitalize font-medium">Share on :</h2>
                 </div>
 
                 <div className="flex items-center justify-center sm:gap-6 gap-2">

@@ -20,8 +20,8 @@ export default function ShoppingCartTable({ shoppingcart }) {
                                 />
                             </div>
 
-                            <div class="flex justify-center flex-col">
-                                <h2 class="text-[#00A762] text-left
+                            <div className="flex justify-center flex-col">
+                                <h2 className="text-[#00A762] text-left
                          font-dm text-lg capitalize font-medium
                         ">{item.title}</h2>
 

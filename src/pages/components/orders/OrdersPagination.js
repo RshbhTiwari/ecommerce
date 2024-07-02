@@ -46,7 +46,7 @@ const OrdersPagination = ({ Ordersdata }) => {
                         page no : &nbsp;
                         <Paragraph title={currentPage} />
 
-                        <h2 class="text-[#00A762] text-center px-2
+                        <h2 className="text-[#00A762] text-center px-2
                          font-dm text-lg capitalize font-medium
                         ">of</h2>
 

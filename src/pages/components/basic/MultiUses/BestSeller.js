@@ -27,7 +27,7 @@ const BestSeller = ({ allblog }) => {
                     </td>
 
                     <td className='font-dm py-2 pl-4 text-end text-[#00A762]'>
-                        <h2 class="text-[#00A762]  
+                        <h2 className="text-[#00A762]  
                         font-dm text-base capitalize font-medium">{row.title}</h2>
                         <Paragraph title={row.date} textAlign='right' />
                     </td>

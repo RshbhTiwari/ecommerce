@@ -36,13 +36,13 @@ const ProductsortpillsCard = ({ allProducts }) => {
 
 
                     <div className="col-span-12 sm:col-span-8 lg:col-span-9   flex justify-center flex-col">
-                        <h2 class="text-[#00A762] text-left
+                        <h2 className="text-[#00A762] text-left
                          font-dm text-lg capitalize font-medium
                         ">{item.title}</h2>
 
                         <Paragraph title={item.subtitle} textAlign='onyleft' />
 
-                        <h2 class="text-[#00A762] text-left
+                        <h2 className="text-[#00A762] text-left
                          font-dm text-lg capitalize font-medium
                          ">${item.price}</h2>
                     </div>

@@ -23,7 +23,7 @@ function AccountSideNav() {
                     </div>
 
                     <div className="flex flex-col items-center">
-                        <h2 class="flex items-left w-full text-[#072320] text-left font-dm text-lg capitalize font-medium ">{row.title}</h2>
+                        <h2 className="flex items-left w-full text-[#072320] text-left font-dm text-lg capitalize font-medium ">{row.title}</h2>
                         <Paragraph textAlign='onyleft'
                             title={row.subtitle} />
 

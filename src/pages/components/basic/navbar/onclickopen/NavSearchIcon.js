@@ -85,14 +85,14 @@ function NavSearchIcon() {
 
 
 
-                                        <div class="flex justify-center flex-col sm:ml-3 ml-0">
-                                            <h2 class="text-[#00A762] md:text-left text-center
+                                        <div className="flex justify-center flex-col sm:ml-3 ml-0">
+                                            <h2 className="text-[#00A762] md:text-left text-center
                                                  font-dm text-lg capitalize font-medium
                                                  ">{item.title}</h2>
 
                                             <Paragraph title={item.subtitle} textAlign='left' />
 
-                                            <h2 class="text-[#00A762] md:text-left text-center
+                                            <h2 className="text-[#00A762] md:text-left text-center
                                                      font-dm text-lg capitalize font-medium
                                                       ">${item.price}</h2>
                                         </div>

@@ -75,7 +75,7 @@ export default function SingleBlogDetails() {
                                             </td>
 
                                             <td className='font-dm py-2 pl-4 text-end text-[#00A762]'>
-                                                <h2 class="text-[#00A762]  
+                                                <h2 className="text-[#00A762]  
                                                  font-dm text-base capitalize font-medium">{row.title}</h2>
                                                 <Paragraph title={row.date} textAlign='right' />
                                             </td>
@@ -91,11 +91,11 @@ export default function SingleBlogDetails() {
                         <div className='pb-10'>
                             <HeadingTitle title="Popular Tags" textAlign='left' />
                             <div className='my-4 flex flex-wrap gap-2' >
-                                <button class="font-dm font-sm px-3  py-2 text-white bg-[#036642] capitalize">Smoothie</button>
-                                <button class="font-dm font-sm px-3 py-2 text-white bg-[#036642] capitalize">Healthy</button>
-                                <button class="font-dm font-sm px-3 py-2 text-white bg-[#036642] capitalize">Been</button>
-                                <button class="font-dm font-sm px-3 py-2 text-white bg-[#036642] capitalize">Vegetable</button>
-                                <button class="font-dm font-sm px-3 py-2 text-white bg-[#036642] capitalize">Juice</button>
+                                <button className="font-dm font-sm px-3  py-2 text-white bg-[#036642] capitalize">Smoothie</button>
+                                <button className="font-dm font-sm px-3 py-2 text-white bg-[#036642] capitalize">Healthy</button>
+                                <button className="font-dm font-sm px-3 py-2 text-white bg-[#036642] capitalize">Been</button>
+                                <button className="font-dm font-sm px-3 py-2 text-white bg-[#036642] capitalize">Vegetable</button>
+                                <button className="font-dm font-sm px-3 py-2 text-white bg-[#036642] capitalize">Juice</button>
                             </div>
                         </div>
                     </div>

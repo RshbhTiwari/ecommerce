@@ -55,7 +55,7 @@ const ProductRatings = ({ title }) => {
                 <div className="my-4 flex flex-col space-y-3">
                     <div className="flex space-x-2  items-center">
                         <FaUserCircle className="text-3xl text-[#00A762]" />
-                        <h2 class="text-[#00A762] text-center 
+                        <h2 className="text-[#00A762] text-center 
                  font-dm text-lg capitalize font-medium
                  ">rishabh tiwari</h2>
                     </div>

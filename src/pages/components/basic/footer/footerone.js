@@ -15,12 +15,12 @@ export default function Footerone() {
 
 
                         <div className='lg:col-span-4 col-span-12  flex flex-col justify-end items-start'>
-                            <h6 class="text-white font-dm text-lg mb-2 capitalize text-center width_change w-3/4">Newsletter Signup</h6>
-                            <div class="relative w-3/4 width_change">
+                            <h6 className="text-white font-dm text-lg mb-2 capitalize text-center width_change w-3/4">Newsletter Signup</h6>
+                            <div className="relative w-3/4 width_change">
                                 <input type="text"
-                                    class="block w-full py-2 px-3 bg-[#00a76282] text-white font-dm   focus:outline-none capitalize" placeholder="enter your email" />
-                                <div class="absolute inset-y-0 right-0 flex items-center bg-[#00A762]">
-                                    <button type="submit" class="text-white px-4 py-2 capitalize font-dm ">
+                                    className="block w-full py-2 px-3 bg-[#00a76282] text-white font-dm   focus:outline-none capitalize" placeholder="enter your email" />
+                                <div className="absolute inset-y-0 right-0 flex items-center bg-[#00A762]">
+                                    <button type="submit" className="text-white px-4 py-2 capitalize font-dm ">
                                         subscribe
                                     </button>
                                 </div>
@@ -45,8 +45,8 @@ export default function Footerone() {
                         </div>
 
                         <div className='lg:col-span-4 col-span-12 flex flex-col justify-end items-end'>
-                            <h6 class="text-white font-dm text-lg mb-2 capitalize text-center width_change w-3/4">Get in Touch With Us</h6>
-                            <div class="flex justify-center items-center w-3/4 width_change	 bg-[#00a76282] gap-2 py-2 px-3">
+                            <h6 className="text-white font-dm text-lg mb-2 capitalize text-center width_change w-3/4">Get in Touch With Us</h6>
+                            <div className="flex justify-center items-center w-3/4 width_change	 bg-[#00a76282] gap-2 py-2 px-3">
                                 <FaFacebookF className="text-[25px] text-[#00a762]" />
                                 <FaInstagram className="text-[25px] text-[#00a762]" />
                                 <RiSkypeFill className="text-[25px] text-[#00a762]" />
@@ -69,55 +69,55 @@ export default function Footerone() {
 
 
                         <div className='md:col-span-3  col-span-12 flex flex-col md:justify-start md:items-start justify-center items-center'>
-                            <h6 class="text-[#072320] text-lg  font-dm  mb-3 capitalize  font-medium">Help</h6>
+                            <h6 className="text-[#072320] text-lg  font-dm  mb-3 capitalize  font-medium">Help</h6>
 
                             <div className='md:col-span-3 col-span-12  flex flex-col md:justify-start md:items-start justify-center items-center'>
-                                <p class="text-white font-dm text-sm mb-1 capitalize font-light">How to Make an Order?</p>
-                                <p class="text-white font-dm text-sm  mb-1 capitalize font-light">About Us </p>
-                                <p class="text-white font-dm text-sm mb-1 capitalize font-light">My Orders</p>
-                                <p class="text-white font-dm text-sm mb-1 capitalize font-light">Delivery Terms</p>
-                                <p class="text-white font-dm text-sm mb-1 capitalize font-light">Return</p>
+                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">How to Make an Order?</p>
+                                <p className="text-white font-dm text-sm  mb-1 capitalize font-light">About Us </p>
+                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">My Orders</p>
+                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">Delivery Terms</p>
+                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">Return</p>
                             </div>
 
                         </div>
 
                         <div className='md:col-span-3 col-span-12  flex flex-col 
                        md:justify-start md:items-start justify-center items-center'>
-                            <h6 class="text-[#072320] text-lg  font-dm mb-3 capitalize font-medium">Quick Links</h6>
+                            <h6 className="text-[#072320] text-lg  font-dm mb-3 capitalize font-medium">Quick Links</h6>
 
                             <div className='md:col-span-3 col-span-12  flex flex-col 
                                  md:justify-start md:items-start justify-center items-center'>
-                                <p class="text-white font-dm text-sm mb-1 capitalize font-light">Instagram</p>
-                                <p class="text-white font-dm text-sm  mb-1 capitalize font-light">Facebook</p>
-                                <p class="text-white font-dm text-sm mb-1 capitalize font-light">Pinterest</p>
-                                <p class="text-white font-dm text-sm mb-1 capitalize font-light">Twitter</p>
-                                <p class="text-white font-dm text-sm mb-1 capitalize font-light">YouTube</p>
+                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">Instagram</p>
+                                <p className="text-white font-dm text-sm  mb-1 capitalize font-light">Facebook</p>
+                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">Pinterest</p>
+                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">Twitter</p>
+                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">YouTube</p>
                             </div>
 
                         </div>
 
                         <div className='md:col-span-3  col-span-12  flex flex-col 
                         md:justify-start md:items-start justify-center items-center'>
-                            <h6 class="text-[#072320] text-lg  font-dm  mb-3 capitalize font-medium">Shop</h6>
+                            <h6 className="text-[#072320] text-lg  font-dm  mb-3 capitalize font-medium">Shop</h6>
 
                             <div className='md:col-span-3 col-span-12  flex flex-col    md:justify-start md:items-start justify-center items-center'>
-                                <p class="text-white font-dm text-sm mb-1 capitalize font-light">Products</p>
-                                <p class="text-white font-dm text-sm  mb-1 capitalize font-light">Cart</p>
-                                <p class="text-white font-dm text-sm mb-1 capitalize font-light">Wishlist</p>
-                                <p class="text-white font-dm text-sm mb-1 capitalize font-light">My Account</p>
-                                <p class="text-white font-dm text-sm mb-1 capitalize font-light">Contacts</p>
+                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">Products</p>
+                                <p className="text-white font-dm text-sm  mb-1 capitalize font-light">Cart</p>
+                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">Wishlist</p>
+                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">My Account</p>
+                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">Contacts</p>
                             </div>
                         </div>
 
                         <div className='md:col-span-3 col-span-12 flex flex-col md:justify-start md:items-start justify-center items-center'>
-                            <h6 class="text-[#072320] text-lg  font-dm mb-3 capitalize font-medium">Categories</h6>
+                            <h6 className="text-[#072320] text-lg  font-dm mb-3 capitalize font-medium">Categories</h6>
 
                             <div className='md:col-span-3 col-span-12  flex flex-col md:justify-start md:items-start justify-center items-center'>
-                                <p class="text-white font-dm text-sm mb-1 capitalize font-light">Products</p>
-                                <p class="text-white font-dm text-sm  mb-1 capitalize font-light">Vegetables</p>
-                                <p class="text-white font-dm text-sm mb-1 capitalize font-light">Fruits</p>
-                                <p class="text-white font-dm text-sm mb-1 capitalize font-light">Bakery</p>
-                                <p class="text-white font-dm text-sm mb-1 capitalize font-light">Sweets</p>
+                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">Products</p>
+                                <p className="text-white font-dm text-sm  mb-1 capitalize font-light">Vegetables</p>
+                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">Fruits</p>
+                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">Bakery</p>
+                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">Sweets</p>
                             </div>
                         </div>
 
