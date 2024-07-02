@@ -7,7 +7,7 @@ import one from '../assets/home/1.jpg';
 const carouselcarddata = [
     {
         title: "daily essentials eggs & dairy",
-        subtitle: "Buy more & Save More",
+        subtitle: "Buy more & Save More Buy more & Save More Buy more & Save More",
         offer: "30% off",
         image: two
     },
