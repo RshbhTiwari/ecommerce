@@ -8,11 +8,13 @@ const categoriescarddata = [
     {
         title: "Vegetables",
         item: "6 Products",
+        subtitle:'This category includes vegetables with edible leaves',
         image: two
     },
     {
         title: "Fresh Fruits",
         item: "10 Products",
+        subtitle:'This category includes fruits with a tangy flavor and often a thick rind',
         image: three
     },
     {

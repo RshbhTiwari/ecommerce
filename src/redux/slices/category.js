@@ -53,7 +53,7 @@ export const fetchAllCategories = () => async (dispatch) => {
     try {
         dispatch(startLoading());
         const response = await axios.get("/categories");
-        dispatch(getAllCategoriesSuccess(response.data));
+        dispatch(getAllCategoriesSuccess(response.data.data));
     } catch (error) {
         console.error("Error fetching categories:", error.response.data.message);
         dispatch(hasError(error?.response?.data?.message));
