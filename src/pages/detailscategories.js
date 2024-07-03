@@ -11,26 +11,10 @@ import { useEffect } from "react";
 function DetailsCategories() {
 
     const { id } = useParams();
-    const dispatch = useDispatch();
-    const { isLoading, error, oneCategory } = useSelector(
-        (state) => state.category
-    );
-
-    useEffect(() => {
-        dispatch(fetchOneCategory(id)); // Dispatch action to fetch category based on id
-    }, [dispatch, id]);
-
-    if (isLoading) {
-        return <p>Loading...</p>;
-    }
-
-    if (error) {
-        return <p>Error....</p>;
-    }
-
+  
     return (
         <>
-            <DetailsCategoriesPages categoriesData={oneCategory} />
+            <DetailsCategoriesPages  id={id}/>
         </>
     );
 }

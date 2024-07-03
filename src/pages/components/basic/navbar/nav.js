@@ -21,6 +21,7 @@ import {
 } from "../../../../redux/slices/category";
 import { useDispatch, useSelector } from 'react-redux';
 import { ErrorPages } from '../ErrorPages';
+import { useNavigate } from 'react-router-dom';
 
 const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
 
@@ -28,8 +29,18 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
+const settings = {
+    infinite: true,
+    speed: 500,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+};
+
 export default function Nav() {
     const dispatch = useDispatch();
+
     const path = window.location.pathname;
     const [showDropdown, setShowDropdown] = useState(false);
     const [allCategoriesData, setAllCategoriesData] = useState([]);
@@ -56,14 +67,9 @@ export default function Nav() {
         setShowDropdown(false);
     };
 
-    const settings = {
-        infinite: true,
-        speed: 500,
-        autoplay: true,
-        autoplaySpeed: 2000,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-    };
+
+
+
 
 
     return (
@@ -131,7 +137,11 @@ export default function Nav() {
                                                                     ) : (
                                                                         <>
                                                                             {allCategoriesData.map((row, index) => (
-                                                                                <h5 className='font-dm py-1 cursor-pointer text-white text-wrap' key={index}>{row?.name}</h5>
+                                                                                <a href={`/categories/${row.id}`}>
+                                                                                    <h5 className='font-dm py-1 cursor-pointer text-white text-wrap'
+                                                                                        key={index}
+                                                                                    >{row?.name}</h5>
+                                                                                </a>
                                                                             ))
                                                                             }
                                                                         </>
@@ -224,7 +234,7 @@ export default function Nav() {
                         </DisclosurePanel>
                     </>
                 )}
-            </Disclosure>
+            </Disclosure >
         </>
     )
 }

@@ -12,7 +12,8 @@ const ProductTab = () => {
     };
 
     return (
-        <div className="max-w-screen-lg mx-auto p-4">
+        <>
+
             <div className="flex space-x-2">
                 <div
                     className={`px-3 py-2 bg-[#00A762] justify-center cursor-pointer items-center text-white rounded-md flex  ${
@@ -41,7 +42,9 @@ const ProductTab = () => {
                     <PaginationshoplistCard /> 
                 )}
             </div>
-        </div>
+
+        </>
+     
     );
 };
 

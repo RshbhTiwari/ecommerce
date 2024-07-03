@@ -25,7 +25,7 @@ const BlogPage = () => {
 
                         <div className='pb-10'>
                             <HeadingTitle title="Categories" textAlign='left' />
-                            <AllCategories categoriescarddata={categoriescarddata} />
+                            {/* <AllCategories categoriescarddata={categoriescarddata} /> */}
                         </div>
 
                         <div className='pb-10'>

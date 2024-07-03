@@ -1,10 +1,10 @@
 import React from 'react';
 
-const AllCategories = ({ row , onFilterRow,onDetailsRow}) => {
+const AllCategories = ({ row ,onDetailsRow}) => {
     const { name ,products_count} = row;
     return (
         <tr className='border-b cursor-pointer' onClick={() => {
-            onFilterRow();
+            // onFilterRow();
             onDetailsRow();
           }} >
             <td className='font-dm py-2 text-[#00A762]'>{name}</td>
