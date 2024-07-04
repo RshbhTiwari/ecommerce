@@ -2,11 +2,11 @@ import React from 'react';
 
 const One = ({ title,
     handleClick,
-    bgColor, type,width, textwrap }) => {
+    bgColor, type, width, textwrap }) => {
 
     const buttonType = type === 'submit' ? 'submit' : 'button';
 
-    const textwrapClass = textwrap === 'nowarp' ? 'text-nowrap'  :
+    const textwrapClass = textwrap === 'nowarp' ? 'text-nowrap' :
         'text-wrap';
 
     const buttonStyle = {
@@ -16,16 +16,16 @@ const One = ({ title,
     };
     return (
         <>
-         <button className={`text-white rounded-lg shadow-md font-dm px-3 py-2 capitalize ${textwrapClass}`} style={buttonStyle}
-            type={buttonType}
-        onClick={handleClick}
-        >
-            {title}
-        </button>
+            <button className={`text-white rounded-lg shadow-md font-dm px-3 py-2 capitalize ${textwrapClass}`} style={buttonStyle}
+                type={buttonType}
+                onClick={handleClick}
+            >
+                {title}
+            </button>
 
-        
+
         </>
-       
+
     );
 };
 

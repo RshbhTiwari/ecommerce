@@ -89,6 +89,12 @@ code {
   }
 }
 
+.center_box {
+  display: inline-grid;
+  justify-content: center;
+  align-items: center;
+}
+
 /* .category_hover{
   opacity: 0.5;
   transform: translateY(20px);

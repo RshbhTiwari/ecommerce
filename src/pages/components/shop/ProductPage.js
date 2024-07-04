@@ -11,7 +11,7 @@ import size from '../../../data/size';
 import { Squarebtn } from '../basic/button';
 import ProductTab from './tab/productTab';
 import {
-    fetchAllCategories, fetchOneCategory,
+    fetchAllCategories,
     startLoading,
     hasError,
 } from "../../../redux/slices/category";
@@ -24,7 +24,6 @@ export default function ProductPage() {
     const dispatch = useDispatch();
 
     const [allCategoriesData, setAllCategoriesData] = useState([]);
-    const [tableData, setTableData] = useState([]);
 
     const { isLoading, error, categories } = useSelector(
         (state) => state.category
@@ -44,8 +43,8 @@ export default function ProductPage() {
         console.log("id", id)
         navigate(`/categories/${id}`);
         //  dispatch(deleteBanners(id, toast));
-        //   const filterData = tableData.filter((item) => item._id !== id);
-        //  setTableData(filterData);
+        //   const filterData = allCategoriesData.filter((item) => item._id !== id);
+        //  setAllCategoriesData(filterData);
     };
 
     return (
@@ -57,21 +56,23 @@ export default function ProductPage() {
                 <div className="grid grid-cols-12 gap-6 py-10">
 
                     <div className='md:col-span-4 lg:col-span-3 col-span-12'>
-                        <div className='pb-10'>
-                            <HeadingTitle title="Categories" textAlign='left' />
-                            <table className='w-full my-2'>
-                                <tbody>
-                                    {allCategoriesData.map((row, index) => (
-                                        <AllCategories
-                                            key={index}
-                                            row={row}
-                                            onDetailsRow={() => categoriDetailsRow(row.id)}
-                                        />
-                                    ))
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
+                        {allCategoriesData.length > 0 ? (
+                            <div className='pb-10'>
+                                <HeadingTitle title="Categories" textAlign='left' />
+                                <table className='w-full my-2'>
+                                    <tbody>
+                                        {allCategoriesData.map((row, index) => (
+                                            <AllCategories
+                                                key={index}
+                                                row={row}
+                                                onDetailsRow={() => categoriDetailsRow(row.id)}
+                                            />
+                                        ))
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        ) : null}
 
                         <div className='pb-10'>
                             <HeadingTitle title="Best Seller" textAlign='left' />

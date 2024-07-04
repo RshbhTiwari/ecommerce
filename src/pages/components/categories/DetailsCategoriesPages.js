@@ -1,95 +1,3 @@
-
-// import BreadCrum from '../basic/BreadCrum';
-// import { HeadingBanner, HeadingTitle, Paragraph } from '../basic/title';
-// import { useEffect, useState } from 'react';
-// import comLogo from '../../../assets/home/5.jpg';
-// import ProductTab from '../shop/tab/productTab';
-// import CollectionsShopCard from '../shop/CollectionsShopCard';
-
-// export default function DetailsCategoriesPages({ categoriesData }) {
-//     const { name, short_description } = categoriesData;
-//     const [tableData, setTableData] = useState([]);
-
-//     const handleFilterRow = (id) => {
-//         console.log("id", id)
-//         // dispatch(deleteBanners(id, toast));
-//         // const filterData = tableData.filter((item) => item._id !== id);
-//         // setTableData(filterData);
-//         // navigate(`/blog/${id}`);
-//     };
-
-//     return (
-//         <>
-//             <BreadCrum componentName="categories" link="/shop" />
-
-//             <div className="container mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-
-//                 <div className='py-10'>
-//                     <HeadingBanner color='#072320'
-//                         title={name}
-//                         textAlign='left' />
-
-//                     <div>
-//                         <Paragraph
-//                             title={short_description} textAlign='left' />
-//                     </div>
-
-
-//                     {categoriesData?.subcategories && categoriesData.subcategories.length > 0 ? (
-//                         <>
-//                             <div className='my-6'>
-//                                 <HeadingTitle title="Sub Categories" textAlign='left' />
-//                             </div>
-
-//                             <div className='mb-6'>
-//                                 <div className="grid grid-cols-12 gap-6">
-//                                     {categoriesData.subcategories.map((subcategory, index) => (
-//                                         <div key={index} className='md:col-span-6 lg:col-span-3 col-span-12 flex flex-col justify-center p-4 relative h-full items-center rounded-lg border-[2px] border-[#072320]'>
-//                                             <div className='flex justify-center items-center bg-[#00A762] rounded-lg p-4'>
-//                                                 <div className='overflow-hidden rounded-lg'>
-//                                                     <img
-//                                                         src={subcategory.image}  // Assuming subcategory has an image property
-//                                                         alt="Subcategory Image"
-//                                                         className="overflow-hidden rounded-lg hover:scale-110 transition-all duration-500 cursor-pointer"
-//                                                     />
-//                                                 </div>
-//                                             </div>
-//                                             <div className='pt-2'>
-//                                                 <h2 className="text-[#00A762] text-center font-dm text-lg capitalize font-medium">
-//                                                     {subcategory.title}  {/* Assuming subcategory has a title property */}
-//                                                 </h2>
-//                                             </div>
-//                                         </div>
-//                                     ))}
-//                                 </div>
-//                             </div>
-//                         </>
-//                     ) : null}
-
-
-
-
-//                 </div>
-
-//                 <ProductTab />
-
-
-//                 <div className="py-10">
-//                     <HeadingTitle title="most purchased products" />
-//                     <div className="mt-4">
-//                         <CollectionsShopCard />
-//                     </div>
-//                 </div>
-
-//             </div>
-
-//         </>
-
-//     );
-// }
-
-
-
 import { useNavigate } from 'react-router-dom';
 import allblog from '../../../data/allblog';
 import BreadCrum from '../basic/BreadCrum';
@@ -107,16 +15,17 @@ import {
 } from "../../../redux/slices/category";
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import comLogo from '../../../assets/home/5.jpg';
 import ProductTab from '../shop/tab/productTab';
 import CollectionsShopCard from '../shop/CollectionsShopCard';
+import { ErrorPages } from '../basic/ErrorPages';
+const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
+
 
 export default function DetailsCategoriesPages({ id }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const [allCategoriesData, setAllCategoriesData] = useState([]);
-    const [tableData, setTableData] = useState([]);
 
     const { isLoading, error, categories, oneCategory } = useSelector(
         (state) => state.category
@@ -139,11 +48,11 @@ export default function DetailsCategoriesPages({ id }) {
     const handleFilterRow = (id) => {
         console.log("id", id)
         // dispatch(deleteBanners(id, toast));
-        // const filterData = tableData.filter((item) => item._id !== id);
-        // setTableData(filterData);
+        // const filterData = allCategoriesData.filter((item) => item._id !== id);
+        // setAllCategoriesData(filterData);
         // navigate(`/blog/${id}`);
     };
-    
+
     useEffect(() => {
         dispatch(fetchOneCategory(id)); // Dispatch action to fetch category based on id
     }, [dispatch, id]);
@@ -153,10 +62,16 @@ export default function DetailsCategoriesPages({ id }) {
     }
 
     if (error) {
-        return <p>Error....</p>;
+        return <div className='my-10'>
+            <ErrorPages
+                title="Oops! Page Not Found"
+                massage="It seems like you've taken a wrong turn. Don't worry, you can head back to our homepage to continue your shopping journey."
+                height="350px"
+                handleClick={() => { navigate('/') }}
+            /></div>;
     }
 
-    console.log("oneCategory",oneCategory)
+    console.log("oneCategory", oneCategory)
     return (
         <>
             <BreadCrum componentName="categories" link="/shop" />
@@ -167,27 +82,27 @@ export default function DetailsCategoriesPages({ id }) {
 
 
                     <div className='md:col-span-4 lg:col-span-3 col-span-12'>
+                        {allCategoriesData.length > 0 ? (
+                            <div className='pb-10'>
+                                <HeadingTitle title="Categories" textAlign='left' />
 
-                        <div className='pb-10'>
-                            <HeadingTitle title="Categories" textAlign='left' />
+                                <table className='w-full my-2'>
+                                    <tbody>
+                                        {allCategoriesData.map((row, index) => (
+                                            <AllCategories
+                                                key={index}
+                                                row={row}
+                                                onFilterRow={() => handleFilterRow(row.id)}
+                                                onDetailsRow={() => categoriDetailsRow(row.id)}
+                                            />
+                                        ))
+                                        }
 
-                            <table className='w-full my-2'>
-                                <tbody>
-                                    {allCategoriesData.map((row, index) => (
-                                        <AllCategories
-                                            key={index}
-                                            row={row}
-                                            onFilterRow={() => handleFilterRow(row.id)}
-                                            onDetailsRow={() => categoriDetailsRow(row.id)}
-                                        />
-                                    ))
-                                    }
+                                    </tbody>
+                                </table>
 
-                                </tbody>
-                            </table>
-
-                        </div>
-
+                            </div>
+                        ) : null}
                         <div className='pb-10'>
                             <HeadingTitle title="Best Seller" textAlign='left' />
 
@@ -219,40 +134,46 @@ export default function DetailsCategoriesPages({ id }) {
 
                             <div>
                                 <Paragraph
-                                    title={oneCategory?.short_description} textAlign='left' />
+                                    title={oneCategory?.description} textAlign='left' />
                             </div>
 
-                            {/* {oneCategory?.subcategories && oneCategory.subcategories.length > 0 ? (
-                                <> */}
+                            {oneCategory?.children && oneCategory?.children?.length > 0 ? (
+                                <>
                                     <div className='my-6'>
                                         <HeadingTitle title="Sub Categories" textAlign='left' />
                                     </div>
+
+
                                     <div className='mb-6'>
                                         <div className="grid grid-cols-12 gap-6">
-                                            <div className='md:col-span-6 lg:col-span-3 col-span-12 flex flex-col justify-center p-4 relative h-full items-center rounded-lg border-[2px] border-[#072320]'>
+                                            {oneCategory?.children?.map((row, index) => (
+                                                <div key={index}
+                                                    className='md:col-span-6 lg:col-span-3 col-span-12 flex flex-col justify-center p-3 relative h-full items-center rounded-lg border-[2px] border-[#072320]'>
 
-                                                <div className='flex justify-center items-center bg-[#00A762] rounded-lg p-4'>
-                                                    <div className='overflow-hidden rounded-lg'>
-                                                        <img
-                                                            src={comLogo}
-                                                            alt="image"
-                                                            className="overflow-hidden rounded-lg
+                                                    <div className='flex justify-center items-center bg-[#00A762] rounded-lg p-3'>
+                                                        <div className='overflow-hidden rounded-lg'>
+                                                            <img
+                                                                src={BASE_IMAGE_URL + row?.icon_image}
+                                                                alt="image"
+                                                                className="overflow-hidden rounded-lg
                                                      hover:scale-110 transition-all duration-500 cursor-pointer"
-                                                        />
+                                                            />
+                                                        </div>
                                                     </div>
-                                                </div>
 
-                                                <div className='pt-2'>
-                                                    <h2 class="text-[#00A762] text-center 
+                                                    <div className='pt-2'>
+                                                        <h2 class="text-[#00A762] text-center 
                                                font-dm text-lg capitalize font-medium 
-                                                ">Red Radish 1 pack</h2>
-                                                </div>
+                                                ">{row?.name}</h2>
+                                                    </div>
 
-                                            </div>
+                                                </div>
+                                            ))
+                                            }
                                         </div>
                                     </div>
-                                {/* </>
-                            ) : null} */}
+                                </>
+                            ) : null}
                         </div>
 
                         <div className="max-w-screen-lg mx-auto p-4">

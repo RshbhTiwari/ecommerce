@@ -10,7 +10,7 @@ function AccountSideNav() {
         <>
             {myaccountlink.map((row, index) => (
                 <div className='gap-4 mb-4 
-                 flex items-center border-2 border-[#072320] rounded-lg px-4 py-4 cursor-pointer' key={index} onClick={() => {
+                 flex items-center border-2  border-[#072320] rounded-lg px-4 py-4 cursor-pointer' key={index} onClick={() => {
                         navigate(row.link);
                     }} >
 

@@ -13,10 +13,12 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./home.css";
 import { ErrorPages } from "../basic/ErrorPages";
+import { useNavigate } from "react-router-dom";
 
 const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
 
 const CategoriesCard = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [allCategoriesData, setAllCategoriesData] = useState([]);
     const { isLoading, error, categories } = useSelector(
@@ -34,7 +36,7 @@ const CategoriesCard = () => {
         }
     }, [categories]);
 
-    console.log("categories",categories)
+    console.log("categories", categories)
 
 
     const settings = {
@@ -71,6 +73,11 @@ const CategoriesCard = () => {
         sliderRef.current.slickPrev();
     };
 
+    const categoriDetailsRow = (id) => {
+        navigate(`/categories/${id}`);
+    };
+
+
     return (
         <div className="relative">
             {isLoading ? (
@@ -85,22 +92,20 @@ const CategoriesCard = () => {
                         </div>
                     ))}
                 </div>
-            ) : error ? (
-                <ErrorPages
-                    massage="Sorry, but nothing matched your search terms. Please try again."
-                    height="250px"
-                />
             ) : (
                 <>
                     <Slider ref={sliderRef} {...settings} className="">
                         {allCategoriesData.map((item, index) => (
-                            <div key={index} className="px-2">
-                                <div className="flex flex-col items-center justify-center rounded-lg p-3 border-2 border-[#072320]">
-                                    <div className="w-[75px] mb-2 mx-auto">
+                            <div key={index} className="px-2" >
+                                <div className="flex flex-col items-center justify-center rounded-lg p-3 border-2 border-[#072320] cursor-pointer"
+                                    onClick={() => categoriDetailsRow(item.id)}>
+
+                                    <div className="w-[75px] mb-2 mx-auto" >
                                         <img
                                             src={BASE_IMAGE_URL + item?.thumbnail_image}
                                             alt="image"
                                             className="responsive_image_card"
+                                            onClick={() => categoriDetailsRow(item.id)}
                                         />
                                     </div>
                                     <h2 className="text-[#00A762] text-center font-dm text-lg capitalize font-medium">

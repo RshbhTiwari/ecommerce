@@ -20,8 +20,6 @@ import {
     hasError,
 } from "../../../../redux/slices/category";
 import { useDispatch, useSelector } from 'react-redux';
-import { ErrorPages } from '../ErrorPages';
-import { useNavigate } from 'react-router-dom';
 
 const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
 
@@ -115,7 +113,7 @@ export default function Nav() {
                                                         <div className='absolute rounded-b-lg bg-[#072320] w-[350px] z-10 py-5 px-7 top-full left-1/2 transform transition-all duration-300 
                                                       -translate-x-1/2'>
 
-                                                            <div className="grid grid-cols-12 gap-4  ">
+                                                            <div className="grid grid-cols-12 gap-4  center_box">
 
                                                                 <div className='sm:col-span-6 col-span-12 flex flex-col justify-center'>
 
@@ -128,13 +126,7 @@ export default function Nav() {
                                                                             ))
                                                                             }
                                                                         </>
-                                                                    ) : error ? (
-                                                                        <div className="flex h-full items-center justify-center">
-                                                                            <p className="text-center  font-dm text-white text-sm  capitalize">
-                                                                                Sorry, but nothing matched your search terms. Please try again.
-                                                                            </p>
-                                                                        </div>
-                                                                    ) : (
+                                                                    ) :  (
                                                                         <>
                                                                             {allCategoriesData.map((row, index) => (
                                                                                 <a href={`/categories/${row.id}`}>
@@ -156,15 +148,9 @@ export default function Nav() {
                                                                             </div>
                                                                         </div>
                                                                         </>
-                                                                    ) : error ? (
-                                                                        <div className="flex h-full items-center justify-center">
-                                                                            <p className="text-center  font-dm text-white text-sm  capitalize">
-                                                                                Sorry, but nothing matched your search terms. Please try again.
-                                                                            </p>
-                                                                        </div>
                                                                     ) : (
                                                                         <>
-                                                                            <Slider {...settings} className='mt-2' >
+                                                                            <Slider {...settings} className='' >
                                                                                 {allCategoriesData.map((item, index) => (
                                                                                     <div className='p-4 bg-[#00A762] rounded-lg' key={index} >
                                                                                         <div className='rounded-lg flex items-center justify-center '>
