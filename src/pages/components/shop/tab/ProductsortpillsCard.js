@@ -6,12 +6,14 @@ import { Paragraph } from '../../basic/title';
 
 const ProductsortpillsCard = ({ allProducts }) => {
 
+    const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
+
     const navigate = useNavigate();
 
     const handleDetailsRow = (id) => {
         navigate(`/shop/${id}`);
     };
-
+    console.log("allProducts", allProducts)
     return (
 
         <div className=" ">
@@ -26,11 +28,18 @@ const ProductsortpillsCard = ({ allProducts }) => {
                     <div key={index} className="lg:col-span-3 sm:col-span-4  col-span-12
                         flex items-center h-[150px] w-full justify-content rounded-md bg-[#00a762b0] 
                     sm:block hidden">
-                        <img
-                            src={item.image}
-                            alt='product_img'
-                            className="w-full h-full"
-                        />
+
+                        {item.additional_images && item.additional_images.length > 0 ? (
+                            <img
+                                src={BASE_IMAGE_URL + item.additional_images[0]}
+                                alt='product_img'
+                                className="w-full h-full object-cover rounded-md"
+                            />
+                        ) : (
+                            <div className="w-full h-full bg-gray-200 rounded-md">
+
+                            </div>
+                        )}
                     </div>
 
 
@@ -38,13 +47,23 @@ const ProductsortpillsCard = ({ allProducts }) => {
                     <div className="col-span-12 sm:col-span-8 lg:col-span-9   flex justify-center flex-col">
                         <h2 className="text-[#00A762] text-left
                          font-dm text-lg capitalize font-medium
-                        ">{item.title}</h2>
+                        ">{item.name}</h2>
 
-                        <Paragraph title={item.subtitle} textAlign='onyleft' />
+                        <Paragraph title={item.description} textAlign='onyleft' />
 
-                        <h2 className="text-[#00A762] text-left
-                         font-dm text-lg capitalize font-medium
-                         ">${item.price}</h2>
+                        {item?.discount_price ? (
+                            <>
+                                <div className="flex items-center gap-2 text-[#00A762] text-center font-dm text-lg capitalize font-medium pb-2">
+                                    <span className="block text-xs line-through">₹{item?.price}</span>
+                                    <span className="block">₹{item?.discount_price}</span>
+
+                                </div>
+                            </>
+                        ) : (
+                            <h2 className="text-[#00A762] font-dm text-lg capitalize font-medium pb-2">
+                                ₹{item?.price}
+                            </h2>
+                        )}
                     </div>
 
 
@@ -54,9 +73,6 @@ const ProductsortpillsCard = ({ allProducts }) => {
                             <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320] cursor-pointer '>
                                 <FaRegHeart className='text-white text-[22px]' />
                             </div>
-                            {/* <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320] cursor-pointer'>
-                                <h6 className='text-white text-[27px] mt-[-7px] flex justify-center  items-center'>+</h6>
-                            </div> */}
                             <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320] cursor-pointer'>
                                 <HiOutlineShoppingBag className='text-white text-[22px]' />
                             </div>
@@ -67,8 +83,6 @@ const ProductsortpillsCard = ({ allProducts }) => {
                 </div>
             ))
             }
-
-
         </div>
 
     );

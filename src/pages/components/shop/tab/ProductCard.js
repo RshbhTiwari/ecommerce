@@ -1,17 +1,19 @@
 import React from 'react';
 import { FaRegHeart } from "react-icons/fa";
 import { HiOutlineShoppingBag } from "react-icons/hi";
-
 import { useNavigate } from 'react-router-dom';
 import { Paragraph } from '../../basic/title';
 
-const ProductCard = ({allProducts}) => {
 
+
+const ProductCard = ({ allProducts }) => {
+    const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
     const navigate = useNavigate();
 
     const handleDetailsRow = (id) => {
         navigate(`/shop/${id}`);
     };
+
 
     return (
 
@@ -26,7 +28,8 @@ const ProductCard = ({allProducts}) => {
                     <div className='flex justify-center items-center bg-[#00A762] rounded-lg mb-2 mx-4 my-4 relative'>
                         <div className='w-3/4 overflow-hidden'>
                             <img
-                                src={item.image}
+                            src={BASE_IMAGE_URL + item?.image}
+                                // src={BASE_IMAGE_URL + item?.additional_images[0]}
                                 alt="image"
                                 className="responsive_image_card overflow-hidden hover:scale-110 transition-all duration-500 cursor-pointer"
                             />
@@ -51,9 +54,19 @@ const ProductCard = ({allProducts}) => {
                         </div>
 
 
-                        <h2 className="text-[#00A762] text-center 
-                                  font-dm text-lg capitalize font-medium pb-2
-                                   ">${item.price}</h2>
+                        {item.discount_price ? (
+                            <>
+                                <div className="flex items-center gap-2 text-[#00A762] text-center font-dm text-lg capitalize font-medium pb-2">
+                                    <span className="block text-xs line-through">₹{item?.price}</span>
+                                    <span className="block">₹{item?.discount_price}</span>
+
+                                </div>
+                            </>
+                        ) : (
+                            <h2 className="text-[#00A762] font-dm text-lg capitalize font-medium pb-2">
+                                ₹{item?.price}
+                            </h2>
+                        )}
 
                     </div>
                     <div className='flex justify-center items-center px-2 py-2 gap-2'>
