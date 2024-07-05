@@ -2,9 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import allblog from '../../../data/allblog';
 import BreadCrum from '../basic/BreadCrum';
 import { HeadingBanner, HeadingTitle, Paragraph } from '../basic/title';
-
-import categoriescarddata from '../../../data/categoriescarddata';
-import ProductCard from '../home/ProductCard';
 import { AllCategories, BestSeller } from '../basic/MultiUses';
 import size from '../../../data/size';
 import { Squarebtn } from '../basic/button';
@@ -18,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ProductTab from '../shop/tab/productTab';
 import CollectionsShopCard from '../shop/CollectionsShopCard';
 import { ErrorPages } from '../basic/ErrorPages';
+
 const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
 
 
@@ -54,7 +52,7 @@ export default function DetailsCategoriesPages({ id }) {
     };
 
     useEffect(() => {
-        dispatch(fetchOneCategory(id)); // Dispatch action to fetch category based on id
+        dispatch(fetchOneCategory(id));
     }, [dispatch, id]);
 
     if (isLoading) {
@@ -71,8 +69,6 @@ export default function DetailsCategoriesPages({ id }) {
             /></div>;
     }
 
-    console.log("oneCategory", oneCategory)
-    
     return (
         <>
             <BreadCrum componentName="categories" link="/shop" />

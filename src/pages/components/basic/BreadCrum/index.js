@@ -1,5 +1,4 @@
-export default function BreadCrum({ componentName, link,componentSecondName }) {
-
+export default function BreadCrum({ componentName, link, componentSecondName }) {
     return (
         <>
             <div className="bread_crumb py-2">

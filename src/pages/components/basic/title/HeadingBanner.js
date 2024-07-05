@@ -8,13 +8,12 @@ const HeadingBanner = ({ title, textAlign, color }) => {
 
     const textColor = color === '#072320' ? 'text-[#072320]' : 'text-white';
 
-
-
     const titleStyle = {};
 
     return (
-        <h1
-            className={`font-dm text-4xl mb-2 capitalize p-0 font-medium ${alignmentClass} ${textColor}`} style={titleStyle}>{title}</h1>
+        <h1 className={`font-dm text-4xl mb-2 capitalize p-0 font-medium ${alignmentClass} ${textColor}`} style={titleStyle}>
+            {title}
+        </h1>
     );
 };
 
