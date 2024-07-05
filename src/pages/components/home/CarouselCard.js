@@ -68,7 +68,7 @@ const CarouselCard = () => {
           <div className='relative h-full'>
             <div className='overflow-hidden rounded-lg h-full'>
               <img
-                src={BASE_IMAGE_URL + item?.icon_image}
+                src={BASE_IMAGE_URL + item?.feature_image}
                 alt="image"
                 onClick={() => categoriDetailsRow(item.id)}
                 className="responsive_image_card shadow rounded-lg overflow-hidden object-cover hover:scale-110 transition-all duration-500 cursor-pointer h-full"

@@ -22,58 +22,79 @@
     background: linear-gradient(0.25turn, #072320, #072320, #072320b5, #ffffff45);
 }
 
-.card_btn_box{
+.card_btn_box {
     bottom: 18px;
     width: 90%;
     display: flex;
     justify-content: end;
 }
 
-.left_right_shop_btn{
+.left_right_shop_btn {
     top: 50%;
     transform: translateY(-50%);
     width: 100%;
 }
-.left_shop_btn{
+
+.left_shop_btn {
     margin-left: -20px;
     border: 1px solid #072320;
 }
-.right_shop_btn{
+
+.right_shop_btn {
     margin-right: -20px;
     border: 1px solid #072320;
 }
 
-.left_right_btn{
+.left_right_btn {
     top: 50%;
     transform: translateY(-50%);
     width: 100%;
 }
-.left_btn{
+
+.left_btn {
     margin-left: -13px;
     border: 2px solid #072320;
 }
 
-.right_btn{
+.right_btn {
     margin-right: -13px;
     border: 2px solid #072320;
 }
 
 
-.bg_image{
+.bg_image {
     background-image: url('../../../assets/home/banner.png');
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
 }
+
 @media only screen and (max-width:1023px) {
-    .left_btn{
+    .left_btn {
         margin-left: -8px;
     }
+
     .right_btn {
-        margin-right: -8px;}
-    .cashback_box{
+        margin-right: -8px;
+    }
+
+    .cashback_box {
         padding-left: 20px;
     }
 }
-.slick-next {display: none !important;}
 
+.slick-next {
+    display: none !important;
+}
+
+.slider-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+  }
+  
+  .slider-item {
+    flex: 1 0 auto;
+    margin: 10px;
+  }

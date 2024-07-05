@@ -72,6 +72,7 @@ export default function DetailsCategoriesPages({ id }) {
     }
 
     console.log("oneCategory", oneCategory)
+    
     return (
         <>
             <BreadCrum componentName="categories" link="/shop" />
@@ -137,7 +138,7 @@ export default function DetailsCategoriesPages({ id }) {
                                     title={oneCategory?.description} textAlign='left' />
                             </div>
 
-                            {oneCategory?.children && oneCategory?.children?.length > 0 ? (
+                            {oneCategory?.subcategories && oneCategory?.subcategories?.length > 0 ? (
                                 <>
                                     <div className='my-6'>
                                         <HeadingTitle title="Sub Categories" textAlign='left' />
@@ -146,14 +147,14 @@ export default function DetailsCategoriesPages({ id }) {
 
                                     <div className='mb-6'>
                                         <div className="grid grid-cols-12 gap-6">
-                                            {oneCategory?.children?.map((row, index) => (
+                                            {oneCategory?.subcategories?.map((row, index) => (
                                                 <div key={index}
                                                     className='md:col-span-6 lg:col-span-3 col-span-12 flex flex-col justify-center p-3 relative h-full items-center rounded-lg border-[2px] border-[#072320]'>
 
                                                     <div className='flex justify-center items-center bg-[#00A762] rounded-lg p-3'>
                                                         <div className='overflow-hidden rounded-lg'>
                                                             <img
-                                                                src={BASE_IMAGE_URL + row?.icon_image}
+                                                                src={BASE_IMAGE_URL + row?.image}
                                                                 alt="image"
                                                                 className="overflow-hidden rounded-lg
                                                      hover:scale-110 transition-all duration-500 cursor-pointer"
@@ -166,6 +167,8 @@ export default function DetailsCategoriesPages({ id }) {
                                                font-dm text-lg capitalize font-medium 
                                                 ">{row?.name}</h2>
                                                     </div>
+
+                                                    <h1 className='font-dm text-center'>{row?.products_count} Products</h1>
 
                                                 </div>
                                             ))

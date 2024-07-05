@@ -17,7 +17,7 @@ const ProductCard = () => {
 
         <div className="grid grid-cols-12 gap-4">
             {allProducts.slice(0, 3).map((item, index) => (
-                <div className='md:col-span-6 lg:col-span-4  col-span-12 flex flex-col justify-center relative h-full items-center rounded-lg 
+                <div className='md:col-span-6 lg:col-span-4  col-span-12 flex flex-col justify-between relative h-full items-center rounded-lg 
                   border-2 border-[#072320]'
                     key={index} onClick={() => {
                         handleDetailsRow(item.id);

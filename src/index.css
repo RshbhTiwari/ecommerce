@@ -106,3 +106,19 @@ code {
   opacity: 1;
   transform: translateY(200);
 } */
+
+
+
+.zoom-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.zoom-container img {
+  transition: transform 0.3s ease;
+}
+
+.zoom-container:hover img {
+  transform: scale(1.1);
+}
+

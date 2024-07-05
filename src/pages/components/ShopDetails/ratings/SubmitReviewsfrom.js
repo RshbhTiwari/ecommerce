@@ -10,7 +10,7 @@ const SubmitReviewsfrom = () => {
     const schema = Yup.object().shape({
         username: Yup.string().required('user name is required'),
         email: Yup.string().email('Invalid email').required('Email is required'),
-        rating: Yup.number().required('Rating is required').min(1, 'Minimum rating is 1').max(5, 'Maximum rating is 5'),
+        rating: Yup.string().required('Rating is required'), 
         comment: Yup.string().required('Comment is required').min(10, 'Comment must be at least 10 characters'),
     });
 
@@ -86,23 +86,50 @@ const RatingInput = () => {
     const { register, formState: { errors } } = useFormContext();
 
     return (
-        <div className="mt-3">
-            <label className="block text-[#072320] font-dm text-lg capitalize font-medium">rating
-                <span className=' font-medium text-red-500'>*</span>
+        <div className='mt-3'>
+            <label className='block text-[#072320] font-dm text-lg capitalize font-medium'>
+                Rating <span className='font-medium text-red-500'>*</span>
             </label>
-
-            <div>
-                {[1, 2, 3, 4, 5].map((value) => (
-                    <label key={value} className="inline-flex items-center px-2">
-                        <input type="radio" value={value} {...register('rating')} />
-                        <span className="ml-1"><FaStar color="#ffc107" /></span>
-                    </label>
-                ))}
-            </div>
-            {errors.rating && <p className="text-red-500 font-dm mt-1">{errors.rating.message}</p>}
+            <select
+                className='input_box w-full'
+                {...register('rating', {
+                    required: 'Please select a rating',
+                })}
+            >
+                <option value="">Select Rating</option>
+                <option value="1">1 Star</option>
+                <option value="2">2 Stars</option>
+                <option value="3">3 Stars</option>
+                <option value="4">4 Stars</option>
+                <option value="5">5 Stars</option>
+            </select>
+            {errors.rating && <p className="text-red-500 mt-1">{errors.rating.message}</p>}
         </div>
     );
 };
+
+
+// const RatingInput = () => {
+//     const { register, formState: { errors } } = useFormContext();
+
+//     return (
+//         <div className="mt-3">
+//             <label className="block text-[#072320] font-dm text-lg capitalize font-medium">rating
+//                 <span className=' font-medium text-red-500'>*</span>
+//             </label>
+
+//             <div>
+//                 {[1, 2, 3, 4, 5].map((value) => (
+//                     <label key={value} className="inline-flex items-center px-2">
+//                         <input type="radio" value={value} {...register('rating')} />
+//                         <span className="ml-1"><FaStar color="#ffc107" /></span>
+//                     </label>
+//                 ))}
+//             </div>
+//             {errors.rating && <p className="text-red-500 font-dm mt-1">{errors.rating.message}</p>}
+//         </div>
+//     );
+// };
 
 const EmailInput = () => {
     const { register, formState: { errors } } = useFormContext();

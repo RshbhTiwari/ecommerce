@@ -8,7 +8,7 @@ const AllCategories = ({ row ,onDetailsRow}) => {
             onDetailsRow();
           }} >
             <td className='font-dm py-2 text-[#00A762]'>{name}</td>
-            <td className='font-dm py-2 text-end text-[#00A762]'>{products_count} Products</td>
+            <td className='font-dm py-2 text-end text-[#00A762] text-nowrap'>{products_count} Products</td>
         </tr>
 
     );

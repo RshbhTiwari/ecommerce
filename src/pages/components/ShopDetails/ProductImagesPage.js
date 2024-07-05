@@ -78,8 +78,6 @@
 // };
 
 // export default ProductImagesPage;
-
-
 import React, { useEffect, useState } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -89,8 +87,8 @@ import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
 const ProductImagesPage = () => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const [autoplay, setAutoplay] = useState(true); 
-    
+    const [autoplay, setAutoplay] = useState(true);
+
     useEffect(() => {
         let interval;
         clearInterval(interval);
@@ -109,11 +107,20 @@ const ProductImagesPage = () => {
         <>
             {/* Single image box */}
             <div className='rounded-lg relative ' >
-                <img
+
+                <div className='rounded-lg relative zoom-container'>
+                    <img
+                        src={carouselcarddata[currentImageIndex].image}
+                        alt="image"
+                        className="cursor-pointer h-full w-full rounded-lg shadow"
+                    />
+                </div>
+
+                {/* <img
                     src={carouselcarddata[currentImageIndex].image}
                     alt="image"
                     className="cursor-pointer h-full w-full rounded-lg shadow"
-                />
+                /> */}
 
                 {/* Previous and Next buttons */}
 
