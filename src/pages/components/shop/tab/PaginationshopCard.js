@@ -8,23 +8,23 @@ import { FaAngleLeft } from "react-icons/fa";
 
 const PaginationshopCard = ({products}) => {
 
-    const [allCategoriesData, setAllCategoriesData] = useState([]);
+    const [allProductsData, setAllProductsData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 6;
 
     useEffect(() => {
         if (products?.length) {
-            setAllCategoriesData(products);
+            setAllProductsData(products);
         }
     }, [products]);
 
-    console.log("allCategoriesData",allCategoriesData)
+    console.log("allProductsData",allProductsData)
     // Calculate current products to display
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const currentProducts = allCategoriesData.slice(indexOfFirstProduct, indexOfLastProduct);
+    const currentProducts = allProductsData.slice(indexOfFirstProduct, indexOfLastProduct);
 
-    const totalPages = Math.ceil(allCategoriesData.length / productsPerPage);
+    const totalPages = Math.ceil(allProductsData.length / productsPerPage);
 
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import productcard from "../../../../data/productcard";
 import ProductsortpillsCard from './ProductsortpillsCard';
 import { Paragraph } from '../../basic/title';
@@ -6,15 +6,24 @@ import { FaAngleRight } from "react-icons/fa";
 import { FaAngleLeft } from "react-icons/fa";
 
 const PaginationshoplistCard = ({products}) => {
+
+    const [allProductsData, setAllProductsData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 6;
 
+    useEffect(() => {
+        if (products?.length) {
+            setAllProductsData(products);
+        }
+    }, [products]);
+
+    console.log("allProductsData",allProductsData)
     // Calculate pagination
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const currentProducts = productcard.slice(indexOfFirstProduct, indexOfLastProduct);
+    const currentProducts = allProductsData.slice(indexOfFirstProduct, indexOfLastProduct);
 
-    const totalPages = Math.ceil(productcard.length / productsPerPage);
+    const totalPages = Math.ceil(allProductsData.length / productsPerPage);
 
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber);
