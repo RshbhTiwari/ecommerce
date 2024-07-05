@@ -54,7 +54,7 @@ export default productSlice.reducer;
 export const getproduct = () => async (dispatch) => {
     try {
         dispatch(startLoading());
-        const response = await axios.get("/categories/featured");
+        const response = await axios.get("/products");
         dispatch(getproductsSuccess(response?.data?.featuredCategory));
     } catch (error) {
         console.error("Error fetching categories:", error.response.data.message);
@@ -68,7 +68,7 @@ export const getproduct = () => async (dispatch) => {
 export const getOneProduct = (id) => async (dispatch) => {
     try {
         dispatch(startLoading());
-        const response = await axios.get(`/category/${id}`);
+        const response = await axios.get(`/products/${id}`);
         dispatch(getOneproductsSuccess(response?.data?.category));
     } catch (error) {
         console.error("Error fetching category:", error.response?.data?.message);
