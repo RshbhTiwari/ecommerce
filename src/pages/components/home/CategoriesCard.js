@@ -7,25 +7,50 @@ import {
     startLoading,
     hasError,
 } from "../../../redux/slices/category";
-import categoriescarddata from "../../../data/categoriescarddata";
 import { Paragraph } from "../basic/title";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./home.css";
-import { ErrorPages } from "../basic/ErrorPages";
 import { useNavigate } from "react-router-dom";
 import defultimage from '../../../assets/home/defultlogo.png';
 
 const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
 
+const settings = {
+    dots: false,
+    infinite: true,
+    centerPadding: "100px",
+    speed: 500,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    responsive: [
+        {
+            breakpoint: 1024,
+            settings: {
+                slidesToShow: 2,
+                slidesToScroll: 1,
+                infinite: true,
+            },
+        },
+        {
+            breakpoint: 600,
+            settings: {
+                slidesToShow: 1,
+                slidesToScroll: 1,
+            },
+        },
+    ],
+};
+
 const CategoriesCard = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const sliderRef = useRef(null);
     const [allCategoriesData, setAllCategoriesData] = useState([]);
+
     const { isLoading, error, categories } = useSelector(
         (state) => state.category
     );
-    const sliderRef = useRef(null);
 
     useEffect(() => {
         dispatch(fetchAllCategories());
@@ -36,35 +61,6 @@ const CategoriesCard = () => {
             setAllCategoriesData(categories);
         }
     }, [categories]);
-
-    console.log("categories", categories)
-
-
-    const settings = {
-        dots: false,
-        infinite: true,
-        centerPadding: "100px",
-        speed: 500,
-        slidesToShow: 5,
-        slidesToScroll: 1,
-        responsive: [
-            {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 1,
-                    infinite: true,
-                },
-            },
-            {
-                breakpoint: 600,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1,
-                },
-            },
-        ],
-    };
 
     const nextSlide = () => {
         sliderRef.current.slickNext();
@@ -77,7 +73,6 @@ const CategoriesCard = () => {
     const categoriDetailsRow = (id) => {
         navigate(`/categories/${id}`);
     };
-
 
     return (
         <div className="relative">

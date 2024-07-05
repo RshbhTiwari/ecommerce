@@ -36,18 +36,17 @@ const HomePage = () => {
             <HomeBanner />
 
             <div className="container mx-auto max-w-7xl  px-2 sm:px-6 lg:px-8">
-                <CarouselCard />
-
-                {categories.length > 0 ? (
-                    <div className="pb-10">
-                        <HeadingTitle title="Shop By Categories" />
-                        <div className="mt-4">
-                            <CategoriesCard />
+                {allCategoriesData.length > 0 ? (
+                    <>
+                        <CarouselCard />
+                        <div className="pb-10">
+                            <HeadingTitle title="Shop By Categories" />
+                            <div className="mt-4">
+                                <CategoriesCard />
+                            </div>
                         </div>
-                    </div>
+                    </>
                 ) : null}
-
-
             </div>
 
             <div className="bg-[#072320] mb-10 py-4">
@@ -55,7 +54,6 @@ const HomePage = () => {
             </div>
 
             <div className="container mx-auto max-w-7xl  px-2 sm:px-6 lg:px-8">
-
                 <div className="pb-10">
                     <HeadingTitle title="Bestsellers in September" />
                     <div className="mt-4">
@@ -67,11 +65,9 @@ const HomePage = () => {
                     <ImageContent />
                 </div>
 
-
                 <div className="pb-10">
                     <OfferContent />
                 </div>
-
             </div>
 
         </>

@@ -2,15 +2,14 @@ import React, { useEffect, useState } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import carouselcarddata from "../../../data/carouselcarddata";
 import Btnone from '../basic/button/one';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllFeaturedCategories } from '../../../redux/slices/category';
-
 import defultimage from '../../../assets/home/img.png';
 
 const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
+
 const settings = {
   infinite: true,
   speed: 500,
@@ -57,8 +56,6 @@ const CarouselCard = () => {
     }
   }, [featured]);
 
-  console.log("featured", featured)
-
   const categoriDetailsRow = (id) => {
     navigate(`/categories/${id}`);
   };
@@ -69,8 +66,6 @@ const CarouselCard = () => {
         <div key={index} className='px-2 relative h-full cursor-pointer' onClick={() => categoriDetailsRow(item.id)}>
           <div className='relative h-full'>
             <div className='overflow-hidden rounded-lg h-full'>
-
-
 
               {item?.feature_image ? (
                 <img
