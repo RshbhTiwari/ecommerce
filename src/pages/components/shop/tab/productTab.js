@@ -6,13 +6,6 @@ import PaginationshoplistCard from './PaginationshoplistCard';
 
 const ProductTab = ({ allproducts }) => {
     const [activeTab, setActiveTab] = useState('tab_a');
-    const [allProductsData, setAllProductsData] = useState([]);
-
-    useEffect(() => {
-        if (allproducts?.length) {
-            setAllProductsData(allproducts);
-        }
-    }, [allproducts]);
 
     const handleTabClick = (tab) => {
         setActiveTab(tab);
@@ -20,7 +13,7 @@ const ProductTab = ({ allproducts }) => {
 
     return (
         <>
-            {allProductsData?.length ? (
+            {allproducts?.length ? (
                 <div className="flex space-x-2">
                     <div
                         className={`px-3 py-2 bg-[#00A762] justify-center cursor-pointer items-center text-white rounded-md flex  ${activeTab === 'tab_a' ? 'bg-teal-950' : ''

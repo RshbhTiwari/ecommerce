@@ -18,16 +18,26 @@ import {
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import comLogo from '../../../assets/home/5.jpg';
+import { getproduct } from '../../../redux/slices/product';
 
 export default function ProductPage() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const [allCategoriesData, setAllCategoriesData] = useState([]);
+    const [allProductsData, setAllProductsData] = useState([]);
 
-    const { isLoading, error, categories } = useSelector(
+    const { isLoading: categoryIsLoading, error: categoryError, categories } = useSelector(
         (state) => state.category
     );
+    const { isLoading: productIsLoading, error: productError, products } = useSelector(
+        (state) => state.product
+    );
+
+    useEffect(() => {
+        dispatch(getproduct());
+    }, [dispatch]);
+
 
     useEffect(() => {
         dispatch(fetchAllCategories());
@@ -39,12 +49,15 @@ export default function ProductPage() {
         }
     }, [categories]);
 
+    useEffect(() => {
+        if (products?.length) {
+            setAllProductsData(products);
+        }
+    }, [products]);
+
     const categoriDetailsRow = (id) => {
         console.log("id", id)
         navigate(`/categories/${id}`);
-        //  dispatch(deleteBanners(id, toast));
-        //   const filterData = allCategoriesData.filter((item) => item._id !== id);
-        //  setAllCategoriesData(filterData);
     };
 
     return (
@@ -94,7 +107,7 @@ export default function ProductPage() {
 
                     <div className='md:col-span-8 lg:col-span-9 col-span-12'>
                         <div className="max-w-screen-lg mx-auto p-4">
-                            <ProductTab />
+                            <ProductTab allproducts={ allProductsData} />
                         </div>
                     </div>
 

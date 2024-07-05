@@ -44,10 +44,10 @@ const ProductCard = ({allProducts}) => {
 
                         <h2 className="text-[#00A762] text-center 
                                   font-dm text-lg capitalize font-medium 
-                                   ">{item.title}</h2>
+                                   ">{item.name}</h2>
 
                         <div className='pb-2'>
-                            <Paragraph title={item.subtitle} />
+                            <Paragraph title={item.description} />
                         </div>
 
 

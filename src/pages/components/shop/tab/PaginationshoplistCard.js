@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import productcard from "../../../../data/productcard";
 import ProductsortpillsCard from './ProductsortpillsCard';
 import { Paragraph } from '../../basic/title';
 import { FaAngleRight } from "react-icons/fa";
@@ -7,22 +6,22 @@ import { FaAngleLeft } from "react-icons/fa";
 
 const PaginationshoplistCard = ({ products }) => {
 
-    const [allProductsData, setAllProductsData] = useState([]);
+    // const [allProductsData, setAllProductsData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 6;
 
-    useEffect(() => {
-        if (products?.length) {
-            setAllProductsData(products);
-        }
-    }, [products]);
+    // useEffect(() => {
+    //     if (products?.length) {
+    //         setAllProductsData(products);
+    //     }
+    // }, [products]);
 
     // Calculate pagination
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const currentProducts = allProductsData.slice(indexOfFirstProduct, indexOfLastProduct);
+    const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
 
-    const totalPages = Math.ceil(allProductsData.length / productsPerPage);
+    const totalPages = Math.ceil(products.length / productsPerPage);
 
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber);
@@ -40,7 +39,7 @@ const PaginationshoplistCard = ({ products }) => {
 
             <ProductsortpillsCard allProducts={currentProducts} />
 
-            {allProductsData?.length ? (
+            {products?.length ? (
                 <div className="flex justify-center  mt-8 w-full">
                     {/* Pagination controls */}
                     <div className='flex justify-center items-center space-x-4 lg:hidden block'>

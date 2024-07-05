@@ -22,9 +22,9 @@ const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
 export default function DetailsCategoriesPages({ id }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
+    const [reloadPage, setReloadPage] = useState(false);
     const [allCategoriesData, setAllCategoriesData] = useState([]);
-
+    const [allSubProductsData, setAllSubProductsData] = useState([]);
     const { isLoading, error, categories, oneCategory } = useSelector(
         (state) => state.category
     );
@@ -34,26 +34,41 @@ export default function DetailsCategoriesPages({ id }) {
     }, [dispatch]);
 
     useEffect(() => {
+        dispatch(fetchOneCategory(id));
+    }, [dispatch, id]);
+
+    useEffect(() => {
         if (categories?.length) {
             setAllCategoriesData(categories);
         }
     }, [categories]);
 
-    const categoriDetailsRow = (id) => {
-        navigate(`/categories/${id}`);
-    };
-
-    const handleFilterRow = (id) => {
-        console.log("id", id)
-        // dispatch(deleteBanners(id, toast));
-        // const filterData = allCategoriesData.filter((item) => item._id !== id);
-        // setAllCategoriesData(filterData);
-        // navigate(`/blog/${id}`);
-    };
+    useEffect(() => {
+        if (reloadPage) {
+            window.location.reload();
+            setReloadPage(false);
+        }
+    }, [reloadPage]); 
 
     useEffect(() => {
+        if (oneCategory && oneCategory.all_products) {
+            setAllSubProductsData(oneCategory.all_products);
+        }
+    }, [oneCategory, id]);
+
+    console.log("oneCategory", oneCategory)
+
+
+    const categoriDetailsRow = (id) => {
+        navigate(`/categories/${id}`);
+        setReloadPage(true);
+    };
+
+    const handleSubProductsRow = (id) => {
+        console.log("id", id)
         dispatch(fetchOneCategory(id));
-    }, [dispatch, id]);
+        setAllSubProductsData(oneCategory.products);
+    };
 
     if (isLoading) {
         return <p>Loading...</p>;
@@ -88,7 +103,6 @@ export default function DetailsCategoriesPages({ id }) {
                                             <AllCategories
                                                 key={index}
                                                 row={row}
-                                                onFilterRow={() => handleFilterRow(row.id)}
                                                 onDetailsRow={() => categoriDetailsRow(row.id)}
                                             />
                                         ))
@@ -141,6 +155,7 @@ export default function DetailsCategoriesPages({ id }) {
                                         <div className="grid grid-cols-12 gap-6">
                                             {oneCategory?.children?.map((row, index) => (
                                                 <div key={index}
+                                                    onClick={() => handleSubProductsRow(row?.id)}
                                                     className='md:col-span-6 lg:col-span-3 col-span-12 flex flex-col justify-center p-3 relative h-full items-center rounded-lg border-[2px] border-[#072320]'>
 
                                                     <div className='flex justify-center items-center bg-[#00A762] rounded-lg p-3'>
@@ -172,7 +187,9 @@ export default function DetailsCategoriesPages({ id }) {
                         </div>
 
                         <div className="max-w-screen-lg mx-auto p-4">
-                            <ProductTab allproducts={oneCategory?.products} />
+                            <ProductTab
+                                allproducts={allSubProductsData}
+                            />
                         </div>
                     </div>
 

@@ -29,12 +29,12 @@ const productSlice = createSlice({
             state.error = action.payload;
         },
 
-        getAllCategoriesSuccess(state, action) {
+        getproductsSuccess(state, action) {
             state.isLoading = false;
             state.products = action.payload;
         },
 
-        getOneCategorySuccess(state, action) {
+        getOneproductsSuccess(state, action) {
             state.isLoading = false;
             state.oneproduct = action.payload;
         },
@@ -55,7 +55,8 @@ export const getproduct = () => async (dispatch) => {
     try {
         dispatch(startLoading());
         const response = await axios.get("/products");
-        dispatch(getproductsSuccess(response?.data?.featuredCategory));
+        dispatch(getproductsSuccess(response.data.products));
+    
     } catch (error) {
         console.error("Error fetching categories:", error.response.data.message);
         dispatch(hasError(error?.response?.data?.message));
