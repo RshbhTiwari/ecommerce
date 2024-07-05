@@ -86,7 +86,6 @@ export default function DetailsCategoriesPages({ id }) {
                         {allCategoriesData.length > 0 ? (
                             <div className='pb-10'>
                                 <HeadingTitle title="Categories" textAlign='left' />
-
                                 <table className='w-full my-2'>
                                     <tbody>
                                         {allCategoriesData.map((row, index) => (
@@ -101,7 +100,6 @@ export default function DetailsCategoriesPages({ id }) {
 
                                     </tbody>
                                 </table>
-
                             </div>
                         ) : null}
                         <div className='pb-10'>
@@ -126,8 +124,6 @@ export default function DetailsCategoriesPages({ id }) {
 
                     <div className='md:col-span-8 lg:col-span-9 col-span-12'>
 
-
-
                         <div className='px-4 pb-4'>
                             <HeadingBanner color='#072320'
                                 title={oneCategory?.name}
@@ -138,7 +134,7 @@ export default function DetailsCategoriesPages({ id }) {
                                     title={oneCategory?.description} textAlign='left' />
                             </div>
 
-                            {oneCategory?.subcategories && oneCategory?.subcategories?.length > 0 ? (
+                            {oneCategory?.children && oneCategory?.children?.length > 0 ? (
                                 <>
                                     <div className='my-6'>
                                         <HeadingTitle title="Sub Categories" textAlign='left' />
@@ -147,14 +143,14 @@ export default function DetailsCategoriesPages({ id }) {
 
                                     <div className='mb-6'>
                                         <div className="grid grid-cols-12 gap-6">
-                                            {oneCategory?.subcategories?.map((row, index) => (
+                                            {oneCategory?.children?.map((row, index) => (
                                                 <div key={index}
                                                     className='md:col-span-6 lg:col-span-3 col-span-12 flex flex-col justify-center p-3 relative h-full items-center rounded-lg border-[2px] border-[#072320]'>
 
                                                     <div className='flex justify-center items-center bg-[#00A762] rounded-lg p-3'>
                                                         <div className='overflow-hidden rounded-lg'>
                                                             <img
-                                                                src={BASE_IMAGE_URL + row?.image}
+                                                                src={BASE_IMAGE_URL + row?.icon_image}
                                                                 alt="image"
                                                                 className="overflow-hidden rounded-lg
                                                      hover:scale-110 transition-all duration-500 cursor-pointer"
@@ -180,7 +176,7 @@ export default function DetailsCategoriesPages({ id }) {
                         </div>
 
                         <div className="max-w-screen-lg mx-auto p-4">
-                            <ProductTab />
+                            <ProductTab allproducts={oneCategory?.products} />
                         </div>
                     </div>
 

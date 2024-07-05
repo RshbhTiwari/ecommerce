@@ -1,21 +1,30 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import productcard from "../../../../data/productcard";
 import ProductCard from './ProductCard';
 import { Paragraph } from '../../basic/title';
 import { FaAngleRight } from "react-icons/fa";
 import { FaAngleLeft } from "react-icons/fa";
 
-const PaginationshopCard = () => {
+const PaginationshopCard = ({products}) => {
+
+    const [allCategoriesData, setAllCategoriesData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 6;
 
+    useEffect(() => {
+        if (products?.length) {
+            setAllCategoriesData(products);
+        }
+    }, [products]);
+
+    console.log("allCategoriesData",allCategoriesData)
     // Calculate current products to display
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const currentProducts = productcard.slice(indexOfFirstProduct, indexOfLastProduct);
+    const currentProducts = allCategoriesData.slice(indexOfFirstProduct, indexOfLastProduct);
 
-    const totalPages = Math.ceil(productcard.length / productsPerPage);
+    const totalPages = Math.ceil(allCategoriesData.length / productsPerPage);
 
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber);

@@ -5,7 +5,7 @@ import { Paragraph } from '../../basic/title';
 import { FaAngleRight } from "react-icons/fa";
 import { FaAngleLeft } from "react-icons/fa";
 
-const PaginationshoplistCard = () => {
+const PaginationshoplistCard = ({products}) => {
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 6;
 

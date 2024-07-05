@@ -20,6 +20,7 @@ import {
     hasError,
 } from "../../../../redux/slices/category";
 import { useDispatch, useSelector } from 'react-redux';
+import defultimage from '../../../../assets/home/defultlogo.png';
 
 const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
 
@@ -95,17 +96,17 @@ export default function Nav() {
                                                     <div className="h-[40px] w-fit mb-1">
                                                         <img
                                                             className="h-full w-auto"
-                                                            src={item.image}
+                                                            src={item?.image}
                                                             alt="logo"
                                                         />
                                                     </div>
                                                     <a
                                                         href={item.link}
                                                         className={`text-gray-300 px-3 py-2 text-sm font-dm font-medium ease-in-out duration-700 
-                                                                ${item.current === path ? 'border-b-2 border-white' : ''} 
-                                                                ${item.name === 'Shop' ? 'shop_class' : ''}`}
+                                                                ${item?.current === path ? 'border-b-2 border-white' : ''} 
+                                                                ${item?.name === 'Shop' ? 'shop_class' : ''}`}
                                                     >
-                                                        {item.name}
+                                                        {item?.name}
                                                     </a>
 
                                                     {/* Dropdown Panel for "Home" */}
@@ -126,10 +127,10 @@ export default function Nav() {
                                                                             ))
                                                                             }
                                                                         </>
-                                                                    ) :  (
+                                                                    ) : (
                                                                         <>
                                                                             {allCategoriesData.map((row, index) => (
-                                                                                <a href={`/categories/${row.id}`}>
+                                                                                <a href={`/categories/${row?.id}`}>
                                                                                     <h5 className='font-dm py-1 cursor-pointer text-white text-wrap'
                                                                                         key={index}
                                                                                     >{row?.name}</h5>
@@ -154,11 +155,23 @@ export default function Nav() {
                                                                                 {allCategoriesData.map((item, index) => (
                                                                                     <div className='p-4 bg-[#00A762] rounded-lg' key={index} >
                                                                                         <div className='rounded-lg flex items-center justify-center '>
-                                                                                            <img
-                                                                                                src={BASE_IMAGE_URL + item?.thumbnail_image}
-                                                                                                alt="image"
-                                                                                                className="cursor-pointer w-full h-full rounded-lg"
-                                                                                            />
+                                                                                            {item?.thumbnail_image ? (
+                                                                                                <a href={`/categories/${item?.id}`}>
+                                                                                                    <img
+                                                                                                        src={BASE_IMAGE_URL + item?.thumbnail_image}
+                                                                                                        alt="image"
+                                                                                                        className="cursor-pointer w-full h-full rounded-lg"
+                                                                                                    />
+                                                                                                </a>
+                                                                                            ) : (
+                                                                                                <a href={`/categories/${item?.id}`}>
+                                                                                                    <img
+                                                                                                        src={defultimage}
+                                                                                                        alt="image"
+                                                                                                        className="cursor-pointer w-full h-full rounded-lg"
+                                                                                                    />
+                                                                                                </a>
+                                                                                            )}
                                                                                         </div>
 
                                                                                     </div>

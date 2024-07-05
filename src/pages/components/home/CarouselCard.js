@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllFeaturedCategories } from '../../../redux/slices/category';
 
+import defultimage from '../../../assets/home/img.png';
+
 const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
 const settings = {
   infinite: true,
@@ -51,7 +53,7 @@ const CarouselCard = () => {
 
   useEffect(() => {
     if (featured?.length) {
-      setAllfeaturedData(featured); 
+      setAllfeaturedData(featured);
     }
   }, [featured]);
 
@@ -59,7 +61,7 @@ const CarouselCard = () => {
 
   const categoriDetailsRow = (id) => {
     navigate(`/categories/${id}`);
-};
+  };
 
   return (
     <Slider {...settings} className='py-10'>
@@ -67,12 +69,25 @@ const CarouselCard = () => {
         <div key={index} className='px-2 relative h-full cursor-pointer' onClick={() => categoriDetailsRow(item.id)}>
           <div className='relative h-full'>
             <div className='overflow-hidden rounded-lg h-full'>
-              <img
-                src={BASE_IMAGE_URL + item?.feature_image}
-                alt="image"
-                onClick={() => categoriDetailsRow(item.id)}
-                className="responsive_image_card shadow rounded-lg overflow-hidden object-cover hover:scale-110 transition-all duration-500 cursor-pointer h-full"
-              />
+
+
+
+              {item?.feature_image ? (
+                <img
+                  src={BASE_IMAGE_URL + item?.feature_image}
+                  alt="image"
+                  onClick={() => categoriDetailsRow(item.id)}
+                  className="responsive_image_card shadow rounded-lg overflow-hidden object-cover hover:scale-110 transition-all duration-500 cursor-pointer h-full"
+                />
+              ) : (
+                <img
+                  src={defultimage}
+                  alt="image"
+                  onClick={() => categoriDetailsRow(item.id)}
+                  className="responsive_image_card shadow rounded-lg overflow-hidden object-cover hover:scale-110 transition-all duration-500 cursor-pointer h-full"
+                />
+              )}
+
             </div>
 
             {/* Absolute box */}

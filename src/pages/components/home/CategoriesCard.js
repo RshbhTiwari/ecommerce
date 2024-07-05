@@ -14,6 +14,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "./home.css";
 import { ErrorPages } from "../basic/ErrorPages";
 import { useNavigate } from "react-router-dom";
+import defultimage from '../../../assets/home/defultlogo.png';
 
 const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
 
@@ -101,12 +102,22 @@ const CategoriesCard = () => {
                                     onClick={() => categoriDetailsRow(item.id)}>
 
                                     <div className="w-[75px] mb-2 mx-auto" >
-                                        <img
-                                            src={BASE_IMAGE_URL + item?.thumbnail_image}
-                                            alt="image"
-                                            className="responsive_image_card"
-                                            onClick={() => categoriDetailsRow(item.id)}
-                                        />
+
+                                        {item?.thumbnail_image ? (
+                                            <img
+                                                src={BASE_IMAGE_URL + item?.thumbnail_image}
+                                                alt="image"
+                                                className="responsive_image_card"
+                                                onClick={() => categoriDetailsRow(item.id)}
+                                            />
+                                        ) : (
+                                            <img
+                                                src={defultimage}
+                                                alt="image"
+                                                className="responsive_image_card"
+                                                onClick={() => categoriDetailsRow(item.id)}
+                                            />
+                                        )}
                                     </div>
                                     <h2 className="text-[#00A762] text-center font-dm text-lg capitalize font-medium">
                                         {item?.name}
