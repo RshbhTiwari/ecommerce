@@ -111,10 +111,10 @@ export default function Nav() {
 
                                                     {/* Dropdown Panel for "Home" */}
                                                     {item.name === 'Shop' && showDropdown && (
-                                                        <div className='absolute rounded-b-lg bg-[#072320] w-[350px] z-10 py-5 px-7 top-full left-1/2 transform transition-all duration-300 
+                                                        <div className='absolute rounded-b-lg bg-[#072320] w-[400px] z-10 py-5 px-7 top-full left-1/2 transform transition-all duration-300 
                                                       -translate-x-1/2'>
 
-                                                            <div className="grid grid-cols-12 gap-4  center_box">
+                                                            <div className="grid grid-cols-12 gap-6 center_box">
 
                                                                 <div className='sm:col-span-6 col-span-12 flex flex-col justify-center'>
 
@@ -130,11 +130,14 @@ export default function Nav() {
                                                                     ) : (
                                                                         <>
                                                                             {allCategoriesData.map((row, index) => (
-                                                                                <a href={`/categories/${row?.id}`}>
-                                                                                    <h5 className='font-dm py-1 cursor-pointer text-white text-wrap'
-                                                                                        key={index}
-                                                                                    >{row?.name}</h5>
-                                                                                </a>
+                                                                                <>
+                                                                                    <a href={`/categories/${row?.id}`}>
+                                                                                        <h5 className='font-dm py-2 cursor-pointer text-white text-wrap'
+                                                                                            key={index}
+                                                                                        >{row?.name}</h5>
+                                                                                    </a>
+                                                                                    <hr className="border-t-1 border-[#00A762]" />
+                                                                                </>
                                                                             ))
                                                                             }
                                                                         </>
@@ -153,27 +156,28 @@ export default function Nav() {
                                                                         <>
                                                                             <Slider {...settings} className='' >
                                                                                 {allCategoriesData.map((item, index) => (
-                                                                                    <div className='p-4 bg-[#00A762] rounded-lg' key={index} >
-                                                                                        <div className='rounded-lg flex items-center justify-center '>
-                                                                                            {item?.thumbnail_image ? (
-                                                                                                <a href={`/categories/${item?.id}`}>
-                                                                                                    <img
-                                                                                                        src={BASE_IMAGE_URL + item?.thumbnail_image}
-                                                                                                        alt="image"
-                                                                                                        className="cursor-pointer w-full h-full rounded-lg"
-                                                                                                    />
-                                                                                                </a>
-                                                                                            ) : (
-                                                                                                <a href={`/categories/${item?.id}`}>
-                                                                                                    <img
-                                                                                                        src={defultimage}
-                                                                                                        alt="image"
-                                                                                                        className="cursor-pointer w-full h-full rounded-lg"
-                                                                                                    />
-                                                                                                </a>
-                                                                                            )}
+                                                                                    <div className='px-1'>
+                                                                                        <div className='p-4 bg-[#00A762] rounded-lg' key={index} >
+                                                                                            <div className='rounded-lg flex items-center justify-center '>
+                                                                                                {item?.thumbnail_image ? (
+                                                                                                    <a href={`/categories/${item?.id}`}>
+                                                                                                        <img
+                                                                                                            src={BASE_IMAGE_URL + item?.thumbnail_image}
+                                                                                                            alt="image"
+                                                                                                            className="cursor-pointer w-full h-full rounded-lg"
+                                                                                                        />
+                                                                                                    </a>
+                                                                                                ) : (
+                                                                                                    <a href={`/categories/${item?.id}`}>
+                                                                                                        <img
+                                                                                                            src={defultimage}
+                                                                                                            alt="image"
+                                                                                                            className="cursor-pointer w-full h-full rounded-lg"
+                                                                                                        />
+                                                                                                    </a>
+                                                                                                )}
+                                                                                            </div>
                                                                                         </div>
-
                                                                                     </div>
 
                                                                                 ))}

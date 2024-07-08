@@ -9,15 +9,19 @@ import HomeBanner from "./HomeBanner";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { fetchAllCategories } from "../../../redux/slices/category";
+import { getproduct } from "../../../redux/slices/product";
 
 const HomePage = () => {
 
     const dispatch = useDispatch();
 
     const [allCategoriesData, setAllCategoriesData] = useState([]);
-
+    const [allProductsData, setAllProductsData] = useState([]);
     const { isLoading, error, categories } = useSelector(
         (state) => state.category
+    );
+    const { isLoading: productIsLoading, error: productError, products } = useSelector(
+        (state) => state.product
     );
 
     useEffect(() => {
@@ -25,10 +29,22 @@ const HomePage = () => {
     }, [dispatch]);
 
     useEffect(() => {
+        dispatch(getproduct());
+    }, [dispatch]);
+
+    useEffect(() => {
         if (categories?.length) {
             setAllCategoriesData(categories);
         }
     }, [categories]);
+
+    useEffect(() => {
+        if (products?.length) {
+            setAllProductsData(products);
+        }
+    }, [products]);
+
+    console.log("allProductsDataallProductsData", allProductsData)
 
     return (
         <>
@@ -54,13 +70,15 @@ const HomePage = () => {
             </div>
 
             <div className="container mx-auto max-w-7xl  px-2 sm:px-6 lg:px-8">
-                <div className="pb-10">
-                    <HeadingTitle title="Bestsellers in September" />
-                    <div className="mt-4">
-                        <ProductCard />
+                {allProductsData.length > 0 ? (
+                    <div className="pb-10">
+                        <HeadingTitle title="Bestsellers in September" />
+                        <div className="mt-4">
+                            <ProductCard allProductsData={allProductsData} />
+                        </div>
                     </div>
-                </div>
-
+                ) : null}
+                
                 <div className="pb-10">
                     <ImageContent />
                 </div>

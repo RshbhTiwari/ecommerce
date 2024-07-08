@@ -6,17 +6,9 @@ import { FaAngleLeft } from "react-icons/fa";
 
 const PaginationshoplistCard = ({ products }) => {
 
-    // const [allProductsData, setAllProductsData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 6;
 
-    // useEffect(() => {
-    //     if (products?.length) {
-    //         setAllProductsData(products);
-    //     }
-    // }, [products]);
-
-    // Calculate pagination
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
     const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);

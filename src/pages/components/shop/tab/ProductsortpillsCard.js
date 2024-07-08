@@ -19,14 +19,14 @@ const ProductsortpillsCard = ({ allProducts }) => {
         <div className=" ">
 
             {allProducts.map((item, index) => (
-                <div className="grid grid-cols-12 gap-4 mb-2 py-2 px-2 flex relative h-full items-center rounded-lg shadow-md
-                  "  key={index} onClick={() => {
+                <div className={`grid grid-cols-12 gap-4 mb-2 py-2 px-2 flex relative h-full items-center rounded-lg shadow-md
+                     ${index % 2 === 0 ? '' : 'bg-gray-200 '}`} key={index} onClick={() => {
                         handleDetailsRow(item.id);
                     }}>
 
 
                     <div key={index} className="lg:col-span-3 sm:col-span-4  col-span-12
-                        flex items-center h-[150px] w-full justify-content rounded-md bg-[#00a762b0] 
+                        flex items-center h-[150px] w-full justify-content rounded-md bg-[#00A762] p-3
                     sm:block hidden">
 
                         {item.additional_images && item.additional_images.length > 0 ? (

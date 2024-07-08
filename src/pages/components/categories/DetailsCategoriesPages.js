@@ -9,6 +9,7 @@ import {
     fetchAllCategories, fetchOneCategory,
     startLoading,
     hasError,
+    fetchOneSubCategory,
 } from "../../../redux/slices/category";
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,7 +26,7 @@ export default function DetailsCategoriesPages({ id }) {
     const [reloadPage, setReloadPage] = useState(false);
     const [allCategoriesData, setAllCategoriesData] = useState([]);
     const [allSubProductsData, setAllSubProductsData] = useState([]);
-    const { isLoading, error, categories, oneCategory } = useSelector(
+    const { isLoading, error, categories, oneCategory, oneSubCategory } = useSelector(
         (state) => state.category
     );
 
@@ -48,15 +49,13 @@ export default function DetailsCategoriesPages({ id }) {
             window.location.reload();
             setReloadPage(false);
         }
-    }, [reloadPage]); 
+    }, [reloadPage]);
 
     useEffect(() => {
         if (oneCategory && oneCategory.all_products) {
             setAllSubProductsData(oneCategory.all_products);
         }
     }, [oneCategory, id]);
-
-    console.log("oneCategory", oneCategory)
 
 
     const categoriDetailsRow = (id) => {
@@ -65,10 +64,15 @@ export default function DetailsCategoriesPages({ id }) {
     };
 
     const handleSubProductsRow = (id) => {
-        console.log("id", id)
-        dispatch(fetchOneCategory(id));
-        setAllSubProductsData(oneCategory.products);
+        dispatch(fetchOneSubCategory(id));
+        console.log("ididid", oneSubCategory?.products)
     };
+
+    useEffect(() => {
+        if (oneSubCategory && oneSubCategory.products) {
+            setAllSubProductsData(oneSubCategory?.products);
+        }
+    }, [oneSubCategory]);
 
     if (isLoading) {
         return <p>Loading...</p>;
@@ -83,6 +87,8 @@ export default function DetailsCategoriesPages({ id }) {
                 handleClick={() => { navigate('/') }}
             /></div>;
     }
+
+    console.log("oneCategory?.children", oneCategory?.children)
 
     return (
         <>
@@ -156,12 +162,14 @@ export default function DetailsCategoriesPages({ id }) {
                                             {oneCategory?.children?.map((row, index) => (
                                                 <div key={index}
                                                     onClick={() => handleSubProductsRow(row?.id)}
-                                                    className='md:col-span-6 lg:col-span-3 col-span-12 flex flex-col justify-center p-3 relative h-full items-center rounded-lg border-[2px] border-[#072320]'>
+                                                    className='md:col-span-6 lg:col-span-3 col-span-12 cursor-pointer 
+                                                    flex flex-col justify-center p-3 relative h-full items-center rounded-lg
+                                                     border-[2px] border-[#072320]'>
 
                                                     <div className='flex justify-center items-center bg-[#00A762] rounded-lg p-3'>
                                                         <div className='overflow-hidden rounded-lg'>
                                                             <img
-                                                                src={BASE_IMAGE_URL + row?.icon_image}
+                                                                src={BASE_IMAGE_URL + row?.thumbnail_image}
                                                                 alt="image"
                                                                 className="overflow-hidden rounded-lg
                                                      hover:scale-110 transition-all duration-500 cursor-pointer"

@@ -7,6 +7,7 @@ const initialState = {
     categories: [],
     featured: [],
     oneCategory: {},
+    oneSubCategory: {},
 };
 
 const header = {
@@ -41,6 +42,10 @@ const categorySlice = createSlice({
             state.isLoading = false;
             state.oneCategory = action.payload;
         },
+        getOneSubCategorySuccess(state, action) {
+            state.isLoading = false;
+            state.oneSubCategory = action.payload;
+        },
     },
 });
 
@@ -49,6 +54,7 @@ export const {
     hasError,
     getAllCategoriesSuccess,
     getFeaturedSuccess,
+    getOneSubCategorySuccess,
     getOneCategorySuccess,
 } = categorySlice.actions;
 
@@ -81,12 +87,28 @@ export const fetchAllCategories = () => async (dispatch) => {
 
 // Thunk action to fetch one category by id
 export const fetchOneCategory = (id) => async (dispatch) => {
+    console.log("idididid", id)
     try {
         dispatch(startLoading());
-        const response = await axios.get(`/category-or-subcategory/${id}`);
+        const response = await axios.get(`/category/${id}`);
+        console.log("idididid", response?.data?.category)
         dispatch(getOneCategorySuccess(response?.data?.category));
     } catch (error) {
         console.error("Error fetching category:", error.response?.data?.message);
+        dispatch(hasError(error.response?.data?.message));
+    }
+};
+
+// Thunk action to fetch one sub category by id
+export const fetchOneSubCategory = (id) => async (dispatch) => {
+    console.log("idididid", id)
+    try {
+        dispatch(startLoading());
+        const response = await axios.get(`/subcategory/${id}`);
+        console.log("idididid", response?.data?.subcategory)
+        dispatch(getOneSubCategorySuccess(response?.data?.subcategory));
+    } catch (error) {
+        console.error("Error fetching subcategory:", error.response?.data?.message);
         dispatch(hasError(error.response?.data?.message));
     }
 };

@@ -19,21 +19,22 @@ const ProductCard = ({ allProducts }) => {
 
         <div className="grid grid-cols-12 gap-4">
             {allProducts.map((item, index) => (
-                <div className='md:col-span-12 sm:col-span-6 lg:col-span-4  col-span-12 flex flex-col justify-center relative h-full items-center rounded-lg 
+                <div className='md:col-span-12 sm:col-span-6 lg:col-span-4  col-span-12 flex flex-col justify-between relative h-full items-center rounded-lg 
                   border-2 border-[#072320]'
                     key={index} onClick={() => {
                         handleDetailsRow(item.id);
                     }} >
 
-                    <div className='flex justify-center items-center bg-[#00A762] rounded-lg mb-2 mx-4 my-4 relative'>
-                        <div className='w-3/4 overflow-hidden'>
+                    <div className='flex justify-center items-center bg-[#00A762] p-4 rounded-lg mb-2 mx-4 my-4 relative'>
+                        <div className='overflow-hidden rounded-lg  '>
                             <img
-                            src={BASE_IMAGE_URL + item?.image}
-                                // src={BASE_IMAGE_URL + item?.additional_images[0]}
+                                src={BASE_IMAGE_URL + item.additional_images[0]}
                                 alt="image"
-                                className="responsive_image_card overflow-hidden hover:scale-110 transition-all duration-500 cursor-pointer"
+                                className="responsive_image_card rounded-lg 
+                                overflow-hidden hover:scale-110 transition-all duration-500 cursor-pointer"
                             />
                         </div>
+                        
                         {item.offer ? (
                             <div className='text-white font-dm flex justify-center items-center uppercase w-14 absolute
                          h-14 border-2 border-[#072320] rounded-full top-4 right-4'>

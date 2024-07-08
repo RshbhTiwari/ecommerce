@@ -117,7 +117,7 @@ const CategoriesCard = () => {
                                     <h2 className="text-[#00A762] text-center font-dm text-lg capitalize font-medium">
                                         {item?.name}
                                     </h2>
-                                    <Paragraph title={`${item?.products_count} Products`} />
+                                    <Paragraph title={`${item?.total_product_count} Products`} /> 
                                 </div>
                             </div>
                         ))}

@@ -55,7 +55,7 @@ export const getproduct = () => async (dispatch) => {
     try {
         dispatch(startLoading());
         const response = await axios.get("/products");
-        dispatch(getproductsSuccess(response.data.products));
+        dispatch(getproductsSuccess(response?.data?.products));
     
     } catch (error) {
         console.error("Error fetching categories:", error.response.data.message);
