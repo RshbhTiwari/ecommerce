@@ -22,8 +22,6 @@ const One = ({ title,
             >
                 {title}
             </button>
-
-
         </>
 
     );
