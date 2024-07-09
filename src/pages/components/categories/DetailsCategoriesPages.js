@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ProductTab from '../shop/tab/productTab';
 import CollectionsShopCard from '../shop/CollectionsShopCard';
 import { ErrorPages } from '../basic/ErrorPages';
+import { getproduct } from '../../../redux/slices/product';
 
 export default function DetailsCategoriesPages({ id }) {
     const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
@@ -27,6 +28,13 @@ export default function DetailsCategoriesPages({ id }) {
     const { isLoading, error, categories, oneCategory, oneSubCategory } = useSelector(
         (state) => state.category
     );
+    const { isLoading: productIsLoading, error: productError, products } = useSelector(
+        (state) => state.product
+    );
+
+    useEffect(() => {
+        dispatch(getproduct());
+    }, [dispatch]);
 
     useEffect(() => {
         dispatch(fetchAllCategories());
@@ -205,7 +213,7 @@ export default function DetailsCategoriesPages({ id }) {
                 <div className="pb-10">
                     <HeadingTitle title="most purchased products" />
                     <div className="mt-4">
-                        <CollectionsShopCard />
+                        <CollectionsShopCard allproducts={products} />
                     </div>
                 </div>
 

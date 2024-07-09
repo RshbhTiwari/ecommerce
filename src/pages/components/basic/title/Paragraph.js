@@ -1,6 +1,9 @@
-import React from 'react';
 
-const Paragraph = ({ title, textAlign, color, width }) => {
+
+import React, { useState } from 'react';
+
+const Paragraph = ({ title, textAlign, color, width, shortDescription }) => {
+    const [showFull, setShowFull] = useState(false);
 
     const alignmentClass = textAlign === 'left' ? 'md:text-left text-center'
         : textAlign === 'onyleft' ? 'text-left'
@@ -15,9 +18,31 @@ const Paragraph = ({ title, textAlign, color, width }) => {
         width: width,
     };
 
-    return (
-        <p className={`text-base font-dm  ${alignmentClass} ${textColor}`} style={titleStyle}>{title}</p>
-    );
+    const toggleDescription = () => {
+        setShowFull(!showFull);
+    };
+
+    if (shortDescription === 'true') {
+        return (
+            <div>
+                {showFull ? (
+                    <p className={`text-base font-dm ${alignmentClass} ${textColor}`} style={titleStyle}>{title}</p>
+                ) : (
+                    <p className={`text-base font-dm ${alignmentClass} ${textColor} overflow-hidden line-clamp-3`} style={titleStyle}>{title}</p>
+                )}
+                <div className='flex justify-center items-center'>
+                    <button className="text-[#00A762] font-dm mt-2" onClick={toggleDescription}>
+                        {showFull ? 'Read Less' : 'Read More'}
+                    </button>
+                </div>
+            </div>
+        );
+    } else {
+        return (
+            <p className={`text-base font-dm ${alignmentClass} ${textColor}`} style={titleStyle}>{title}</p>
+        );
+    }
 };
 
 export default Paragraph;
+

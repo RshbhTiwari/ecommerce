@@ -109,7 +109,7 @@ export default function ProductPage() {
 
                     <div className='md:col-span-8 lg:col-span-9 col-span-12'>
                         <div className="max-w-screen-lg mx-auto p-4">
-                            <ProductTab allproducts={ allProductsData} />
+                            <ProductTab allproducts={allProductsData} />
                         </div>
                     </div>
 
@@ -119,7 +119,7 @@ export default function ProductPage() {
                 <div className="pb-10">
                     <HeadingTitle title="most purchased products" />
                     <div className="mt-4">
-                        <CollectionsShopCard />
+                        <CollectionsShopCard allproducts={products} />
                     </div>
                 </div>
 

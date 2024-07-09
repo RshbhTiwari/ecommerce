@@ -51,7 +51,7 @@ const ProductCard = ({ allProducts }) => {
                                    ">{item.name}</h2>
 
                         <div className='pb-2'>
-                            <Paragraph title={item.description} />
+                            <Paragraph title={item.short_description} />
                         </div>
 
 

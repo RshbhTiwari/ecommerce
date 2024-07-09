@@ -5,17 +5,19 @@ import { HeadingTitle } from '../basic/title';
 import ProductSingleContentPage from './ProductSingleContentPage';
 import CollectionsShopCard from '../shop/CollectionsShopCard';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOneProduct } from '../../../redux/slices/product';
+import { getOneProduct, getproduct } from '../../../redux/slices/product';
 
 const ShopSingleDetails = ({ id }) => {
     const dispatch = useDispatch();
 
     const [allSingleProductsData, setSingleProductsData] = useState([]);
 
-    const { isLoading, error, oneproduct } = useSelector(
+    const { isLoading, error, oneproduct,products } = useSelector(
         (state) => state.product
     );
-
+    useEffect(() => {
+        dispatch(getproduct());
+    }, [dispatch]);
     useEffect(() => {
         dispatch(getOneProduct(id));
     }, [dispatch, id]);
@@ -47,7 +49,7 @@ const ShopSingleDetails = ({ id }) => {
                 <div className="pb-10">
                     <HeadingTitle title="related products" />
                     <div className="mt-4">
-                        <CollectionsShopCard />
+                        <CollectionsShopCard allproducts={products}/>
                     </div>
                 </div>
             </div>
