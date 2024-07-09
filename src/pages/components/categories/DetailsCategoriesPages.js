@@ -17,10 +17,8 @@ import ProductTab from '../shop/tab/productTab';
 import CollectionsShopCard from '../shop/CollectionsShopCard';
 import { ErrorPages } from '../basic/ErrorPages';
 
-const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
-
-
 export default function DetailsCategoriesPages({ id }) {
+    const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [reloadPage, setReloadPage] = useState(false);

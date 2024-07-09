@@ -37,6 +37,7 @@ const productSlice = createSlice({
         getOneproductsSuccess(state, action) {
             state.isLoading = false;
             state.oneproduct = action.payload;
+            
         },
     },
 });
@@ -58,7 +59,7 @@ export const getproduct = () => async (dispatch) => {
         dispatch(getproductsSuccess(response?.data?.products));
     
     } catch (error) {
-        console.error("Error fetching categories:", error.response.data.message);
+        console.error("Error fetching product:", error.response.data.message);
         dispatch(hasError(error?.response?.data?.message));
     }
 };
@@ -70,9 +71,10 @@ export const getOneProduct = (id) => async (dispatch) => {
     try {
         dispatch(startLoading());
         const response = await axios.get(`/products/${id}`);
-        dispatch(getOneproductsSuccess(response?.data?.category));
+        dispatch(getOneproductsSuccess(response?.data?.product));
+    
     } catch (error) {
-        console.error("Error fetching category:", error.response?.data?.message);
+        console.error("Error fetching product:", error.response?.data?.message);
         dispatch(hasError(error.response?.data?.message));
     }
 };

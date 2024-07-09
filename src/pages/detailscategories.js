@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 
 function DetailsCategories() {
     const { id } = useParams();
-  
     return (
         <>
             <DetailsCategoriesPages id={id}/>

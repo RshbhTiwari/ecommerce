@@ -8,17 +8,8 @@ import { useNavigate } from "react-router-dom";
 import ProductRatings from "./ratings/ProductRatings";
 
 
-const ShopsingleData = {
-    id: 1,
-    title: "Red Radish 1 pack",
-    subtitle: "The color of a radish is a strong indicator of its taste. Pick the ones that are a rich, full red.The color of a radish is a strong indicator of its taste. Pick the ones that are a rich, full red The color of a radish is a strong indicator of its taste. Pick the ones that are a rich, full red",
-    price: "20.00",
-    offer: "new",
-    stock: "IN STOCK"
-}
-
-const ProductSingleContentPage = () => {
-
+const ProductSingleContentPage = ({ oneproduct }) => {
+    const { name, description, discount_price, price, stock_status } = oneproduct;
     const navigate = useNavigate();
 
     const handleshoppingcardRow = () => {
@@ -27,15 +18,28 @@ const ProductSingleContentPage = () => {
 
     return (
         <>
-            <div className="mb-4"><StockBtn title={ShopsingleData.stock} /></div>
+            <div className="mb-4"><StockBtn title={stock_status === 'in_stock' ? 'In Stock' : 'Out of Stock'} /></div>
 
             <div className="mb-4">
-                <HeadingBanner title={ShopsingleData.title} color='#072320' />
+                <HeadingBanner title={name} color='#072320' />
             </div>
 
-            <div className="mb-4"><h2 className="text-[#00A762] font-dm text-lg capitalize sm:text-left text-center font-medium">${ShopsingleData.price}</h2></div>
+            <div className="mb-4">
+                {discount_price ? (
+                    <>
+                        <div className="flex items-center sm:justify-start justify-center gap-2 text-[#00A762] text-center font-dm text-lg capitalize font-medium pb-2">
+                            <span className="block text-xs line-through">₹{price}</span>
+                            <span className="block">₹{discount_price}</span>
 
-            <div className="mb-8"> <Paragraph title={ShopsingleData.subtitle} textAlign='left' /></div>
+                        </div>
+                    </>
+                ) : (
+                    <h2 className="text-[#00A762] font-dm text-lg sm:text-left text-center capitalize font-medium pb-2">
+                        ₹{price}
+                    </h2>
+                )}
+            </div>
+            <div className="mb-8"> <Paragraph title={description} textAlign='left' /></div>
 
 
             <div className="mb-8 flex items-center sm:justify-start justify-center">
@@ -88,9 +92,9 @@ const ProductSingleContentPage = () => {
                 </div>
             </div>
 
-            <ProductRatings  title={ShopsingleData.title}/>
+            <ProductRatings title='4' />
 
-            
+
         </>
     );
 };
