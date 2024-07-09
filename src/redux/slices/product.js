@@ -70,7 +70,7 @@ export const getproduct = () => async (dispatch) => {
 export const getOneProduct = (id) => async (dispatch) => {
     try {
         dispatch(startLoading());
-        const response = await axios.get(`/products/${id}`);
+        const response = await axios.get(`/product/${id}`);
         dispatch(getOneproductsSuccess(response?.data?.product));
     
     } catch (error) {

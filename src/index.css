@@ -107,7 +107,9 @@ code {
   transform: translateY(200);
 } */
 
-
+.imgslide .slick-list .slick-track{
+  display: inline-block !important;
+}
 
 .zoom-container {
   position: relative;
