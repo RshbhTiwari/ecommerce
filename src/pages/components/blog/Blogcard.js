@@ -23,7 +23,7 @@ const Blogcard = ({allblog}) => {
                             <img
                                 src={item.image}
                                 alt="image"
-                                className="responsive_image_card rounded-t-lg shadow
+                                className="rounded-t-lg shadow
                                             overflow-hidden hover:scale-110 transition-all duration-500"
                             />
                         </div>

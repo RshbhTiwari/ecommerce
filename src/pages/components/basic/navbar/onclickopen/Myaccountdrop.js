@@ -2,9 +2,12 @@
 import myaccountlink from "../../../../../data/myaccountlink";
 import { Paragraph } from "../../title";
 import turnoff from "../../../../../assets/myaccount/turn-off.png";
+import { useDispatch } from "react-redux";
+import { postLogoutUser } from "../../../../../redux/slices/loginRegister";
 
 
 export default function Myaccountdrop() {
+    const dispatch = useDispatch();
     return (
         <>
             {myaccountlink.map((row, index) => (
@@ -34,7 +37,9 @@ export default function Myaccountdrop() {
             }
             <a href='/login'>
                 <div className='w-full md:gap-2 gap-0 
-                 flex items-center cursor-pointer py-4' >
+                 flex items-center cursor-pointer py-4' onClick={() => {
+                    dispatch(postLogoutUser());
+                  }} >
 
                     <div className="w-1/4 flex items-center justify-center">
                         <img

@@ -7,6 +7,7 @@ import { Paragraph } from '../../basic/title';
 
 
 const ProductCard = ({ allProducts }) => {
+
     const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
     const navigate = useNavigate();
 
@@ -25,22 +26,20 @@ const ProductCard = ({ allProducts }) => {
                         handleDetailsRow(item.id);
                     }} >
 
-                    <div className='flex justify-center items-center bg-[#00A762] p-4 rounded-lg mb-2 mx-4 my-4 relative'>
-                        <div className='overflow-hidden rounded-lg  '>
+                    <div className='flex justify-center items-center bg-[#00A762] p-4 rounded-lg mt-3 mb-2 relative mx-6'>
+                        <div className='overflow-hidden rounded-lg h-[200px] relative'>
                             <img
-                                src={BASE_IMAGE_URL + item.additional_images[0]}
+                                src={BASE_IMAGE_URL + item?.additional_images[0]}
                                 alt="image"
-                                className="responsive_image_card rounded-lg 
-                                overflow-hidden hover:scale-110 transition-all duration-500 cursor-pointer"
+                                className="  w-full h-full object-cover rounded-lg 
+                                         hover:scale-110 transition-all duration-500 cursor-pointer"
                             />
                         </div>
-                        
-                        {item.offer ? (
+                        {item?.offer ? (
                             <div className='text-white font-dm flex justify-center items-center uppercase w-14 absolute
                          h-14 border-2 border-[#072320] rounded-full top-4 right-4'>
-                                {item.offer}
+                                {item?.offer}
                             </div>) : null}
-
                     </div>
 
                     <div className='flex flex-col justify-center items-center px-4 '>
@@ -51,7 +50,7 @@ const ProductCard = ({ allProducts }) => {
                                    ">{item.name}</h2>
 
                         <div className='pb-2'>
-                            <Paragraph title={item.short_description} />
+                            <Paragraph title={item.short_description} shortDescription='true' />
                         </div>
 
 

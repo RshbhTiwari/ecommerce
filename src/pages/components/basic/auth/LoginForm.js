@@ -1,13 +1,18 @@
-
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { useForm, FormProvider, useFormContext } from 'react-hook-form';
-
 import { useState } from 'react';
-import { FaEyeSlash, FaEye } from "react-icons/fa";
+import { FaEyeSlash, FaEye } from 'react-icons/fa';
 import { Btnone } from '../button';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { postLoginUser } from '../../../../redux/slices/loginRegister';
+import { toast } from 'react-toastify';
 
 const LoginForm = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
     const schema = Yup.object().shape({
         email: Yup.string().email('Invalid email').required('Email is required'),
         password: Yup.string().required('Password is required').min(6, 'Password must be at least 6 characters'),
@@ -21,10 +26,20 @@ const LoginForm = () => {
         },
     });
 
-    const { handleSubmit, formState: { errors } } = methods;
+    const { reset, handleSubmit, formState: { isSubmitting, isValid, errors } } = methods;
 
-    const onSubmit = (data) => {
-        console.log("data", data);
+    const onSubmit = async (data) => {
+        console.log("datadatadatadatadata", data);
+        try {
+            await new Promise((resolve) => setTimeout(resolve, 500));
+            const payload = {
+                email: data.email,
+                password: data.password,
+            };
+            dispatch(postLoginUser(payload, toast, reset, navigate));
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return (
@@ -33,22 +48,27 @@ const LoginForm = () => {
                 <EmailInput />
                 <PasswordInput />
 
-                <div className='mt-3 flex  items-center'>
-                    <a href='/forgotpassword ' className="text-[#00A762] text-center 
-                                  font-dm text-base capitalize font-medium 
-                                   ">Lost Your Password ?</a>
+                <div className='mt-3 flex items-center'>
+                    <a href='/forgotpassword' className="text-[#00A762] text-center font-dm text-base capitalize font-medium">
+                        Lost Your Password ?
+                    </a>
                 </div>
 
                 <div className='mt-6'>
-                    <Btnone title="login"
-                        bgColor="#00A762" type="submit" width="100%" />
+                    <Btnone
+                        title="login"
+                        loading={isSubmitting}
+                        bgColor="#00A762"
+                        type="submit"
+                        width="100%"
+                    />
                 </div>
 
-                <div className='mt-3 flex  items-center'>
-                    <h2 href='#' className="text-center 
-                                  font-dm text-base capitalize font-medium 
-                                   ">Not A Member?
-<a className='text-[#00A762] ml-2' href='/signup'>Register ?</a></h2>
+                <div className='mt-3 flex items-center'>
+                    <h2 className="text-center font-dm text-base capitalize font-medium">
+                        Not A Member?
+                        <a className='text-[#00A762] ml-2' href='/signup'>Register ?</a>
+                    </h2>
                 </div>
             </form>
         </FormProvider>
@@ -56,7 +76,7 @@ const LoginForm = () => {
 };
 
 const EmailInput = () => {
-    const { register, formState: { errors } } = useFormContext(); // Destructure errors from useFormContext
+    const { register, formState: { errors } } = useFormContext();
 
     return (
         <div className='mt-3'>
@@ -76,7 +96,7 @@ const EmailInput = () => {
 };
 
 const PasswordInput = () => {
-    const { register, formState: { errors } } = useFormContext(); // Destructure errors from useFormContext
+    const { register, formState: { errors } } = useFormContext();
     const [showPassword, setShowPassword] = useState(false);
 
     const togglePasswordVisibility = () => {
@@ -114,4 +134,3 @@ const PasswordInput = () => {
 };
 
 export default LoginForm;
-

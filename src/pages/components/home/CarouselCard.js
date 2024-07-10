@@ -72,14 +72,14 @@ const CarouselCard = () => {
                   src={BASE_IMAGE_URL + item?.feature_image}
                   alt="image"
                   onClick={() => categoriDetailsRow(item.id)}
-                  className="responsive_image_card shadow rounded-lg overflow-hidden object-cover hover:scale-110 transition-all duration-500 cursor-pointer h-full"
+                  className=" shadow rounded-lg overflow-hidden object-cover hover:scale-110 transition-all duration-500 cursor-pointer h-full"
                 />
               ) : (
                 <img
                   src={defultimage}
                   alt="image"
                   onClick={() => categoriDetailsRow(item.id)}
-                  className="responsive_image_card shadow rounded-lg overflow-hidden object-cover hover:scale-110 transition-all duration-500 cursor-pointer h-full"
+                  className=" shadow rounded-lg overflow-hidden object-cover hover:scale-110 transition-all duration-500 cursor-pointer h-full"
                 />
               )}
 

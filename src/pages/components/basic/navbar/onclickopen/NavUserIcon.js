@@ -55,7 +55,7 @@ function NavUserIcon() {
 
     return (
         <div className="relative">
-            {/* <div className='flex items-center cursor-pointer' onClick={toggleMenu} ref={loginRef}>
+            <div className='flex items-center cursor-pointer' onClick={toggleMenu} ref={loginRef}>
                 <AiOutlineLogin className='text-white text-[24px]' />
                 <h6 className='text-white font-dm text-sm ml-2 capitalize'>login</h6>
             </div>
@@ -64,9 +64,9 @@ function NavUserIcon() {
                 <div ref={dropdownRef} className="logindrop absolute z-10 px-4 py-6 right-0 mt-4 w-[350px] rounded-md shadow-lg bg-white">
                     <DropLogin onClick={toggleMenu}/>
                 </div>
-            )} */}
+            )}
 
-            <div className="relative">
+            {/* <div className="relative">
                 <div className='flex items-center cursor-pointer'
                     onClick={toggleMenu}
                     // onMouseEnter={handleMouseEnter}
@@ -78,10 +78,10 @@ function NavUserIcon() {
                 {isOpen && (
                     <div ref={dropdownRef}
                         className='absolute rounded-lg shadow-lg lg:mt-4 mt-2 z-10  bg-white w-72 top-full left-1/2 transform -translate-x-1/2'>
-                            <Myaccountdrop />
+                        <Myaccountdrop />
                     </div>
                 )}
-            </div>
+            </div> */}
         </div>
     );
 }

@@ -21,13 +21,14 @@ import Addressbook from "./pages/addressbook";
 import AddAddressBook from "./pages/addaddressbook";
 import EditAddressBook from "./pages/editaddressbook";
 import DetailsCategories from "./pages/detailscategories";
-
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
     <>
-      <Navbar />
       <BrowserRouter>
+        <Navbar />
+        <ToastContainer />
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route path="/contact" element={<Contact />} />
@@ -50,8 +51,8 @@ function App() {
           <Route path="/my-account/orders" element={<Orders />} />
           <Route path="/my-account/orders/:id" element={<OrdersDetails />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
-      <Footer />
     </>
   );
 }

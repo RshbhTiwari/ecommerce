@@ -70,7 +70,7 @@ const HomePage = () => {
             </div>
 
             <div className="container mx-auto max-w-7xl  px-2 sm:px-6 lg:px-8">
-                {allProductsData.length > 0 ? (
+                {allProductsData?.length > 0 ? (
                     <div className="pb-10">
                         <HeadingTitle title="Bestsellers in September" />
                         <div className="mt-4">

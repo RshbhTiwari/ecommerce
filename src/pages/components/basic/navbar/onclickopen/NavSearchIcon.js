@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { IoMdSearch } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
-import { Btnone } from "../../button";
 import { FaRegHeart } from "react-icons/fa";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import { Paragraph } from "../../title";

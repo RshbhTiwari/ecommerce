@@ -13,7 +13,7 @@ const OfferContent = () => {
                         <img
                             src={item.image}
                             alt="image"
-                            className="responsive_image_card "
+                            className=" "
                         />
                     </div>
 

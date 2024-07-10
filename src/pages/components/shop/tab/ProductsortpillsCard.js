@@ -48,8 +48,7 @@ const ProductsortpillsCard = ({ allProducts }) => {
                         <h2 className="text-[#00A762] text-left
                          font-dm text-lg capitalize font-medium
                         ">{item.name}</h2>
-
-                        <Paragraph title={item.short_description} textAlign='onyleft' />
+                        <Paragraph title={item.short_description} shortDescription='true' textAlign='onyleft' />
 
                         {item?.discount_price ? (
                             <>

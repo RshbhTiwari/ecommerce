@@ -102,14 +102,14 @@ const CategoriesCard = () => {
                                             <img
                                                 src={BASE_IMAGE_URL + item?.thumbnail_image}
                                                 alt="image"
-                                                className="responsive_image_card"
+                                                className=""
                                                 onClick={() => categoriDetailsRow(item.id)}
                                             />
                                         ) : (
                                             <img
                                                 src={defultimage}
                                                 alt="image"
-                                                className="responsive_image_card"
+                                                className=""
                                                 onClick={() => categoriDetailsRow(item.id)}
                                             />
                                         )}

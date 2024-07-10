@@ -1,17 +1,22 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { useForm, FormProvider, useFormContext } from 'react-hook-form';
-import { useState } from 'react';
-import { FaEyeSlash, FaEye } from "react-icons/fa";
 import { Btnone } from '../button';
+import { useDispatch } from 'react-redux';
+import { postRegisterUser } from '../../../../redux/slices/loginRegister';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const SignupFrom = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
     const schema = Yup.object().shape({
         email: Yup.string().email('Invalid email').required('Email is required'),
         password: Yup.string()
             .required('Password is required')
             .min(6, 'Password must be at least 6 characters'),
-        username: Yup.string().required('Username is required'),
+        name: Yup.string().required('Username is required'),
     });
 
     const methods = useForm({
@@ -19,25 +24,44 @@ const SignupFrom = () => {
         defaultValues: {
             email: '',
             password: '',
-            username: '',
+            name: '',
             contact: '',
             city: '',
             pincode: '',
         },
     });
 
-    const { handleSubmit, formState: { errors } } = methods;
 
-    const onSubmit = (data) => {
-        console.log("data", data);
-        // Handle submission logic, e.g., API call to reset password
+    const { reset, handleSubmit, formState: { isSubmitting, isValid, errors } } = methods;
+
+    const onSubmit = async (data) => {
+        try {
+            await new Promise((resolve) => setTimeout(resolve, 500));
+            let formData = new FormData();
+            formData.set("name", data.name);
+            formData.set("contact", data.contact);
+            formData.set("email", data.email);
+            formData.set("city", data.city);
+            formData.set("pincode", data.pincode);
+            formData.set("password", data.password);
+            dispatch(
+                postRegisterUser(
+                    formData,
+                    reset,
+                    toast,
+                    navigate,
+                )
+            );
+        } catch (error) {
+            console.error(error);
+        }
     };
+
+
 
     return (
         <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmit)}>
-
-
                 <UsernameInput />
                 <EmailInput />
                 <ContactInput />
@@ -47,7 +71,7 @@ const SignupFrom = () => {
 
                 <div className='mt-6'>
                     <Btnone title="Register now"
-                        bgColor="#00A762" type="submit" width="100%" />
+                        bgColor="#00A762" type="submit" width="100%" loading={isSubmitting} />
                 </div>
                 <div className='mt-3 flex  items-center'>
                     <h2 href='#' className="text-center 
@@ -66,16 +90,16 @@ const UsernameInput = () => {
 
     return (
         <div className='mt-3'>
-            <label className='block text-[#072320] font-dm text-lg capitalize font-medium' htmlFor="username">Username<span className=' font-medium text-red-500'>*</span></label>
+            <label className='block text-[#072320] font-dm text-lg capitalize font-medium' htmlFor="name">Username<span className=' font-medium text-red-500'>*</span></label>
             <input
                 className='input_box w-full'
                 type="text"
-                id="username"
+                id="name"
                 placeholder='Enter username'
-                {...register('username')}
+                {...register('name')}
             />
-            {errors.username && (
-                <p className="text-red-500 mt-1">{errors.username.message}</p>
+            {errors.name && (
+                <p className="text-red-500 mt-1">{errors.name.message}</p>
             )}
         </div>
     );
@@ -113,8 +137,8 @@ const ContactInput = () => {
                 id="contact"
                 placeholder='Enter contact number'
                 {...register('contact')}
-                   pattern="\d{10}"
-                      title="Please enter a 10-digit contact number"
+                pattern="\d{10}"
+                title="Please enter a 10-digit contact number"
             />
         </div>
     );
@@ -149,10 +173,10 @@ const PincodeInput = () => {
                 id="pincode"
                 placeholder='Enter pincode'
                 {...register('pincode')}
-                 pattern="\d{6}"
+                pattern="\d{6}"
                 title="Please enter a 6-digit pincode"
             />
-            
+
         </div>
     );
 };

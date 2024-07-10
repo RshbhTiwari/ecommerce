@@ -17,7 +17,7 @@ const Ordersection = () => {
                     <img
                         src={imgSrc}
                         alt="image"
-                        className="responsive_image_card shadow rounded-lg "
+                        className=" shadow rounded-lg "
                     />
                 </div>
 

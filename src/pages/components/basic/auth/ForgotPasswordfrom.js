@@ -1,11 +1,16 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { useForm, FormProvider, useFormContext } from 'react-hook-form';
-import { useState } from 'react';
-import { FaEyeSlash, FaEye } from "react-icons/fa";
+import { toast } from 'react-toastify';
 import { Btnone } from '../button';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { postForgotPasswordUser } from '../../../../redux/slices/loginRegister';
 
 const ForgotPasswordForm = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
     const schema = Yup.object().shape({
         email: Yup.string().email('Invalid email').required('Email is required'),
         password: Yup.string()
@@ -25,11 +30,21 @@ const ForgotPasswordForm = () => {
         },
     });
 
-    const { handleSubmit, formState: { errors } } = methods;
+    const {reset, handleSubmit, formState: { isSubmitting, isValid, errors } } = methods;
 
-    const onSubmit = (data) => {
-        console.log("data", data);
-        // Handle submission logic, e.g., API call to reset password
+    const onSubmit = async (data) => {
+        console.log("datadatadatadatadata", data);
+        try {
+            await new Promise((resolve) => setTimeout(resolve, 500));
+            const payload = {
+                email: data.email,
+                password: data.password,
+            };
+            console.log("datadatadatadatadata payload", payload);
+            dispatch(postForgotPasswordUser(payload, toast, reset, navigate));
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return (
@@ -41,7 +56,7 @@ const ForgotPasswordForm = () => {
 
                 <div className='mt-6'>
                     <Btnone title="Reset Password"
-                        bgColor="#00A762" type="submit" width="100%" />
+                        bgColor="#00A762" type="submit" width="100%" loading={isSubmitting} />
                 </div>
             </form>
         </FormProvider>
