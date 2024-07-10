@@ -57,8 +57,6 @@ const SignupFrom = () => {
         }
     };
 
-
-
     return (
         <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmit)}>

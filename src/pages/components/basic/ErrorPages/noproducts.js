@@ -16,7 +16,7 @@ export default function NoProducts({ massage, height, }) {
                         alt="img"
                     />
                 </div>
-                <h2 class=" my-4
+                <h2 className=" my-4
                     font-dm text-2xl capitalize font-medium text-center text-[#00A762]">
                     {massage}
                 </h2>

@@ -97,6 +97,7 @@ export function postRegisterUser(formData, reset, toast,navigate) {
             if (error?.response?.data?.status == false) {
                 toast.error(error?.response?.data?.message);
                 toast.error(error?.response?.data?.errors?.email[0]);
+                toast.error(error?.response?.data?.errors?.contact[0]);
             }
         }
     };
@@ -138,27 +139,20 @@ export function postLoginUser(payload, toast, reset,navigate,setLoading) {
 }
 
 // POST Forgot Password
-export function postForgotPasswordUser(payload, toast, reset, navigate) {
+export function postForgotPasswordUser(payload, toast, reset) {
     return async (dispatch) => {
         try {
             dispatch(startLoading());
             const response = await axios.post("/forgot-password", payload, { headers: jsonheader });
             dispatch(getForgotPassworSuccess(response?.data));
             console.log("datadatadatadatadata response", response);
-
-            if (response?.data?.status == true) {
-                toast.success(response?.data?.message);
-                reset();
-                navigate('/login');
-            } else {
-                toast.error(response?.data?.message);
-            }
+            toast.success(response?.data?.message);
+            reset();
         } catch (error) {
             reset();
             console.error("Error fetching Forgot Password:", error?.response?.data);
             dispatch(hasError(error?.response?.data?.message));
-            // toast.error(error?.message);
-
+            toast.error(error?.message);
         }
     };
 }

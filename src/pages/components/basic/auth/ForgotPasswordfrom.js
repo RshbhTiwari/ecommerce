@@ -41,7 +41,8 @@ const ForgotPasswordForm = () => {
                 password: data.password,
             };
             console.log("datadatadatadatadata payload", payload);
-            dispatch(postForgotPasswordUser(payload, toast, reset, navigate));
+            dispatch(postForgotPasswordUser(payload, toast, reset));
+            navigate('/login');
         } catch (error) {
             console.error(error);
         }

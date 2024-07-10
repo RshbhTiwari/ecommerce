@@ -184,7 +184,7 @@ export default function DetailsCategoriesPages({ id }) {
                                                     </div>
 
                                                     <div className='pt-2'>
-                                                        <h2 class="text-[#00A762] text-center 
+                                                        <h2 className="text-[#00A762] text-center 
                                                font-dm text-lg capitalize font-medium 
                                                 ">{row?.name}</h2>
                                                     </div>
