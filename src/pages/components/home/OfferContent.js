@@ -6,8 +6,9 @@ const OfferContent = () => {
     return (
         <div className="grid grid-cols-12 gap-2">
             {offercontent.map((item, index) => (
-                <div className='lg:col-span-3 md:col-span-6 col-span-12 flex flex-col justify-center relative h-full items-center rounded-lg p-3 border-2 border-[#072320]'>
-
+                <div key={index}
+                    className='lg:col-span-3 md:col-span-6 col-span-12 flex flex-col justify-center relative h-full
+                              items-center rounded-lg p-3 border-2 border-[#072320]'>
 
                     <div className='w-[75px] mb-2 mx-auto'>
                         <img
