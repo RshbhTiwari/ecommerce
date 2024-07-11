@@ -115,8 +115,8 @@ export function postLoginUser(payload, toast, reset,navigate,setLoading, toggle)
             );
             if (response.data.status == true) {
                 reset();
-                window.location.reload();
                 navigate('/');
+                window.location.reload();
                 toast.success(response?.data?.message);
                 console.log("response.data.user", response.data.user)
                 localStorage.setItem("user", JSON.stringify(response?.data?.user));
