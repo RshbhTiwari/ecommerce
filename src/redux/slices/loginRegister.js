@@ -109,7 +109,8 @@ export function postLoginUser(payload, toast, reset,navigate,setLoading, toggle)
         try {
             dispatch(startLoadingLogin());
             const response = await axios.post("/login", payload);
-            dispatch(getLoginSuccess(response?.data));
+            dispatch(getLoginSuccess(response?.data?.user));
+            console.log("response.data.user", response.data.user)
             dispatch(
                 getLoginAccessTokenSuccess(response?.data?.access_token)
             );
@@ -118,7 +119,6 @@ export function postLoginUser(payload, toast, reset,navigate,setLoading, toggle)
                 navigate('/');
                 window.location.reload();
                 toast.success(response?.data?.message);
-                console.log("response.data.user", response.data.user)
                 localStorage.setItem("user", JSON.stringify(response?.data?.user));
                 localStorage.setItem("accessToken", response?.data?.access_token);
                 setLoading(false);

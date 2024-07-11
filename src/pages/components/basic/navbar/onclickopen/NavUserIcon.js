@@ -105,17 +105,14 @@ function NavUserIcon() {
 
     const [isOpen, setIsOpen] = useState(false);
     const [hasAccessToken, setHasAccessToken] = useState(false);
-
-    // const storedUserData = localStorage.getItem('user');
-    // const userData = storedUserData ? JSON.parse(storedUserData) : null;
-
-
+   
     const loginRef = useRef(null);
     const dropdownRef = useRef(null);
 
-    const toggleMenu = () => {
-        setIsOpen(prevState => !prevState);
-    };
+    
+    const storedUserData = localStorage.getItem('user');
+    const userData = storedUserData ? JSON.parse(storedUserData) : null;
+
 
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
@@ -140,17 +137,20 @@ function NavUserIcon() {
         }
     }, [isOpen]);
 
+    const toggleMenu = () => {
+        setIsOpen(prevState => !prevState);
+    };
     return (
-       <div className="relative">
+        <div className="relative">
             {hasAccessToken ? (
                 <>
                     <div className='flex items-center cursor-pointer' onClick={toggleMenu} ref={loginRef}>
                         <FaRegUserCircle className='text-white text-[24px]' />
-                        <h6 className='text-white font-dm text-sm ml-2 capitalize'>username</h6>
+                        <h6 className='text-white font-dm text-sm ml-2 capitalize'>{userData?.name}</h6>
                     </div>
                     {isOpen && (
                         <div ref={dropdownRef} className='absolute rounded-lg shadow-lg lg:mt-4 mt-2 z-10 bg-white w-72 top-full left-1/2 transform -translate-x-1/2'>
-                            <Myaccountdrop toggle={toggleMenu}/>
+                            <Myaccountdrop toggle={toggleMenu} />
                         </div>
                     )}
                 </>
