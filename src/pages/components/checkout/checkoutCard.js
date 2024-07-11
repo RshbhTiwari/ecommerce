@@ -1,8 +1,5 @@
-
-import productcard from '../../../data/productcard';
 import BreadCrum from '../basic/BreadCrum';
-import { HeadingTitle, Paragraph } from '../basic/title';
-import { Btnone } from '../basic/button';
+import { HeadingTitle } from '../basic/title';
 import AccordionExample from './Accordion';
 import OrderSummary from './Accordion/OrderSummary';
 
@@ -16,7 +13,7 @@ export default function CheckoutCard() {
 
                         <div className='lg:col-span-7 col-span-12'>
                             <AccordionExample />
-                        </div>
+                        </div> 
 
                         <div className='lg:col-span-5 col-span-12'>
 

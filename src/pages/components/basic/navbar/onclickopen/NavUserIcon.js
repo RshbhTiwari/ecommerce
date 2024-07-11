@@ -10,7 +10,7 @@
 
 // function NavUserIcon() {
 //     const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") : "";
-//     const user = JSON.parse(localStorage.getItem('user'));
+
 
 //     console.log("Access Token:", accessToken);
 //     console.log("User Details:", user);
@@ -108,7 +108,8 @@ function NavUserIcon() {
    
     const loginRef = useRef(null);
     const dropdownRef = useRef(null);
-
+    
+//     const user = JSON.parse(localStorage.getItem('user'));
     
     const storedUserData = localStorage.getItem('user');
     const userData = storedUserData ? JSON.parse(storedUserData) : null;

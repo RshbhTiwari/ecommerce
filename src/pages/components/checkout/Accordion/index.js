@@ -82,7 +82,7 @@ const AccordionExample = () => {
 
             <>
                 <div className='shadow-md rounded-lg mt-8'>
-                <div className=' rounded-t-lg p-3 bg-gray-100'>
+                    <div className=' rounded-t-lg p-3 bg-gray-100'>
                         <div className="flex items-center justify-between border-b-2 pb-1 border-[#072320] ">
                             <h2 className={`font-dm text-xl capitalize  font-medium text-left  text-[#072320]`}>Billing Address</h2>
 
@@ -113,7 +113,7 @@ const AccordionExample = () => {
 
             <>
                 <div className='shadow-md rounded-lg mt-8'>
-                <div className=' rounded-t-lg p-3 bg-gray-100'>
+                    <div className=' rounded-t-lg p-3 bg-gray-100'>
                         <div className="flex items-center justify-between border-b-2 pb-1 border-[#072320] ">
                             <h2 className={`font-dm text-xl capitalize  font-medium text-left  text-[#072320]`}>shipping Address</h2>
 
@@ -132,7 +132,7 @@ const AccordionExample = () => {
                                     font-medium  text-left  text-[#00A762]`} onClick={handleAddNewAddress} >
                                 <IoMdAdd className="mr-2 text-2xl" />Add New Address</div>
 
-                                <DefultAddress />
+                            <DefultAddress />
 
                             {isNewOpen && <AddEditAddressFrom />}
 
@@ -143,7 +143,7 @@ const AccordionExample = () => {
 
             <>
                 <div className='shadow-md rounded-lg mt-8'>
-                <div className=' rounded-t-lg p-3 bg-gray-100'>
+                    <div className=' rounded-t-lg p-3 bg-gray-100'>
                         <div className="flex items-center justify-between border-b-2 pb-1 border-[#072320] ">
                             <h2 className={`font-dm text-xl capitalize  font-medium text-left  text-[#072320]`}>Payment option</h2>
 
