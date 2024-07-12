@@ -71,7 +71,6 @@ export default function DetailsCategoriesPages({ id }) {
 
     const handleSubProductsRow = (id) => {
         dispatch(fetchOneSubCategory(id));
-        console.log("ididid", oneSubCategory?.products)
     };
 
     useEffect(() => {
@@ -93,8 +92,6 @@ export default function DetailsCategoriesPages({ id }) {
                 handleClick={() => { navigate('/') }}
             /></div>;
     }
-
-    console.log("oneCategory?.children", oneCategory?.children)
 
     return (
         <>

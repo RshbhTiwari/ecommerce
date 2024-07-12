@@ -33,14 +33,12 @@ const ForgotPasswordForm = () => {
     const {reset, handleSubmit, formState: { isSubmitting, isValid, errors } } = methods;
 
     const onSubmit = async (data) => {
-        console.log("datadatadatadatadata", data);
         try {
             await new Promise((resolve) => setTimeout(resolve, 500));
             const payload = {
                 email: data.email,
                 password: data.password,
             };
-            console.log("datadatadatadatadata payload", payload);
             dispatch(postForgotPasswordUser(payload, toast, reset));
             navigate('/login');
         } catch (error) {

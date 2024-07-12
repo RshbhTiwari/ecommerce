@@ -87,11 +87,9 @@ export const fetchAllCategories = () => async (dispatch) => {
 
 // Thunk action to fetch one category by id
 export const fetchOneCategory = (id) => async (dispatch) => {
-    console.log("idididid", id)
     try {
         dispatch(startLoading());
         const response = await axios.get(`/category/${id}`);
-        console.log("idididid", response?.data?.category)
         dispatch(getOneCategorySuccess(response?.data?.category));
     } catch (error) {
         console.error("Error fetching category:", error.response?.data?.message);
@@ -101,11 +99,9 @@ export const fetchOneCategory = (id) => async (dispatch) => {
 
 // Thunk action to fetch one sub category by id
 export const fetchOneSubCategory = (id) => async (dispatch) => {
-    console.log("idididid", id)
     try {
         dispatch(startLoading());
         const response = await axios.get(`/subcategory/${id}`);
-        console.log("idididid", response?.data?.subcategory)
         dispatch(getOneSubCategorySuccess(response?.data?.subcategory));
     } catch (error) {
         console.error("Error fetching subcategory:", error.response?.data?.message);

@@ -28,8 +28,6 @@ const ShopSingleDetails = ({ id }) => {
         }
     }, [oneproduct]);
 
-
-
     return (
         <>
             <BreadCrum componentName="shop" link="/shop" componentSecondName="shop Details" />

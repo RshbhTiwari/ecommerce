@@ -13,7 +13,6 @@ const ProductsortpillsCard = ({ allProducts }) => {
     const handleDetailsRow = (id) => {
         navigate(`/shop/${id}`);
     };
-    console.log("allProducts", allProducts)
     return (
 
         <div className=" ">

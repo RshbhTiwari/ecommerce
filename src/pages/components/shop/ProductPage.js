@@ -55,10 +55,8 @@ export default function ProductPage() {
         }
     }, [products]);
 
-    console.log("allProductsDataallProductsData",allProductsData)
 
     const categoriDetailsRow = (id) => {
-        console.log("id", id)
         navigate(`/categories/${id}`);
     };
 

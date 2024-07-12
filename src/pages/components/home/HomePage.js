@@ -44,7 +44,6 @@ const HomePage = () => {
         }
     }, [products]);
 
-    console.log("allProductsDataallProductsData", allProductsData)
 
     return (
         <>

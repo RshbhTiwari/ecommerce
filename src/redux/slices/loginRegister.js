@@ -110,7 +110,6 @@ export function postLoginUser(payload, toast, reset,navigate,setLoading, toggle)
             dispatch(startLoadingLogin());
             const response = await axios.post("/login", payload);
             dispatch(getLoginSuccess(response?.data?.user));
-            console.log("response.data.user", response.data.user)
             dispatch(
                 getLoginAccessTokenSuccess(response?.data?.access_token)
             );
@@ -146,7 +145,6 @@ export function postForgotPasswordUser(payload, toast, reset) {
             dispatch(startLoading());
             const response = await axios.post("/forgot-password", payload, { headers: jsonheader });
             dispatch(getForgotPassworSuccess(response?.data));
-            console.log("datadatadatadatadata response", response);
             toast.success(response?.data?.message);
             reset();
         } catch (error) {

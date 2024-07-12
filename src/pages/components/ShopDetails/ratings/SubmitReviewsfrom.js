@@ -33,7 +33,6 @@ const SubmitReviewsfrom = () => {
 
 
     const onSubmit = (data) => {
-        console.log(data);
         reset({
             username: '',
             email: '',

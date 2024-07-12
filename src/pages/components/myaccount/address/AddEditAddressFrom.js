@@ -75,8 +75,6 @@ const AddEditAddressFrom = ({ isEdit = false, userAdd }) => {
 
 
     const onSubmit = (data) => {
-        console.log("data", data);
-        // Handle submission logic, e.g., API call to update account
     };
 
     return (

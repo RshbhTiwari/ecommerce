@@ -12,9 +12,6 @@
 //     const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") : "";
 
 
-//     console.log("Access Token:", accessToken);
-//     console.log("User Details:", user);
-
 //     const [isOpen, setIsOpen] = useState(false);
 //     const dropdownRef = useRef(null);
 //     const loginRef = useRef(null);
@@ -105,12 +102,12 @@ function NavUserIcon() {
 
     const [isOpen, setIsOpen] = useState(false);
     const [hasAccessToken, setHasAccessToken] = useState(false);
-   
+
     const loginRef = useRef(null);
     const dropdownRef = useRef(null);
-    
-//     const user = JSON.parse(localStorage.getItem('user'));
-    
+
+    //     const user = JSON.parse(localStorage.getItem('user'));
+
     const storedUserData = localStorage.getItem('user');
     const userData = storedUserData ? JSON.parse(storedUserData) : null;
 

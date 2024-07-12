@@ -47,6 +47,10 @@ const CollectionsShopCard = ({ allproducts }) => {
 
     const handleDetailsRow = (id) => {
         navigate(`/shop/${id}`);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'  // This adds a smooth scroll effect
+          });
     };
 
 

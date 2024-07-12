@@ -59,7 +59,7 @@ export const getproduct = () => async (dispatch) => {
         dispatch(getproductsSuccess(response?.data?.products));
     
     } catch (error) {
-        console.error("Error fetching product:", error.response.data.message);
+        console.error("Error fetching product:", error?.response?.data?.message);
         dispatch(hasError(error?.response?.data?.message));
     }
 };

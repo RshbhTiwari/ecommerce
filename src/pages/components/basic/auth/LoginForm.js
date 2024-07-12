@@ -29,7 +29,6 @@ const LoginForm = () => {
     const { reset, handleSubmit, formState: { isSubmitting, isValid, errors } } = methods;
 
     const onSubmit = async (data) => {
-        console.log("datadatadatadatadata", data);
         try {
             await new Promise((resolve) => setTimeout(resolve, 500));
             const payload = {

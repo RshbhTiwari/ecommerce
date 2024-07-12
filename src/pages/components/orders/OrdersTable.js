@@ -11,7 +11,6 @@ export default function OrdersTable({ ordersitems }) {
         return dateObj.toLocaleDateString('en-US', options);
     };
 
-    console.log("dateString",ordersitems)
 
     
     return (

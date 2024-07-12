@@ -24,7 +24,6 @@ const ContactForm = () => {
     const { handleSubmit, formState: { errors } } = methods;
 
     const onSubmit = (data) => {
-        console.log("data", data); 
     };
 
     return (
