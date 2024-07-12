@@ -18,7 +18,7 @@ const AccordionExample = () => {
     const [isNewOpen, setisNewIsOpen] = useState(false);
 
     const accessToken = localStorage.getItem('accessToken');
-    const user = JSON?.parse(localStorage.getItem('user'));
+    // const user = JSON?.parse(localStorage.getItem('user'));
 
 
     const togglelogincontinue = () => {
@@ -68,8 +68,10 @@ const AccordionExample = () => {
                             {accessToken ? (
                                 <>
                                     <h2 className={`font-dm text-xl capitalize  font-medium text-left  text-[#072320]`}>
-                                        Welcome back,{user?.name}!
+                                        Welcome back,
+                                     
                                     </h2>
+                                    {/* {user?.name}! */}
                                 </>
                             ) : (
                                 <>
@@ -92,9 +94,10 @@ const AccordionExample = () => {
                         <div className='py-6 px-4'>
                             {accessToken ? (
                                 <div className='flex flex-col items-center w-full'>
+                                    {/* ${user?.name} */}
                                     <div className="py-4 px-4 bg-[#072320] rounded-md shadow-md w-full">
                                         <Paragraph color='white'
-                                            title={`Welcome back, ${user?.name} Ready to complete your grocery shopping?`} />
+                                            title={`Welcome back,  Ready to complete your grocery shopping?`} />
                                     </div>
                                     <div className='flex flex-col items-start w-full pt-4'>
                                         <Btnone title="continue" handleClick={togglelogincontinue}
