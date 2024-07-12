@@ -18,7 +18,7 @@ const AccordionExample = () => {
     const [isNewOpen, setisNewIsOpen] = useState(false);
 
     const accessToken = localStorage.getItem('accessToken');
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON?.parse(localStorage.getItem('user'));
 
 
     const togglelogincontinue = () => {
