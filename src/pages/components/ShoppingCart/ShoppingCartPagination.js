@@ -4,16 +4,17 @@ import ShoppingCartTable from './ShoppingCartTable';
 import { FaAngleRight } from "react-icons/fa";
 import { FaAngleLeft } from "react-icons/fa";
 
-const ShoppingCartPagination = ({ shoppingcart }) => {
+const ShoppingCartPagination = ({ cartData }) => {
+
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 5;
 
     // Calculate pagination
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const currentshoppingcart = shoppingcart.slice(indexOfFirstProduct, indexOfLastProduct);
+    const currentshoppingcart = cartData.slice(indexOfFirstProduct, indexOfLastProduct);
 
-    const totalPages = Math.ceil(shoppingcart.length / productsPerPage);
+    const totalPages = Math.ceil(cartData.length / productsPerPage);
 
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber);
@@ -31,67 +32,68 @@ const ShoppingCartPagination = ({ shoppingcart }) => {
         <>
             <ShoppingCartTable shoppingcart={currentshoppingcart} />
 
-            {/* Pagination controls */}
-            <div className="flex justify-center  mt-8 w-full sm:mb-0 mb-4">
+            {cartData?.length > 0 ? (
+                <div className="flex justify-center  mt-8 w-full sm:mb-0 mb-4">
+                    {/* Pagination controls */}
+                    <div className='flex justify-center items-center space-x-4 lg:hidden block'>
+                        <button
+                            onClick={() => paginate(currentPage - 1)}
+                            disabled={currentPage === 1}
+                            className="text-white rounded-lg shadow-md font-dm px-3 py-2 capitalize bg-[#072320] disabled:font-medium disabled:bg-[#00a762b5]"
+                        >
+                            <FaAngleLeft className='text-white text-lg' />
+                        </button>
+                        {/* Current page indicator */}
+                        <div className="flex items-center justify-center  font-dm capitalize text-[#072320] font-bold ">
+                            page no : &nbsp;
+                            <Paragraph title={currentPage} />
 
-                <div className='flex justify-center items-center space-x-4 lg:hidden block'>
-                    <button
-                        onClick={() => paginate(currentPage - 1)}
-                        disabled={currentPage === 1}
-                        className="text-white rounded-lg shadow-md font-dm px-3 py-2 capitalize bg-[#072320] disabled:font-medium disabled:bg-[#00a762b5]"
-                    >
-                        <FaAngleLeft className='text-white text-lg' />
-                    </button>
-                    {/* Current page indicator */}
-                    <div className="flex items-center justify-center  font-dm capitalize text-[#072320] font-bold ">
-                        page no : &nbsp;
-                        <Paragraph title={currentPage} />
+                            <h2 className="text-[#00A762] text-center px-2
+                             font-dm text-lg capitalize font-medium
+                            ">of</h2>
 
-                        <h2 className="text-[#00A762] text-center px-2
-font-dm text-lg capitalize font-medium
-">of</h2>
+                            <Paragraph title={totalPages} />
+                        </div>
 
-                        <Paragraph title={totalPages} />
+                        <button
+                            onClick={() => paginate(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                            className="text-white rounded-lg shadow-md font-dm px-3 py-2 capitalize bg-[#072320] disabled:font-medium disabled:bg-[#00a762b5]"
+                        >
+                            <FaAngleRight className='text-white text-lg' />
+                        </button>
+
                     </div>
 
-                    <button
-                        onClick={() => paginate(currentPage + 1)}
-                        disabled={currentPage === totalPages}
-                        className="text-white rounded-lg shadow-md font-dm px-3 py-2 capitalize bg-[#072320] disabled:font-medium disabled:bg-[#00a762b5]"
-                    >
-                        <FaAngleRight className='text-white text-lg' />
-                    </button>
-
-                </div>
-
-                <div className="flex items-center justify-center lg:block hidden">
-                    <button
-                        onClick={() => paginate(currentPage - 1)}
-                        disabled={currentPage === 1}
-                        className="text-white rounded-lg shadow-md font-dm px-3 py-2 capitalize bg-[#072320] disabled:font-medium disabled:bg-[#00a762b5]"
-                    >
-                        Previous
-                    </button>
-
-                    {pageNumbers.map(number => (
+                    <div className="flex items-center justify-center lg:block hidden">
                         <button
-                            key={number}
-                            onClick={() => paginate(number)}
-                            className={`px-3 py-1 ${currentPage === number ? 'bg-[#072320]' : 'bg-[#00a762b5]'} text-white rounded-lg shadow-md font-dm px-3 py-2 capitalize mx-1`}
+                            onClick={() => paginate(currentPage - 1)}
+                            disabled={currentPage === 1}
+                            className="text-white rounded-lg shadow-md font-dm px-3 py-2 capitalize bg-[#072320] disabled:font-medium disabled:bg-[#00a762b5]"
                         >
-                            {number}
+                            Previous
                         </button>
-                    ))}
 
-                    <button
-                        onClick={() => paginate(currentPage + 1)}
-                        disabled={currentPage === totalPages}
-                        className="text-white rounded-lg shadow-md font-dm px-3 py-2 capitalize bg-[#072320] disabled:font-medium disabled:bg-[#00a762b5]"
-                    >
-                        Next
-                    </button>
+                        {pageNumbers.map(number => (
+                            <button
+                                key={number}
+                                onClick={() => paginate(number)}
+                                className={`px-3 py-1 ${currentPage === number ? 'bg-[#072320]' : 'bg-[#00a762b5]'} text-white rounded-lg shadow-md font-dm px-3 py-2 capitalize mx-1`}
+                            >
+                                {number}
+                            </button>
+                        ))}
+
+                        <button
+                            onClick={() => paginate(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                            className="text-white rounded-lg shadow-md font-dm px-3 py-2 capitalize bg-[#072320] disabled:font-medium disabled:bg-[#00a762b5]"
+                        >
+                            Next
+                        </button>
+                    </div>
                 </div>
-            </div>
+            ) : null}
         </>
     );
 };

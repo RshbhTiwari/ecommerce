@@ -12,12 +12,13 @@ const ShopSingleDetails = ({ id }) => {
 
     const [allSingleProductsData, setSingleProductsData] = useState([]);
 
-    const { isLoading, error, oneproduct,products } = useSelector(
+    const { isLoading, error, oneproduct, products } = useSelector(
         (state) => state.product
     );
     useEffect(() => {
         dispatch(getproduct());
     }, [dispatch]);
+    
     useEffect(() => {
         dispatch(getOneProduct(id));
     }, [dispatch, id]);
@@ -36,7 +37,7 @@ const ShopSingleDetails = ({ id }) => {
 
                 <div className="grid grid-cols-12 md:gap-8 gap-0 py-10">
                     <div className='lg:col-span-5 col-span-12'>
-                            <ProductImagesPage id={id} />
+                        <ProductImagesPage id={id} />
                     </div>
 
                     <div className='lg:col-span-7 col-span-12'>
@@ -47,7 +48,7 @@ const ShopSingleDetails = ({ id }) => {
                 <div className="pb-10">
                     <HeadingTitle title="related products" />
                     <div className="mt-4">
-                        <CollectionsShopCard allproducts={products}/>
+                        <CollectionsShopCard allproducts={products} />
                     </div>
                 </div>
             </div>

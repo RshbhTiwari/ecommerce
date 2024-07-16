@@ -1,15 +1,38 @@
-
-import productcard from '../../../data/productcard';
 import BreadCrum from '../basic/BreadCrum';
 import { HeadingTitle, Paragraph } from '../basic/title';
 import { Btnone } from '../basic/button';
 import ShoppingCartPagination from './ShoppingCartPagination';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { getAllCartItems } from '../../../redux/slices/addToCart';
+import { ToastContainer } from 'react-toastify';
 
 export default function ShoppingCard() {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const cart_id = localStorage?.getItem('cart_id') || null;
+    const [cartData, setCartData] = useState([]);
+
+    const { allCartItems } = useSelector(
+        (state) => state.addToCart
+    );
+
+    useEffect(() => {
+        dispatch(getAllCartItems(cart_id));
+    }, [dispatch, cart_id]);
+
+    useEffect(() => {
+        if (allCartItems?.items?.length) {
+            setCartData(allCartItems?.items);
+        }
+    }, [allCartItems]);
+
+
     return (
         <>
+          <ToastContainer />
             <BreadCrum componentName="Cart" link="/shop" />
             <div className="container mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
                 <div className='py-10'>
@@ -18,11 +41,11 @@ export default function ShoppingCard() {
                         <div className='lg:col-span-8 col-span-12'>
                             <HeadingTitle title="Shopping Cart" textAlign='left' />
                             <div className='mt-2'>
-                                <Paragraph title="You have 3 items in your cart" textAlign='left' />
+                                <Paragraph title={`You have ${allCartItems?.items?.length} items in your cart`} textAlign='left' />
                             </div>
 
                             <div className="overflow-x-auto mt-6">
-                                <ShoppingCartPagination shoppingcart={productcard} />
+                                <ShoppingCartPagination cartData={cartData}/>
                             </div>
 
                         </div>

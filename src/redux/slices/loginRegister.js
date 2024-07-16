@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../utils/axios";
+import { getAllCartItems } from "./addToCart";
 
 const initialState = {
     isLoadingLogin: false,
@@ -138,6 +139,8 @@ export function postLoginUser(payload, toast, reset,navigate,setLoading, toggle)
     };
 }
 
+
+
 // POST Forgot Password
 export function postForgotPasswordUser(payload, toast, reset) {
     return async (dispatch) => {
@@ -166,6 +169,7 @@ export function postLogoutUser() {
             dispatch(getLoginAccessTokenSuccess(null));
             localStorage.removeItem("user");
             localStorage.removeItem("accessToken");
+            localStorage.removeItem("cart_id");
             window.location.reload();
         } catch (error) {
             dispatch(hasError(error));

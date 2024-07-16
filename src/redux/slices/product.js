@@ -8,14 +8,6 @@ const initialState = {
     oneproduct: {},
 };
 
-const header = {
-    "Content-type": "multipart/form-data",
-};
-
-const jsonheader = {
-    "Content-type": "application/json",
-};
-
 const productSlice = createSlice({
     name: "product",
     initialState,
@@ -63,8 +55,6 @@ export const getproduct = () => async (dispatch) => {
         dispatch(hasError(error?.response?.data?.message));
     }
 };
-
-
 
 // Thunk action to fetch one Product by id
 export const getOneProduct = (id) => async (dispatch) => {
