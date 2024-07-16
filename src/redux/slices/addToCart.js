@@ -105,7 +105,6 @@ export function putCartItme(itemId, payload, toast) {
             const response = await axios.put(`/cart/updateItem/${itemId}`, payload);
             if (response.data?.status == true) {
                 toast.success(response.data?.message);
-                window.location.reload();
             } else {
                 toast.error(response.data?.message);
             }
@@ -116,11 +115,11 @@ export function putCartItme(itemId, payload, toast) {
 
 export function deleteCartItem(itemId, toast) {
     return async (dispatch) => {
-      
       try {
         const response = await axios.delete('/cart/removeItem/' + itemId);
         dispatch(deleteCartSuccess(response?.data?.status));
         toast.success(response?.data?.message);
+        window.location.reload();
       } catch (error) {
         toast.error(error?.message);
         dispatch(hasError(error));

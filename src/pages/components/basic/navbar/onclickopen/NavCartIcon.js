@@ -7,12 +7,31 @@ import { RxCross2 } from "react-icons/rx";
 import productcard from "../../../../../data/productcard";
 import { Btnone, Btnoutline } from "../../button";
 import { Paragraph } from "../../title";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllCartItems } from "../../../../../redux/slices/addToCart";
+import ShoppingCartTable from "../../../ShoppingCart/ShoppingCartTable";
+import CartEmpty from "../../ErrorPages/cartempty";
 
 function NavCartIcon() {
 
+    const dispatch = useDispatch();
 
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
+    const cart_id = localStorage?.getItem('cart_id') || null;
+
+    const { allCartItems, loading, error } = useSelector(
+        (state) => state.addToCart
+    );
+    const cartData = allCartItems?.items || [];
+    const itemCount = cartData.length;
+
+    useEffect(() => {
+        if (cart_id) {
+            dispatch(getAllCartItems(cart_id));
+        }
+    }, [dispatch, cart_id]);
+
 
     const toggleCart = () => {
         if (isCartOpen) {
@@ -28,7 +47,6 @@ function NavCartIcon() {
         }
     };
 
-
     return (
         <>
             <div className='flex items-center  cursor-pointer' onClick={toggleCart}>
@@ -37,7 +55,7 @@ function NavCartIcon() {
             
                     <div className='rounded-full right-[-7px] top-[-7px] h-[20px] w-[20px] 
                                         flex items-center justify-center text-[13px] text-white bg-[#072320] absolute'>
-                        0
+                       {itemCount}
                     </div>
                 </div>
                 <h6 className='text-white font-dm text-sm ml-2 capitalize'>cart</h6>
@@ -65,49 +83,21 @@ function NavCartIcon() {
                                 </div>
                             </div>
 
-                            <div className='mt-2'>
-                                <Paragraph title="You have 3 items in your cart" textAlign='onyleft' />
-                            </div>
+                            {cartData?.length > 0 ? (
+                                <>
+                                    <div className='mt-2'>
+                                        <Paragraph title={`You have ${itemCount} items in your cart`} textAlign='left' />
+                                    </div>
+                                    <div className="overflow-x-auto mt-6">
+                                        <ShoppingCartTable shoppingcart={cartData} minicart="true" />
+                                    </div>
+                                </>
 
-                            {/* table vertically scroll */}
-                            <div className="mt-4 max-h-[450px] overflow-y-auto">
-                                <table className="w-full">
-                                    <tbody>
-                                        {productcard.slice(0, 2).map((item, index) => (
-                                            <tr className="flex shadow-md rounded-lg justify-between relative my-4" key={index}>
+                            ) : (
+                                <CartEmpty height="150px" />
+                            )}
 
-                                                <div className="flex items-center justify-center cursor-pointer h-8 w-8 rounded-md absolute right-[10px] top-[20px] p-2 bg-[#00000054]">
-                                                    <RxCross2 className='text-2xl text-[#072320]' />
-                                                </div>
-
-                                                <td className="flex items-center py-4 px-4 gap-4">
-                                                    <div className='rounded-md w-24 h-24 bg-[#00a762b0] sm:block hidden'>
-                                                        <img
-                                                            src={item.image}
-                                                            alt='product_img'
-                                                            className='h-full w-full'
-                                                        />
-                                                    </div>
-
-                                                    <div className="flex justify-center flex-col">
-                                                        <h2 className="text-[#00A762] text-left font-dm text-lg capitalize font-medium">
-                                                            {item.title}
-                                                        </h2>
-
-                                                        <Paragraph title={`1*${item.categorie}`} textAlign='onyleft' />
-
-                                                        <h2 className="text-[#00A762] text-left font-dm text-lg capitalize font-medium">
-                                                            20.00
-                                                        </h2>
-                                                    </div>
-
-
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
+                            
 
                             <div className='flex flex-col fixed bottom-[17px] w-[92%]'>
                                 <div className='w-full mt-4'>
