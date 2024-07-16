@@ -16,7 +16,7 @@ const ProductSingleContentPage = ({ oneproduct }) => {
     const dispatch = useDispatch();
     const [quantity, setQuantity] = useState(1);
 
-    const { name, description, discount_price,sku, price, stock_status, additional_images ,short_description} = oneproduct;
+    const { name, description, discount_price, sku, price, stock_status, additional_images, short_description } = oneproduct;
 
 
     const handleIncrement = () => {
@@ -34,18 +34,12 @@ const ProductSingleContentPage = ({ oneproduct }) => {
         const finalPrice = discount_price || price;
         const cartItem = {
             item_id: oneproduct.id,
-            item_title:name,
-            price,
-            sku,
             quantity,
-            description,
-            short_description,
-            discount:discount_price,
             ...(cart_id && { cart_id }),
-            ...(customer_id && { customer_id }) 
+            ...(customer_id && { customer_id })
         };
-        console.log("cartItem", cartItem) 
-        dispatch(addCartItems(cartItem,toast, navigate));
+        console.log("cartItem", cartItem)
+        dispatch(addCartItems(cartItem, toast, navigate));
     };
 
 
@@ -84,7 +78,7 @@ const ProductSingleContentPage = ({ oneproduct }) => {
 
                 <div className="quantity_btn ml-4" name="quantity">
                     <button className="btn_plus hover:bg-gray-200 hover:rounded-l-lg" type="button" onClick={handleIncrement}>
-                        <MdAdd className='text-[#00A762]'  />
+                        <MdAdd className='text-[#00A762]' />
                     </button>
                     <input className="w-full focus:outline-none text-center bg-transparent" value={quantity} disabled style={{ border: "0px solid" }} />
                     <button className="btn_minus hover:bg-gray-200 hover:rounded-r-lg" type="button" onClick={handleDecrement}>

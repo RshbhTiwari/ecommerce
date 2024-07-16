@@ -98,7 +98,7 @@ export default function ShoppingCartTable({ shoppingcart, minicart }) {
 
                                 <div className="flex justify-center flex-col">
                                     <h2 className="text-[#00A762] text-left font-dm text-lg capitalize font-medium">
-                                        {item?.item_title}
+                                        {item?.name}
                                     </h2>
 
                                     <Paragraph title={`${item?.quantity}*${item.item_title}`} textAlign='onyleft' />
@@ -131,17 +131,17 @@ export default function ShoppingCartTable({ shoppingcart, minicart }) {
                         <div className="flex items-center w-2/4 py-4 px-4 gap-4">
                             <div className="flex flex-col">
                                 <h2 className="text-[#00A762] text-left font-dm text-lg capitalize font-medium">
-                                    {item?.item_title}
+                                    {item?.name}
                                 </h2>
                                 <Paragraph title={item?.short_description} shortDescription='true' lineclamp='3' textAlign='onyleft' readjustifytext='start' />
                             </div>
                         </div>
 
                         {/* <div className="flex items-center py-4 px-4 gap-4">
-                    <h2 className="text-[#00A762] text-left font-dm text-lg capitalize font-medium">
-                        Discount: {item?.discount} Price: {item?.price} Quantity: {item?.quantity}
-                    </h2>
-                </div> */}
+                            <h2 className="text-[#00A762] text-left font-dm text-lg capitalize font-medium">
+                                Discount: {item?.discount} Price: {item?.price} Quantity: {item?.quantity}
+                            </h2>
+                        </div> */}
 
                         <div className="flex items-center py-4 px-4 gap-4">
                             <div className="quantity_btn" name="quantity">

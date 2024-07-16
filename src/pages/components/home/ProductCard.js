@@ -3,30 +3,49 @@ import { FaRegHeart } from "react-icons/fa";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import { Paragraph } from '../basic/title';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addCartItems } from '../../../redux/slices/addToCart';
+import { toast } from 'react-toastify';
 
 const ProductCard = ({ allProductsData }) => {
     const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleDetailsRow = (id) => {
         navigate(`/shop/${id}`);
         window.scrollTo({
             top: 0,
             behavior: 'smooth'  // This adds a smooth scroll effect
-          });
+        });
+    };
+
+    const handleAddToCart = (product_id) => {
+
+        const cart_id = localStorage?.getItem('cart_id') || null;
+        const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+        const cartItem = {
+            item_id: product_id,
+            ...(cart_id && { cart_id }),
+            ...(customer_id && { customer_id })
+        };
+        console.log("cartItem", cartItem)
+        dispatch(addCartItems(cartItem, toast, navigate));
     };
 
     return (
 
         <div className="grid grid-cols-12 gap-4">
             {allProductsData.slice(0, 4).map((item, index) => (
-                <div className='md:col-span-6 lg:col-span-3 cursor-pointer col-span-12 flex flex-col justify-between relative h-full items-center rounded-lg 
+                <div className='md:col-span-6 lg:col-span-3  col-span-12 flex flex-col justify-between relative h-full items-center rounded-lg 
                   border-2 border-[#072320]'
-                    key={index} onClick={() => {
-                        handleDetailsRow(item?.id);
-                    }} >
+                    key={index} >
 
-                    <div className='flex justify-center items-center bg-[#00A762] p-4 rounded-lg mt-3 mb-2 mx-6 relative'>
+                    <div className='flex justify-center items-center bg-[#00A762] cursor-pointer p-4 rounded-lg mt-3 mb-2 mx-6 relative'
+                        onClick={() => {
+                            handleDetailsRow(item?.id);
+                        }}
+                    >
                         <div className='overflow-hidden rounded-lg h-[200px] relative'>
                             <img
                                 src={BASE_IMAGE_URL + item?.additional_images[0]}
@@ -43,12 +62,15 @@ const ProductCard = ({ allProductsData }) => {
 
                     </div>
 
+
                     <div className='flex flex-col justify-center items-center px-4 '>
 
 
-                        <h2 className="text-[#00A762] text-center 
+                        <h2 className="text-[#00A762] text-center cursor-pointer
                                   font-dm text-lg capitalize font-medium 
-                                  ">{item?.name}</h2>
+                                  "  onClick={() => {
+                                handleDetailsRow(item?.id);
+                            }}>{item?.name}</h2>
 
                         <div className='pb-2'>
                             <Paragraph title={item?.short_description} shortDescription='true' />
@@ -70,16 +92,19 @@ const ProductCard = ({ allProductsData }) => {
                         )}
 
                     </div>
-                    <div className='flex justify-center items-center px-2 py-2 gap-2'>
 
+                    <div className='flex justify-center items-center px-2 py-2 gap-2'>
                         <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320] cursor-pointer'>
                             <FaRegHeart className='text-white text-[22px]' />
                         </div>
-                        <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320] cursor-pointer'>
+
+                        <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320] cursor-pointer' onClick={() => {
+                            handleAddToCart(item?.id);
+                        }} >
                             <HiOutlineShoppingBag className='text-white text-[22px]' />
                         </div>
-
                     </div>
+
                 </div>
             ))
             }

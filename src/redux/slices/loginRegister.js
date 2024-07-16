@@ -105,7 +105,7 @@ export function postRegisterUser(formData, reset, toast,navigate) {
 }
 
 // LOGIN RAGISTER
-export function postLoginUser(payload, toast, reset,navigate,setLoading, toggle) {
+export function postLoginUser(payload, toast, reset,navigate,setLoading) {
     return async (dispatch) => {
         try {
             dispatch(startLoadingLogin());
@@ -122,6 +122,7 @@ export function postLoginUser(payload, toast, reset,navigate,setLoading, toggle)
                 localStorage.setItem("user", JSON.stringify(response?.data?.user));
                 localStorage.setItem("accessToken", response?.data?.access_token);
                 setLoading(false);
+           
             } else {
                 toast.error(response?.data?.message);
             }
@@ -169,7 +170,6 @@ export function postLogoutUser() {
             dispatch(getLoginAccessTokenSuccess(null));
             localStorage.removeItem("user");
             localStorage.removeItem("accessToken");
-            localStorage.removeItem("cart_id");
             window.location.reload();
         } catch (error) {
             dispatch(hasError(error));

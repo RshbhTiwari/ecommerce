@@ -29,11 +29,13 @@ const LoginForm = () => {
     const { reset, handleSubmit, formState: { isSubmitting, isValid, errors } } = methods;
 
     const onSubmit = async (data) => {
+        const cart_id = localStorage?.getItem('cart_id') || null;
         try {
             await new Promise((resolve) => setTimeout(resolve, 500));
             const payload = {
                 email: data.email,
                 password: data.password,
+                ...(cart_id && { cart_id }),
             };
             dispatch(postLoginUser(payload, toast, reset, navigate));
         } catch (error) {

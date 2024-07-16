@@ -77,7 +77,7 @@ export function addCartItems(cartItem, toast, navigate) {
             console.log("response", cartItem)
             const response = await axios.post("/addtocart", cartItem);
             dispatch(addToCartSuccess(response?.data));
-
+console.log("response",response)
             dispatch(
                 getCartIdSuccess(response?.data?.cart_id)
             );
