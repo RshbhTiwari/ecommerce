@@ -122,11 +122,11 @@ export default function ShoppingCartTable({ shoppingcart, minicart }) {
                                     <h2 className="text-[#072320] whitespace-nowrap  text-left font-dm text-md capitalize font-medium">
                                         {item?.discount ? (
                                             <p className="text-base font-dm">
-                                                     Unit Prize : ₹{item.discount}
+                                                Unit Prize : ₹{item.discount}
                                             </p>
                                         ) : (
                                             <p className="text-base font-dm">
-                                               Unit Prize : ₹{item.price}
+                                                Unit Prize : ₹{item.price}
                                             </p>
                                         )}
                                     </h2>
@@ -138,98 +138,78 @@ export default function ShoppingCartTable({ shoppingcart, minicart }) {
                     ))}
                 </div>
             ) : (
-                <> {cartItems.map((item, index) => (
-                    <div
-                        className={`flex shadow-md items-center my-3 rounded-lg justify-between ${index % 2 === 0 ? '' : 'bg-gray-100'}`}
-                        key={item.id}
-                    >
-                        <div className="rounded-md h-[120px] w-[150px] bg-[#00a762b0] sm:block hidden p-2">
-                            <img
-                                src={BASE_IMAGE_URL + item?.additional_images[0]}
-                                alt="product_img"
-                                className="h-full w-full rounded-md"
-                            />
-                        </div>
+                <div className="overflow-x-auto">
+                    <table className="min-w-full bg-white border border-gray-200  shadow-md rounded-lg">
+                        <thead className="bg-gray-100 ">
+                            <tr className="">
+                                <th className="py-2 px-4 font-dm text-[#00A762] capitalize h-full sm:block hidden">Image</th>
+                                <th className="py-2 px-4 font-dm text-[#00A762] capitalize">Name</th>
+                                <th className="py-2 px-4 font-dm text-[#00A762] capitalize">Prize of the Month</th>
+                                <th className="py-2 px-4 font-dm text-[#00A762] capitalize">Quantity</th>
+                                <th className="py-2 px-4 font-dm text-[#00A762] capitalize">Total Price</th>
+                                <th className="py-2 px-4 font-dm text-[#00A762] capitalize">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {cartItems.map((item, index) => (
+                                <tr key={item.id} className={index % 2 === 0 ? '' : 'bg-gray-100'}>
+                                    <td className="py-2 px-4  md:block hidden">
+                                        <img
+                                            src={BASE_IMAGE_URL + item?.additional_images[0]}
+                                            alt="product_img"
+                                            className="h-24 w-32 object-cover rounded-md"
+                                        />
+                                    </td>
+                                    <td className="py-2 px-4  text-[#00A762] text-left font-dm text-lg capitalize font-medium">
+                                        {item?.name}
+                                    </td>
+                                    <td className="py-2 px-4  text-[#072320] text-left font-dm text-md capitalize font-medium">
+                                        {item?.discount ? `₹${item.discount}` : `₹${item.price}`}
+                                    </td>
+                                    <td className="py-2 px-4 ">
+                                        <div className="flex items-center justify-center gap-1">
+                                            <button
+                                                className="btn_plus hover:bg-gray-200 hover:rounded-l-lg"
+                                                type="button"
+                                                onClick={() => handleIncrement(item?.id)}
+                                            >
+                                                <MdAdd className="text-[#00A762]" />
+                                            </button>
+                                            <input
+                                                className="w-12 text-center bg-transparent border border-gray-300 rounded"
+                                                value={item?.quantity}
+                                                readOnly
+                                            />
+                                            <button
+                                                className="btn_minus hover:bg-gray-200 hover:rounded-r-lg"
+                                                type="button"
+                                                onClick={() => handleDecrement(item?.id)}
+                                            >
+                                                <FiMinus style={{ color: '#00A762' }} />
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td className="py-2 px-4  text-base font-dm">
+                                        ₹{item?.totalPrice}
+                                    </td>
 
-                        <div className="flex flex-col  py-4 px-4 gap-1">
+                                    <td className="py-2 px-4 " onClick={() => handleDelete(item?.id)}>
+                                        <div>   <MdDeleteForever className="text-[#072320] text-2xl" /></div>
 
-                            <h2 className="text-[#00A762] text-left font-dm text-lg capitalize font-medium">
-                                {item?.name}
-                            </h2>
-
-                            <div className="flex items-center gap-1">
-                                <h2 className="text-[#072320] whitespace-nowrap  text-left font-dm text-md capitalize font-medium">
-                                    Prize of the Month :
-                                </h2>
-                                {item?.discount ? (
-                                    <p className="text-base font-dm">
-                                        ₹{item.discount}
-                                    </p>
-                                ) : (
-                                    <p className="text-base font-dm">
-                                        ₹{item.price}
-                                    </p>
-                                )}
-                            </div>
-                        </div>
-
-                        {/* <div className="flex items-center py-4 px-4 gap-4">
-                            <h2 className="text-[#00A762] text-left font-dm text-lg capitalize font-medium">
-                                Discount: {item?.discount} Price: {item?.price} Quantity: {item?.quantity}
-                            </h2>
-                        </div> */}
-
-                        <div className="flex items-center py-4 px-4 gap-4">
-                            <div className="quantity_btn" name="quantity">
-                                <button
-                                    className="btn_plus hover:bg-gray-200 hover:rounded-l-lg"
-                                    type="button"
-                                    onClick={() => handleIncrement(item?.id)}
-                                >
-                                    <MdAdd className="text-[#00A762]" />
-                                </button>
-                                <input
-                                    className="w-full focus:outline-none text-center bg-transparent"
-                                    value={item?.quantity}
-                                    readOnly
-                                    style={{ border: '0px solid' }}
-                                />
-                                <button
-                                    className="btn_minus hover:bg-gray-200 hover:rounded-r-lg"
-                                    type="button"
-                                    onClick={() => handleDecrement(item?.id)}
-                                >
-                                    <FiMinus style={{ color: '#00A762' }} />
-                                </button>
-                            </div>
-                        </div>
-
-
-                        <div className="flex items-center gap-1">
-                            <h2 className="text-[#072320] whitespace-nowrap  text-left font-dm text-md capitalize font-medium">
-                                Total Price :
-                            </h2>
-                            <p className="text-base font-dm">
-                                ₹{item?.totalPrice}
-                            </p>
-                        </div>
-
-
-                        <div
-                            className="flex items-center py-4 px-4 gap-4 cursor-pointer"
-                            onClick={() => handleDelete(item?.id)}
-                        >
-                            <MdDeleteForever className="text-[#072320] text-2xl" />
-                        </div>
-
-                        <div className="">
-                            <Btnone title="Refresh Cart" handleClick={handleUpdate}
-                                bgColor="#00A762" width="100%" />
-                        </div>
-
-
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    <div className="mt-4">
+                        <Btnone
+                            title="Update All Items"
+                            handleClick={handleUpdate}
+                            bgColor="#00A762"
+                            width="100%"
+                        />
                     </div>
-                ))}</>
+                </div>
             )}
         </>
     );

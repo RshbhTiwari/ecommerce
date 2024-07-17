@@ -14,17 +14,15 @@ const initialState = {
 
 const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") : "";
 
-
-
 const jsonheader = {
     "Content-Type": "application/json",
-    "accessToken": accessToken,
+    "access_token": accessToken,
 };
-console.log("accessToken1111", jsonheader)
 
-const header = {
-    "Content-type": "multipart/form-data",
-    "accessToken": accessToken,
+// const access_token = localStorage.getItem('accessToken');
+const headers = {
+    'Authorization': `Bearer ${accessToken}`, // Adjust based on how you store the token
+    'Content-Type': 'application/json'
 };
 
 const Slice = createSlice({
@@ -80,10 +78,10 @@ export default Slice.reducer;
 
 
 // POST RAGISTER
-export function postRegisterUser(formData, reset, toast,navigate) {
+export function postRegisterUser(formData, reset, toast, navigate) {
     return async (dispatch) => {
         try {
-          
+
             dispatch(startLoading());
             const response = await axios.post("/register", formData);
             dispatch(getRegisterSuccess(response?.data));
@@ -109,7 +107,7 @@ export function postRegisterUser(formData, reset, toast,navigate) {
 }
 
 // LOGIN RAGISTER
-export function postLoginUser(payload, toast, reset,navigate,setLoading) {
+export function postLoginUser(payload, toast, reset, navigate, setLoading) {
     return async (dispatch) => {
         try {
             dispatch(startLoadingLogin());
@@ -126,7 +124,7 @@ export function postLoginUser(payload, toast, reset,navigate,setLoading) {
                 localStorage.setItem("user", JSON.stringify(response?.data?.user));
                 localStorage.setItem("accessToken", response?.data?.access_token);
                 setLoading(false);
-           
+
             } else {
                 toast.error(response?.data?.message);
             }
@@ -139,7 +137,7 @@ export function postLoginUser(payload, toast, reset,navigate,setLoading) {
                 dispatch(getLoginSuccess(null));
                 dispatch(getLoginAccessTokenSuccess(null));
             }
-           
+
         }
     };
 }
@@ -166,20 +164,25 @@ export function postForgotPasswordUser(payload, toast, reset) {
 
 
 // USER LOG OUT
-export function postLogoutUser({toast, navigate}) {
+export function postLogoutUser({ toast, navigate }) {
     return async (dispatch) => {
         try {
-        
             dispatch(startLoading());
-            const response = await axios.post("/logout", { headers: jsonheader } );
-            console.log("response",response)
-            dispatch(getLoginSuccess(null));
-            dispatch(getLoginAccessTokenSuccess(null));
-            localStorage.removeItem("user");
-            localStorage.removeItem("accessToken");
-            localStorage.removeItem("cart_id");
-            navigate('/login');
-            // window.location.reload();
+            const response = await axios.post('/logout', {}, { headers });
+            console.log("response123", response)
+            if (response?.data?.status == true) {
+                localStorage.removeItem('user');
+                localStorage.removeItem('accessToken');
+                localStorage.removeItem('cart_id');
+                window.location.reload();
+                dispatch(getLoginSuccess(null));
+                dispatch(getLoginAccessTokenSuccess(null));
+                navigate('/login');
+                toast.success(response?.data?.message);
+                
+            } else {
+                throw new Error('Failed to log out');
+            }
         } catch (error) {
             dispatch(hasError(error));
         }
