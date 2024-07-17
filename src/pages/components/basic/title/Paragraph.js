@@ -11,6 +11,7 @@ const Paragraph = ({ title, textAlign, color, width, shortDescription, readjusti
     const textColor = color === 'white' ? 'text-white'
         : color === '#00A762' ? 'text-[#00A762] hover:text-[#000000]'
             : 'text-[#000000]';
+            
     const readjustify = readjustifytext === 'start' ? 'justify-start' : 'justify-center';
 
     const titleStyle = {

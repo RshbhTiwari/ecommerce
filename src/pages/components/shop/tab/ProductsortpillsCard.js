@@ -3,25 +3,36 @@ import { FaRegHeart } from "react-icons/fa";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import { useNavigate } from 'react-router-dom';
 import { Paragraph } from '../../basic/title';
+import { addCartItems } from '../../../../redux/slices/addToCart';
+import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
 
 const ProductsortpillsCard = ({ allProducts }) => {
 
     const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
 
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const handleDetailsRow = (id) => {
-        navigate(`/shop/${id}`);
+    const handleAddToCart = (product_id) => {
+        const cart_id = localStorage?.getItem('cart_id') || null;
+        const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+        const cartItem = {
+            item_id: product_id,
+            ...(cart_id && { cart_id }),
+            ...(customer_id && { customer_id })
+        };
+        console.log("cartItem", cartItem)
+        dispatch(addCartItems(cartItem, toast, navigate));
     };
+
+
     return (
 
-        <div className=" ">
-
+        <>
             {allProducts.map((item, index) => (
                 <div className={`grid grid-cols-12 gap-4 mb-2 py-2 px-2 flex relative h-full items-center rounded-lg shadow-md
-                     ${index % 2 === 0 ? '' : 'bg-gray-200 '}`} key={index} onClick={() => {
-                        handleDetailsRow(item.id);
-                    }}>
+                     ${index % 2 === 0 ? '' : 'bg-gray-200 '}`} key={index}>
 
 
                     <div key={index} className="lg:col-span-3 sm:col-span-4  col-span-12
@@ -47,7 +58,7 @@ const ProductsortpillsCard = ({ allProducts }) => {
                         <h2 className="text-[#00A762] text-left
                          font-dm text-lg capitalize font-medium
                         ">{item.name}</h2>
-                        <Paragraph title={item.short_description} shortDescription='true' textAlign='onyleft' />
+                        <Paragraph title={item.short_description} shortDescription='true' textAlign='onyleft' readjustifytext='start'/>
 
                         {item?.discount_price ? (
                             <>
@@ -71,7 +82,10 @@ const ProductsortpillsCard = ({ allProducts }) => {
                             <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320] cursor-pointer '>
                                 <FaRegHeart className='text-white text-[22px]' />
                             </div>
-                            <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320] cursor-pointer'>
+
+                            <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320] cursor-pointer' onClick={() => {
+                            handleAddToCart(item?.id);
+                        }}>
                                 <HiOutlineShoppingBag className='text-white text-[22px]' />
                             </div>
                         </div>
@@ -81,7 +95,7 @@ const ProductsortpillsCard = ({ allProducts }) => {
                 </div>
             ))
             }
-        </div>
+        </>
 
     );
 };

@@ -14,13 +14,17 @@ const initialState = {
 
 const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") : "";
 
+
+
 const jsonheader = {
     "Content-Type": "application/json",
-    "x-access-token": accessToken,
+    "accessToken": accessToken,
 };
+console.log("accessToken1111", jsonheader)
 
 const header = {
     "Content-type": "multipart/form-data",
+    "accessToken": accessToken,
 };
 
 const Slice = createSlice({
@@ -162,16 +166,20 @@ export function postForgotPasswordUser(payload, toast, reset) {
 
 
 // USER LOG OUT
-export function postLogoutUser() {
+export function postLogoutUser({toast, navigate}) {
     return async (dispatch) => {
         try {
+        
             dispatch(startLoading());
+            const response = await axios.post("/logout", { headers: jsonheader } );
+            console.log("response",response)
             dispatch(getLoginSuccess(null));
             dispatch(getLoginAccessTokenSuccess(null));
             localStorage.removeItem("user");
             localStorage.removeItem("accessToken");
             localStorage.removeItem("cart_id");
-            window.location.reload();
+            navigate('/login');
+            // window.location.reload();
         } catch (error) {
             dispatch(hasError(error));
         }

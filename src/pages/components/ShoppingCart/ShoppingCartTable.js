@@ -120,12 +120,14 @@ export default function ShoppingCartTable({ shoppingcart, minicart }) {
                                         Quantity : {item?.quantity}
                                     </h2>
                                     <h2 className="text-[#072320] whitespace-nowrap  text-left font-dm text-md capitalize font-medium">
-                                        {item?.descount ? (
-                                            <>
-                                                Unit Price: ₹{item.descount}
-                                            </>
+                                        {item?.discount ? (
+                                            <p className="text-base font-dm">
+                                                     Unit Prize : ₹{item.discount}
+                                            </p>
                                         ) : (
-                                            <>Unit Prize :₹{item?.price}</>
+                                            <p className="text-base font-dm">
+                                               Unit Prize : ₹{item.price}
+                                            </p>
                                         )}
                                     </h2>
                                 </div>
@@ -138,10 +140,10 @@ export default function ShoppingCartTable({ shoppingcart, minicart }) {
             ) : (
                 <> {cartItems.map((item, index) => (
                     <div
-                        className={`flex shadow-md items-center rounded-lg justify-between ${index % 2 === 0 ? '' : 'bg-gray-100'}`}
+                        className={`flex shadow-md items-center my-3 rounded-lg justify-between ${index % 2 === 0 ? '' : 'bg-gray-100'}`}
                         key={item.id}
                     >
-                        <div className="rounded-md h-[120px] w-full bg-[#00a762b0] sm:block hidden p-2">
+                        <div className="rounded-md h-[120px] w-[150px] bg-[#00a762b0] sm:block hidden p-2">
                             <img
                                 src={BASE_IMAGE_URL + item?.additional_images[0]}
                                 alt="product_img"

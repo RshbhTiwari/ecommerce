@@ -5,16 +5,15 @@ import turnoff from "../../../../../assets/myaccount/turn-off.png";
 import { useDispatch } from "react-redux";
 import { postLogoutUser } from "../../../../../redux/slices/loginRegister";
 import { useNavigate } from "react-router-dom";
-
+import { toast } from 'react-toastify';
 
 export default function Myaccountdrop({toggle}) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const handleLogout = async () => {
-        dispatch(postLogoutUser());
+        dispatch(postLogoutUser(toast, navigate));
         toggle();
-        navigate('/login');
     };
 
     return (
