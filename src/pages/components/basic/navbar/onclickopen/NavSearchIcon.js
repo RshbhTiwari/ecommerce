@@ -7,12 +7,13 @@ import { Paragraph } from "../../title";
 import { getproduct } from "../../../../../redux/slices/product";
 import { useDispatch, useSelector } from "react-redux";
 import { NoProducts } from '../../ErrorPages';
+import { useNavigate } from "react-router-dom";
 
 function NavSearchIcon() {
 
     const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
     const searchInputRef = useRef(null);
-
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [filterName, setFilterName] = useState('');
@@ -47,13 +48,19 @@ function NavSearchIcon() {
         setIsSearchOpen(!isSearchOpen);
     };
 
-    // Filter products based on input value
     const filteredProducts = allProductsData.filter(item =>
         item.name.toLowerCase().includes(filterName.toLowerCase())
     );
 
     const handleInputChange = (event) => {
         setFilterName(event.target.value);
+    };
+
+    const productsToDisplay = filteredProducts.slice(0, 3);
+
+    const handleRow = () => {
+        navigate(`/search`);
+        setIsSearchOpen(false)
     };
 
     return (
@@ -79,7 +86,7 @@ function NavSearchIcon() {
                                 </div>
                             </div>
 
-                            <div className="md:py-10 py-4">
+                            <div className="md:py-6 py-4">
                                 <input
                                     ref={searchInputRef}
                                     className='input_box w-full'
@@ -97,15 +104,16 @@ function NavSearchIcon() {
                                     <NoProducts massage="Sorry, no products found!" height='200px' />
                                 </div>
                             ) : (
-                                <div className="md:max-h-[250px] max-h-[158px] overflow-y-auto">
+                                <>
                                     {filterName && filteredProducts.length > 0 && (
                                         <>
-                                            {/* PRODUCT VIEW BOX */}
-                                            {filteredProducts.map((item, index) => (
-                                                <a key={index} href={`/shop/${item?.id}`}>
-                                                    <div className={`grid grid-cols-12 gap-4 mb-2 py-2 px-2 flex relative h-full items-center rounded-lg shadow-md ${index % 2 === 0 ? '' : 'bg-gray-200'}`}>
+                                            <div className="grid grid-cols-12 gap-4">
+                                                {/* PRODUCT VIEW BOX */}
+                                                {productsToDisplay.map((item, index) => (
+                                                    <div className='xl:col-span-4 md:col-span-6 col-span-12 relative 
+                                                    rounded-lg border-2 border-[#072320] shadow-md p-2' key={index}>
 
-                                                        <div className="lg:col-span-3 sm:col-span-4 col-span-12 flex items-center h-[150px] w-full justify-content rounded-md bg-[#00A762] p-3 sm:block hidden">
+                                                        <div className="flex items-center h-[150px] w-full justify-content rounded-md bg-[#00A762] p-3">
                                                             {item.additional_images && item.additional_images.length > 0 ? (
                                                                 <img
                                                                     src={BASE_IMAGE_URL + item.additional_images[0]}
@@ -117,20 +125,22 @@ function NavSearchIcon() {
                                                             )}
                                                         </div>
 
-                                                        <div className="col-span-12 sm:col-span-8 lg:col-span-9 flex justify-center flex-col">
-                                                            <h2 className="text-[#00A762] text-left font-dm text-lg capitalize font-medium">{item.name}</h2>
-                                                            <Paragraph title={item.short_description} textAlign='onyleft' />
-                                                            {item?.discount_price ? (
-                                                                <>
-                                                                    <div className="flex items-center gap-2 text-[#00A762] text-center font-dm text-lg capitalize font-medium pb-2">
-                                                                        <span className="block text-xs line-through">₹{item?.price}</span>
-                                                                        <span className="block">₹{item?.discount_price}</span>
-                                                                    </div>
-                                                                </>
-                                                            ) : (
-                                                                <h2 className="text-[#00A762] font-dm text-lg capitalize font-medium pb-2">₹{item?.price}</h2>
-                                                            )}
-                                                        </div>
+                                                        <h2 className="text-[#00A762] mt-2 text-center font-dm text-lg capitalize font-medium">{item.name}</h2>
+
+                                                        <div className='my-2'><Paragraph title={item.short_description} shortDescription='true' lineclamp="2" /> </div>
+
+                                                        <div className='flex w-full text-center justify-center'>
+                                                        {item?.discount_price ? (
+                                                            <>
+                                                                <div className="flex items-center gap-2 text-[#00A762] text-center font-dm text-lg capitalize font-medium pb-2">
+                                                                    <span className="block text-xs line-through">₹{item?.price}</span>
+                                                                    <span className="block">₹{item?.discount_price}</span>
+                                                                </div>
+                                                            </>
+                                                        ) : (
+                                                            <h2 className="text-[#00A762] font-dm text-lg capitalize font-medium pb-2">₹{item?.price}</h2>
+                                                        )}
+   </div>
 
                                                         <div className="absolute inset-0 flex items-center right-0 top-0 left-0 bottom-0 justify-center rounded-lg opacity-0 bg-[#00000040] hover:opacity-100 transition-opacity duration-300">
                                                             <div className="text-white text-center flex justify-center items-center gap-2">
@@ -143,17 +153,23 @@ function NavSearchIcon() {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </a>
-                                            ))}
+
+
+
+
+                                                ))}
+                                            </div>
                                         </>
                                     )}
-                                </div>
+                                </>
                             )}
 
                             {filterName && filteredProducts.length > 0 && (
                                 <div className="flex justify-center mt-4">
                                     <button className={`text-white rounded-lg shadow-md font-dm px-3 py-2 
-                                    capitalize nowarp bg-[#072320]`}>
+                                    capitalize nowarp bg-[#072320]`} onClick={() => {
+                                            handleRow();
+                                        }} >
                                         view all result
                                     </button>
                                 </div>

@@ -22,6 +22,7 @@ import AddAddressBook from "./pages/addaddressbook";
 import EditAddressBook from "./pages/editaddressbook";
 import DetailsCategories from "./pages/detailscategories";
 import { ToastContainer } from 'react-toastify';
+import SearchProduct from "./pages/searchProduct";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
           <Route path="/blog" element={<Blog />} />
           <Route exact path="/blog/:id" element={<DetailsBlog />} />
           <Route exact path="/categories/:id" element={<DetailsCategories />} />
+          <Route path="/search" element={<SearchProduct />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/forgotpassword" element={<Forgotpassword />} />
