@@ -142,7 +142,7 @@ export default function ShoppingCartTable({ shoppingcart, minicart }) {
                     <table className="min-w-full bg-white border border-gray-200  shadow-md rounded-lg">
                         <thead className="bg-gray-100 ">
                             <tr className="">
-                                <th className="py-2 px-4 font-dm text-[#00A762] capitalize h-full sm:block hidden">Image</th>
+                                <th className="py-2 px-4 font-dm text-[#00A762] capitalize h-full md:block hidden">Image</th>
                                 <th className="py-2 px-4 font-dm text-[#00A762] capitalize">Name</th>
                                 <th className="py-2 px-4 font-dm text-[#00A762] capitalize">Prize of the Month</th>
                                 <th className="py-2 px-4 font-dm text-[#00A762] capitalize">Quantity</th>
