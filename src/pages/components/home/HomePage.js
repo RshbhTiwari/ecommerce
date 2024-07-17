@@ -2,7 +2,6 @@ import HeadingTitle from "../basic/title/HeadingTitle";
 import CarouselCard from "./CarouselCard";
 import CategoriesCard from "./CategoriesCard";
 import Ordersection from "./Ordersection";
-import ProductCard from "./ProductCard";
 import ImageContent from "./ImageContent";
 import OfferContent from "./OfferContent";
 import HomeBanner from "./HomeBanner";
@@ -10,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { fetchAllCategories } from "../../../redux/slices/category";
 import { getproduct } from "../../../redux/slices/product";
+import ProductCard from "../shop/tab/ProductCard";
 
 const HomePage = () => {
 
@@ -44,6 +44,7 @@ const HomePage = () => {
         }
     }, [products]);
 
+    const productsToDisplay = allProductsData.slice(0, 4);
 
     return (
         <>
@@ -69,11 +70,12 @@ const HomePage = () => {
             </div>
 
             <div className="container mx-auto max-w-7xl  px-2 sm:px-6 lg:px-8">
+
                 {allProductsData?.length > 0 ? (
                     <div className="pb-10">
                         <HeadingTitle title="Bestsellers in September" />
                         <div className="mt-4">
-                            <ProductCard allProductsData={allProductsData} />
+                            <ProductCard allProducts={productsToDisplay} /> 
                         </div>
                     </div>
                 ) : null}

@@ -4,8 +4,6 @@ import BreadCrum from '../basic/BreadCrum';
 import { HeadingBanner, HeadingTitle, Paragraph } from '../basic/title';
 import CollectionsShopCard from './CollectionsShopCard';
 import './shop.css';
-import categoriescarddata from '../../../data/categoriescarddata';
-import ProductCard from '../home/ProductCard';
 import { AllCategories, BestSeller } from '../basic/MultiUses';
 import size from '../../../data/size';
 import { Squarebtn } from '../basic/button';

@@ -1,20 +1,18 @@
-
-
-
 import { useEffect, useState } from "react";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import { RxCross2 } from "react-icons/rx";
-import productcard from "../../../../../data/productcard";
 import { Btnone, Btnoutline } from "../../button";
 import { Paragraph } from "../../title";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllCartItems } from "../../../../../redux/slices/addToCart";
 import ShoppingCartTable from "../../../ShoppingCart/ShoppingCartTable";
 import CartEmpty from "../../ErrorPages/cartempty";
+import { useNavigate } from "react-router-dom";
 
 function NavCartIcon() {
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
@@ -45,6 +43,16 @@ function NavCartIcon() {
             setIsCartOpen(true);
             document.body.style.overflow = 'hidden';
         }
+    };
+
+    const handleClickCheckout = () => {
+        navigate(`/checkout`);
+        setIsCartOpen(false);
+    };
+
+    const handleClickCart = () => {
+        navigate(`/cart`);
+        setIsCartOpen(false);
     };
 
     return (
@@ -97,16 +105,14 @@ function NavCartIcon() {
                                 <CartEmpty height="150px" />
                             )}
 
-                            
-
                             <div className='flex flex-col fixed bottom-[17px] w-[92%]'>
                                 <div className='w-full mt-4'>
                                     <Btnone title="checkout"
-                                        bgColor="#072320" borderColor="#00A762" width="100%" />
+                                        bgColor="#072320" borderColor="#00A762" width="100%" handleClick={handleClickCheckout} />
                                 </div>
 
                                 <div className='w-full mt-4'>
-                                    <Btnoutline title="edit cart" width="100%" />
+                                    <Btnoutline title="edit cart" width="100%"  handleClick={handleClickCart}/>
                                 </div>
                             </div>
                         </div>

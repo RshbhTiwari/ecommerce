@@ -170,6 +170,7 @@ export function postLogoutUser() {
             dispatch(getLoginAccessTokenSuccess(null));
             localStorage.removeItem("user");
             localStorage.removeItem("accessToken");
+            localStorage.removeItem("cart_id");
             window.location.reload();
         } catch (error) {
             dispatch(hasError(error));

@@ -7,14 +7,14 @@ import { deleteCartItem, putCartItme } from "../../../redux/slices/addToCart";
 import { toast } from 'react-toastify';
 import { RxCross2 } from "react-icons/rx";
 import productcard from "../../../data/productcard";
-
+import { Btnone } from "../basic/button";
 
 export default function ShoppingCartTable({ shoppingcart, minicart }) {
-
     const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
 
     const dispatch = useDispatch();
     const [cartItems, setCartItems] = useState([]);
+    const [itemsToUpdate, setItemsToUpdate] = useState(new Map()); // Track changes
 
     useEffect(() => {
         setCartItems(shoppingcart.map(item => ({
@@ -24,54 +24,69 @@ export default function ShoppingCartTable({ shoppingcart, minicart }) {
     }, [shoppingcart]);
 
     // Handle increment logic
-    const handleIncrement = useCallback(async (itemId) => {
-        setCartItems(cartItems.map(item => {
-            if (item.id === itemId) {
-                const newQuantity = item.quantity + 1;
-                const newTotalPrice = (Number(item?.discount) || Number(item?.price) || 0) * newQuantity;
-                const updatedItem = { ...item, quantity: newQuantity, totalPrice: newTotalPrice };
-                handleUpdate(item.id, updatedItem);
-                return updatedItem;
-            }
-            return item;
-        }));
-    }, [cartItems]);
+    const handleIncrement = useCallback((itemId) => {
+        setCartItems(prevItems => {
+            const updatedItems = prevItems.map(item => {
+                if (item.id === itemId) {
+                    const newQuantity = item.quantity + 1;
+                    const newTotalPrice = (Number(item?.discount) || Number(item?.price) || 0) * newQuantity;
+                    const updatedItem = { ...item, quantity: newQuantity, totalPrice: newTotalPrice };
+                    setItemsToUpdate(prevMap => new Map(prevMap).set(itemId, updatedItem));
+                    return updatedItem;
+                }
+                return item;
+            });
+            return updatedItems;
+        });
+    }, []);
 
     // Handle decrement logic
-    const handleDecrement = useCallback(async (itemId) => {
-        setCartItems(cartItems.map(item => {
-            if (item.id === itemId && item.quantity > 1) {
-                const newQuantity = item.quantity - 1;
-                const newTotalPrice = (Number(item?.discount) || Number(item?.price) || 0) * newQuantity;
-                const updatedItem = { ...item, quantity: newQuantity, totalPrice: newTotalPrice };
-                handleUpdate(item.id, updatedItem);
-                return updatedItem;
-            }
-            return item;
-        }));
-    }, [cartItems]);
+    const handleDecrement = useCallback((itemId) => {
+        setCartItems(prevItems => {
+            const updatedItems = prevItems.map(item => {
+                if (item.id === itemId && item.quantity > 1) {
+                    const newQuantity = item.quantity - 1;
+                    const newTotalPrice = (Number(item?.discount) || Number(item?.price) || 0) * newQuantity;
+                    const updatedItem = { ...item, quantity: newQuantity, totalPrice: newTotalPrice };
+                    setItemsToUpdate(prevMap => new Map(prevMap).set(itemId, updatedItem));
+                    return updatedItem;
+                }
+                return item;
+            });
+            return updatedItems;
+        });
+    }, []);
 
     // Handle update API call
-    const handleUpdate = useCallback(async (itemId, updatedItem) => {
-        const payload = {
-            quantity: updatedItem.quantity,
-            total_prize: updatedItem.totalPrice
-        };
+    const handleUpdate = useCallback(async () => {
         try {
-            dispatch(putCartItme(itemId, payload, toast));
+            for (let [itemId, updatedItem] of itemsToUpdate) {
+                const payload = {
+                    quantity: updatedItem.quantity,
+                    total_prize: updatedItem.totalPrice
+                };
+                dispatch(putCartItme(itemId, payload, toast));
+            }
+            // Clear the updates after successful API call
+            setItemsToUpdate(new Map());
         } catch (error) {
             console.error(error);
         }
-    }, [dispatch]);
+    }, [dispatch, itemsToUpdate]);
 
     const handleDelete = useCallback(async (itemId) => {
         try {
             dispatch(deleteCartItem(itemId, toast));
-            setCartItems(cartItems.filter(item => item.id !== itemId));
+            setCartItems(prevItems => prevItems.filter(item => item.id !== itemId));
+            setItemsToUpdate(prevMap => {
+                const updatedMap = new Map(prevMap);
+                updatedMap.delete(itemId);
+                return updatedMap;
+            });
         } catch (error) {
             console.error(error);
         }
-    }, [dispatch, cartItems]);
+    }, [dispatch]);
 
     return (
         <>
@@ -96,16 +111,22 @@ export default function ShoppingCartTable({ shoppingcart, minicart }) {
                                     />
                                 </div>
 
-                                <div className="flex justify-center flex-col">
+                                <div className="flex justify-center flex-col gap-1">
                                     <h2 className="text-[#00A762] text-left font-dm text-lg capitalize font-medium">
                                         {item?.name}
                                     </h2>
 
-                                    <Paragraph title={`${item?.quantity}*${item.item_title}`} textAlign='onyleft' />
-
-
-                                    <h2 className="text-[#00A762] text-left font-dm text-lg capitalize font-medium">
-                                        ₹{item?.totalPrice}
+                                    <h2 className="text-[#072320] whitespace-nowrap  text-left font-dm text-md capitalize font-medium">
+                                        Quantity : {item?.quantity}
+                                    </h2>
+                                    <h2 className="text-[#072320] whitespace-nowrap  text-left font-dm text-md capitalize font-medium">
+                                        {item?.descount ? (
+                                            <>
+                                                Unit Price: ₹{item.descount}
+                                            </>
+                                        ) : (
+                                            <>Unit Prize :₹{item?.price}</>
+                                        )}
                                     </h2>
                                 </div>
 
@@ -120,7 +141,7 @@ export default function ShoppingCartTable({ shoppingcart, minicart }) {
                         className={`flex shadow-md items-center rounded-lg justify-between ${index % 2 === 0 ? '' : 'bg-gray-100'}`}
                         key={item.id}
                     >
-                        <div className="rounded-md h-[120px] w-[150px] bg-[#00a762b0] sm:block hidden p-2">
+                        <div className="rounded-md h-[120px] w-full bg-[#00a762b0] sm:block hidden p-2">
                             <img
                                 src={BASE_IMAGE_URL + item?.additional_images[0]}
                                 alt="product_img"
@@ -128,12 +149,25 @@ export default function ShoppingCartTable({ shoppingcart, minicart }) {
                             />
                         </div>
 
-                        <div className="flex items-center w-2/4 py-4 px-4 gap-4">
-                            <div className="flex flex-col">
-                                <h2 className="text-[#00A762] text-left font-dm text-lg capitalize font-medium">
-                                    {item?.name}
+                        <div className="flex flex-col  py-4 px-4 gap-1">
+
+                            <h2 className="text-[#00A762] text-left font-dm text-lg capitalize font-medium">
+                                {item?.name}
+                            </h2>
+
+                            <div className="flex items-center gap-1">
+                                <h2 className="text-[#072320] whitespace-nowrap  text-left font-dm text-md capitalize font-medium">
+                                    Prize of the Month :
                                 </h2>
-                                <Paragraph title={item?.short_description} shortDescription='true' lineclamp='3' textAlign='onyleft' readjustifytext='start' />
+                                {item?.discount ? (
+                                    <p className="text-base font-dm">
+                                        ₹{item.discount}
+                                    </p>
+                                ) : (
+                                    <p className="text-base font-dm">
+                                        ₹{item.price}
+                                    </p>
+                                )}
                             </div>
                         </div>
 
@@ -168,11 +202,16 @@ export default function ShoppingCartTable({ shoppingcart, minicart }) {
                             </div>
                         </div>
 
-                        <div className="flex items-center py-4 px-4 gap-4">
+
+                        <div className="flex items-center gap-1">
+                            <h2 className="text-[#072320] whitespace-nowrap  text-left font-dm text-md capitalize font-medium">
+                                Total Price :
+                            </h2>
                             <p className="text-base font-dm">
                                 ₹{item?.totalPrice}
                             </p>
                         </div>
+
 
                         <div
                             className="flex items-center py-4 px-4 gap-4 cursor-pointer"
@@ -180,6 +219,13 @@ export default function ShoppingCartTable({ shoppingcart, minicart }) {
                         >
                             <MdDeleteForever className="text-[#072320] text-2xl" />
                         </div>
+
+                        <div className="">
+                            <Btnone title="Refresh Cart" handleClick={handleUpdate}
+                                bgColor="#00A762" width="100%" />
+                        </div>
+
+
                     </div>
                 ))}</>
             )}

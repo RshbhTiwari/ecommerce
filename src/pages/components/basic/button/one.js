@@ -43,7 +43,7 @@ const One = ({ title, handleClick, bgColor, type, width, textwrap, loading }) =>
 
     return (
         <button
-            className={`text-white rounded-lg shadow-md font-dm px-3 py-2 capitalize ${textwrapClass} flex items-center justify-center`}
+            className={`text-white rounded-lg shadow-md font-dm px-3 py-2 capitalize ${textwrapClass} whitespace-nowrap flex items-center justify-center`}
             style={buttonStyle}
             type={buttonType}
             onClick={handleClick}
