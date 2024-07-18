@@ -1,16 +1,19 @@
-import { useState } from 'react';
-import { HeadingTitle, Paragraph } from '../../basic/title';
+import { useEffect, useState } from 'react';
+import {  Paragraph } from '../../basic/title';
 import { LoginForm } from '../../basic/auth';
 import { Btnone } from '../../basic/button';
 import AddEditAddressFrom from '../../myaccount/address/AddEditAddressFrom';
 import PaymentOptions from './PaymentOptions';
-import { useNavigate } from 'react-router-dom';
 import { IoMdAdd } from "react-icons/io";
 import DefultAddress from '../../myaccount/address/DefultAddress';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAddress } from '../../../../redux/slices/address';
 
 const AccordionExample = () => {
 
-    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [allAddressData, setAllAddressData] = useState([]);
+
     const [isOpen, setIsOpen] = useState(true);
     const [isShippingOpen, setIsShippingOpen] = useState(false);
     const [isBillingOpen, setIsBillingOpen] = useState(false);
@@ -20,11 +23,28 @@ const AccordionExample = () => {
     const accessToken = localStorage?.getItem('accessToken') || null;
     const userMame = JSON?.parse(localStorage?.getItem('user'))?.name || null;
 
+    const { allAddress } = useSelector(
+        (state) => state.address
+    );
 
+    useEffect(() => {
+        dispatch(getAddress());
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (allAddress?.length) {
+            setAllAddressData(allAddress);
+        }
+    }, [allAddress]);
 
     const togglelogincontinue = () => {
         setIsOpen(false);
         setIsBillingOpen(true)
+    };
+
+    const togglebillingcontinue = () => {
+        setIsBillingOpen(false);
+        setIsShippingOpen(true)
     };
 
     const togglelogin = () => {
@@ -145,15 +165,27 @@ const AccordionExample = () => {
 
                     {isBillingOpen && (
                         <div className='p-3'>
-                            <div className={`font-dm text-lg my-2 w-fit cursor-pointer capitalize flex items-center justify-end rounded-lg shadow-md border-[#00A762] border-[2px] px-3 py-1
-                                    font-medium  text-left  text-[#00A762]`} onClick={handleAddNewAddress}>
 
-                                <IoMdAdd className="mr-2 text-2xl" />Add New Address</div>
+                            <>
+                                {isNewOpen || allAddressData?.length === 0 ? (
+                                    <div className='shadow-md rounded-lg border-[#00A762] border-2 p-4 my-4'>
+                                        <AddEditAddressFrom />
+                                    </div>
+                                ) : null}
 
-                            <DefultAddress />
-
-                            {isNewOpen && <AddEditAddressFrom />}
-
+                                {allAddressData?.length > 0 ? (
+                                    <>
+                                        <div
+                                            className={`font-dm text-lg my-2 w-fit cursor-pointer capitalize flex items-center justify-end rounded-lg shadow-md border-[#00A762] border-[2px] px-3 py-1
+                                            font-medium text-left text-[#00A762]`}
+                                            onClick={handleAddNewAddress}
+                                        >
+                                            <IoMdAdd className="mr-2 text-2xl" /> Add New Address
+                                        </div>
+                                        <DefultAddress handleClick={togglebillingcontinue} />
+                                    </>
+                                ) : null}
+                            </>
                         </div>
                     )}
                 </div>

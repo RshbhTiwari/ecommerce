@@ -3,27 +3,23 @@ import { useNavigate } from 'react-router-dom';
 import BreadCrum from '../../basic/BreadCrum';
 import { AccountSideNav } from '../sidenav';
 import { HeadingTitle, Paragraph } from '../../basic/title';
-import { Btnone } from '../../basic/button';
+import { useParams } from "react-router-dom";
 import AddEditAddressFrom from './AddEditAddressFrom';
-
-const userAdd = {
-    id: "1",
-    username: "rishabh",
-    contact: 7974842788,
-    nickname: 'satna',
-    landmarkname: 'sbi ATM',
-    addressname: 'RAIPUR',
-    pincode: 123456,
-    locality: 'RAIPUR',
-    city: 'RAIPUR',
-    state: 'CHHATTISGARH',
-    addresstype: 'home', 
-    defaultAddress: true,
-};
-
+import { useDispatch, useSelector } from 'react-redux';
+import { getOneAddress } from '../../../../redux/slices/address';
+import { useEffect } from 'react';
 
 function AddressEdit() {
-    const navigate = useNavigate();
+    
+    const dispatch = useDispatch();
+
+    const { oneAddress } = useSelector((state) => state.address);
+    const { id } = useParams();
+
+    useEffect(() => {
+        dispatch(getOneAddress(id));
+      }, [dispatch, id]);
+
     return (
         <>
             <BreadCrum componentName="my account" link="/my-account" componentSecondName='Edit Address' />
@@ -41,7 +37,7 @@ function AddressEdit() {
                             <HeadingTitle title="Edit Address" textAlign='left' />
 
                             <div className="">
-                                <AddEditAddressFrom isEdit userAdd={userAdd} />
+                                <AddEditAddressFrom isEdit userAdd={oneAddress} id={id} />
                             </div>
                         </div>
                     </div>

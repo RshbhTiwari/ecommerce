@@ -1,15 +1,17 @@
-
-
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { useForm, FormProvider, useFormContext } from 'react-hook-form';
 import { useEffect, useMemo } from 'react';
 import { Btnone } from '../../basic/button';
 import { useLocation } from 'react-router-dom';
+import { postAddress, putAddress } from '../../../../redux/slices/address';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
-const AddEditAddressFrom = ({ isEdit = false, userAdd }) => {
+const AddEditAddressFrom = ({ isEdit = false, id, userAdd }) => {
 
     const location = useLocation();
+    const dispatch = useDispatch();
 
     const schema = Yup.object().shape({
         firstname: Yup.string().required('First Name is required'),
@@ -25,6 +27,7 @@ const AddEditAddressFrom = ({ isEdit = false, userAdd }) => {
         locality: Yup.string().required('Locality is required'),
         state: Yup.string().required('State is required'),
         city: Yup.string().required('City is required'),
+        email: Yup.string().email('Invalid email').required('Email is required'),
     });
 
     const defaultValues = useMemo(
@@ -39,21 +42,19 @@ const AddEditAddressFrom = ({ isEdit = false, userAdd }) => {
             locality: userAdd?.locality || '',
             state: userAdd?.state || "",
             city: userAdd?.city || '',
-            state: userAdd?.state || "",
+            email: userAdd?.city || '',
             addresstype: userAdd?.addresstype || '',
             defaultAddress: userAdd?.defaultAddress || '',
+            is_billing: userAdd?.is_billing || '',
+            is_shipping: userAdd?.is_shipping || '',
         }),
         [userAdd]
     );
-
-
 
     const methods = useForm({
         resolver: yupResolver(schema),
         defaultValues,
     });
-
-
 
     const {
         reset,
@@ -73,9 +74,35 @@ const AddEditAddressFrom = ({ isEdit = false, userAdd }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isEdit, userAdd]);
 
-
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
+        const cart_id = localStorage?.getItem('cart_id') || null;
+        const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+        try {
+            await new Promise((resolve) => setTimeout(resolve, 500));
+            const payload = {
+                firstname: data?.firstname,
+                lastname: data?.lastname,
+                contact: data?.email,
+                landmarkname: data?.email,
+                addressname: data?.email,
+                pincode: data?.email,
+                locality: data?.email,
+                state: data?.email,
+                city: data?.email,
+                email: data?.email,
+                addresstype: data?.email,
+                defaultAddress: data?.email,
+                is_billing: data?.is_billing,
+                is_shipping: data?.is_shipping,
+                ...(cart_id && { cart_id }),
+                ...(customer_id && { customer_id })
+            };
+            isEdit ? dispatch(putAddress(id, payload, toast)) : dispatch(postAddress(payload, toast));
+        } catch (error) {
+            console.error(error);
+        }
     };
+
 
     return (
         <FormProvider {...methods}>
@@ -93,9 +120,11 @@ const AddEditAddressFrom = ({ isEdit = false, userAdd }) => {
                         <ContactInput />
                     </div>
 
-
-
                     <div className='col-span-12 lg:col-span-6'>
+                        <EmailInput />
+                    </div>
+
+                    <div className='col-span-12 '>
                         <LandmarknamenameInput />
                     </div>
 
@@ -125,12 +154,16 @@ const AddEditAddressFrom = ({ isEdit = false, userAdd }) => {
 
 
                     {/* Conditionally render DefaultAddress based on the route */}
-                    {location.pathname === '/my-account/add-address' ||
+                    {/* {location.pathname === '/my-account/add-address' ||
                         location.pathname.startsWith('/my-account/edit-address/') ? (
                         <div className='col-span-12 '>
                             <DefaultAddress />
                         </div>
-                    ) : null}
+                    ) : null} */}
+
+                    <div className='col-span-12 '>
+                        <DefaultAddress />
+                    </div>
 
                 </div>
                 <div className='mt-6'>
@@ -210,6 +243,25 @@ const ContactInput = () => {
     );
 };
 
+const EmailInput = () => {
+    const { register, formState: { errors } } = useFormContext();
+
+    return (
+        <div className='mt-3'>
+            <label className='block text-[#072320] font-dm text-lg capitalize font-medium' htmlFor="email">Email<span className=' font-medium text-red-500'>*</span></label>
+            <input
+                className='input_box w-full'
+                type="email"
+                id="email"
+                placeholder='Enter email address'
+                {...register('email')}
+            />
+            {errors.email && (
+                <p className="text-red-500 mt-1">{errors.email.message}</p>
+            )}
+        </div>
+    );
+};
 
 const LandmarknamenameInput = () => {
     const { register, formState: { errors } } = useFormContext();
