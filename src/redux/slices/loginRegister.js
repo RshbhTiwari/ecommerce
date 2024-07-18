@@ -107,7 +107,7 @@ export function postRegisterUser(formData, reset, toast, navigate) {
 }
 
 // LOGIN RAGISTER
-export function postLoginUser(payload, toast, reset, navigate, setLoading) {
+export function postLoginUser(payload, toast, reset, navigate, handleClick) {
     return async (dispatch) => {
         try {
             dispatch(startLoadingLogin());
@@ -118,13 +118,15 @@ export function postLoginUser(payload, toast, reset, navigate, setLoading) {
             );
             if (response.data.status == true) {
                 reset();
-                navigate('/');
+                if (handleClick) {
+                    handleClick()
+                }else {
+                    navigate('/');
+                }
                 window.location.reload();
                 toast.success(response?.data?.message);
                 localStorage.setItem("user", JSON.stringify(response?.data?.user));
                 localStorage.setItem("accessToken", response?.data?.access_token);
-                setLoading(false);
-
             } else {
                 toast.error(response?.data?.message);
             }
@@ -179,7 +181,6 @@ export function postLogoutUser({ toast, navigate }) {
                 dispatch(getLoginAccessTokenSuccess(null));
                 navigate('/login');
                 toast.success(response?.data?.message);
-                
             } else {
                 throw new Error('Failed to log out');
             }

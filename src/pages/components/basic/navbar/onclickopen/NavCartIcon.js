@@ -9,27 +9,10 @@ import ShoppingCartTable from "../../../ShoppingCart/ShoppingCartTable";
 import CartEmpty from "../../ErrorPages/cartempty";
 import { useNavigate } from "react-router-dom";
 
-function NavCartIcon() {
-
-    const dispatch = useDispatch();
+function NavCartIcon({cartData, itemCount}) {
     const navigate = useNavigate();
-
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
-    const cart_id = localStorage?.getItem('cart_id') || null;
-
-    const { allCartItems, loading, error } = useSelector(
-        (state) => state.addToCart
-    );
-    const cartData = allCartItems?.items || [];
-    const itemCount = cartData.length;
-
-    useEffect(() => {
-        if (cart_id) {
-            dispatch(getAllCartItems(cart_id));
-        }
-    }, [dispatch, cart_id]);
-
 
     const toggleCart = () => {
         if (isCartOpen) {
@@ -97,7 +80,7 @@ function NavCartIcon() {
                                         <Paragraph title={`You have ${itemCount} items in your cart`} textAlign='left' />
                                     </div>
                                     <div className="overflow-x-auto mt-6">
-                                        <ShoppingCartTable shoppingcart={cartData} minicart="true" />
+                                        <ShoppingCartTable shoppingcart={cartData}  itemCount={itemCount} minicart="true" />
                                     </div>
                                 </>
 

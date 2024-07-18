@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { postLoginUser } from '../../../../redux/slices/loginRegister';
 import { toast } from 'react-toastify';
 
-const LoginForm = () => {
+const LoginForm = ({handleClick}) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -37,7 +37,7 @@ const LoginForm = () => {
                 password: data.password,
                 ...(cart_id && { cart_id }),
             };
-            dispatch(postLoginUser(payload, toast, reset, navigate));
+            dispatch(postLoginUser(payload, toast, reset, navigate, handleClick));
         } catch (error) {
             console.error(error);
         }

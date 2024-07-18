@@ -4,7 +4,7 @@ import comLogo from '../../../../assets/header/tastydaily-0556409248.webp';
 import imgSrcDelivery from '../../../../assets/header/time.png';
 import { NavCartIcon, NavUserIcon, NavSearchIcon } from "./onclickopen";
 
-export default function TopHeader() {
+export default function TopHeader({cartData, itemCount}) {
     return (
         <>
             <div className="bg-[#00A762]">
@@ -36,7 +36,7 @@ export default function TopHeader() {
                             <hr className='text-white rotate-90 border-[1.5px] w-5' />
                             <NavUserIcon />
                             <hr className='text-white rotate-90 border-[1.5px] w-5' />
-                            <NavCartIcon />
+                            <NavCartIcon cartData={cartData} itemCount={itemCount}/>
                         </div>
                     </div>
                 </div>

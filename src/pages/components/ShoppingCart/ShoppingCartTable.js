@@ -1,4 +1,3 @@
-import { Paragraph } from "../basic/title";
 import { MdAdd, MdDeleteForever } from "react-icons/md";
 import { FiMinus } from "react-icons/fi";
 import { useState, useEffect, useCallback } from "react";
@@ -6,7 +5,6 @@ import { useDispatch } from 'react-redux';
 import { deleteCartItem, putCartItme } from "../../../redux/slices/addToCart";
 import { toast } from 'react-toastify';
 import { RxCross2 } from "react-icons/rx";
-import productcard from "../../../data/productcard";
 import { Btnone } from "../basic/button";
 
 export default function ShoppingCartTable({ shoppingcart, minicart }) {

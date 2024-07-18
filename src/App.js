@@ -23,12 +23,46 @@ import EditAddressBook from "./pages/editaddressbook";
 import DetailsCategories from "./pages/detailscategories";
 import { ToastContainer } from 'react-toastify';
 import SearchProduct from "./pages/searchProduct";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllCartItems } from "./redux/slices/addToCart";
+import { useEffect } from "react";
 
 function App() {
+  const dispatch = useDispatch();
+  const cart_id = localStorage?.getItem('cart_id') || null;
+  const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+  const token = localStorage?.getItem('accessToken') || null;
+
+  const { allCartItems, loading, error } = useSelector(
+    (state) => state.addToCart
+  );
+
+  const cartData = allCartItems?.items || [];
+  const itemCount = cartData.length;
+
+  useEffect(() => {
+    if (token) {
+      const payload = {
+        status: true,
+      };
+      dispatch(getAllCartItems(customer_id, payload));
+    } else {
+      const payload = {
+        status: false,
+      };
+      dispatch(getAllCartItems(cart_id, payload));
+    }
+  }, [dispatch, cart_id, customer_id, token]);
+
+  useEffect(() => {
+    console.log('Item count has changed:', itemCount);
+  }, [itemCount, allCartItems]);
+
+
   return (
     <>
       <BrowserRouter>
-        <Navbar />
+        <Navbar cartData={cartData} itemCount={itemCount}/>
         <ToastContainer />
         <Routes>
           <Route exact path="/" element={<Home />} />
@@ -47,7 +81,7 @@ function App() {
           <Route path="/my-account/address-book" element={<Addressbook />} />
           <Route path="/my-account/add-address" element={<AddAddressBook />} />
           <Route path="/my-account/edit-address/:id" element={<EditAddressBook />} />
-          <Route path="/cart" element={<Cart />} />
+          <Route path="/cart" element={<Cart cartData={cartData} itemCount={itemCount}/>} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/my-account/wishlist" element={<Wishlist />} />
           <Route path="/my-account/orders" element={<Orders />} />

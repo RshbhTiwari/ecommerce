@@ -1,9 +1,9 @@
 import { ShoppingCard } from "./components/ShoppingCart";
 
-function Cart() {
+function Cart({cartData, itemCount}) {
     return (
         <>
-            <ShoppingCard />
+            <ShoppingCard cartData={cartData} itemCount={itemCount} />
         </>
     );
 }

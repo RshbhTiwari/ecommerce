@@ -69,7 +69,7 @@ const AccordionExample = () => {
                             {accessToken ? (
                                 <>
                                     <h2 className={`font-dm text-xl capitalize  font-medium text-left  text-[#072320]`}>
-                                        Welcome back,{userMame}!
+                                        Welcome back, {userMame}!
 
                                     </h2>
                                 </>
@@ -119,7 +119,7 @@ const AccordionExample = () => {
                                     </div>
                                     <div className='lg:col-span-6 col-span-12'>
                                         <h2 className={`font-dm text-lg capitalize border-b-2 pb-1 border-[#072320] font-medium text-center  text-[#072320]`}>have an account? login</h2>
-                                        <LoginForm />
+                                        <LoginForm handleClick={togglelogincontinue} />
                                     </div>
 
                                 </div>
@@ -131,7 +131,7 @@ const AccordionExample = () => {
 
             <>
                 <div className='shadow-md rounded-lg mt-8'>
-                    <div className=' rounded-t-lg p-3 bg-gray-100'>
+                    <div className='rounded-t-lg p-3 bg-gray-100'>
                         <div className="flex items-center justify-between border-b-2 pb-1 border-[#072320] ">
                             <h2 className={`font-dm text-xl capitalize  font-medium text-left  text-[#072320]`}>Billing Address</h2>
 
@@ -143,12 +143,11 @@ const AccordionExample = () => {
                         </div>
                     </div>
 
-
                     {isBillingOpen && (
                         <div className='p-3'>
-
                             <div className={`font-dm text-lg my-2 w-fit cursor-pointer capitalize flex items-center justify-end rounded-lg shadow-md border-[#00A762] border-[2px] px-3 py-1
                                     font-medium  text-left  text-[#00A762]`} onClick={handleAddNewAddress}>
+
                                 <IoMdAdd className="mr-2 text-2xl" />Add New Address</div>
 
                             <DefultAddress />

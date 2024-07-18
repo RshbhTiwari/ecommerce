@@ -62,11 +62,13 @@ export const {
 export default cartSlice.reducer;
 
 // get all cart
-export function getAllCartItems(cart_id) {
+export function getAllCartItems(cart_id,payload) {
     return async (dispatch) => {
         try {
             dispatch(startLoading());
-            const response = await axios.get(`/cart/${cart_id}`,);
+            const response = await axios.get(`/cart/${cart_id}`, {
+                params: payload 
+            });
             dispatch(getAllCartItemsSuccess(response?.data?.cart));
         } catch (error) {
             dispatch(hasError(error?.response?.data?.message));
