@@ -16,18 +16,25 @@ export default function ShoppingCard() {
     const cart_id = localStorage?.getItem('cart_id') || null;
     const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
 
+    const token = localStorage?.getItem('accessToken') || null;
+
     const { allCartItems, loading, error } = useSelector(
         (state) => state.addToCart
     );
     const cartData = allCartItems?.items || [];
     const itemCount = cartData.length;
 
+    
+
     useEffect(() => {
-        if (cart_id) {
+        if (token) {
+            dispatch(getAllCartItems(customer_id));
+        } else {
             dispatch(getAllCartItems(cart_id));
         }
-    }, [dispatch, cart_id]);
+    }, [dispatch, cart_id, customer_id, token]);
 
+    
     useEffect(() => {
         console.log('Item count has changed:', itemCount);
     }, [itemCount, allCartItems]);

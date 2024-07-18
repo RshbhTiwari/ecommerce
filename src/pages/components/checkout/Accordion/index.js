@@ -17,8 +17,9 @@ const AccordionExample = () => {
     const [isPaymentOpen, setIsPaymentOpen] = useState(false);
     const [isNewOpen, setisNewIsOpen] = useState(false);
 
-    const accessToken = localStorage.getItem('accessToken');
-    // const user = JSON?.parse(localStorage.getItem('user'));
+    const accessToken = localStorage?.getItem('accessToken') || null;
+    const userMame = JSON?.parse(localStorage?.getItem('user'))?.name || null;
+
 
 
     const togglelogincontinue = () => {
@@ -68,14 +69,13 @@ const AccordionExample = () => {
                             {accessToken ? (
                                 <>
                                     <h2 className={`font-dm text-xl capitalize  font-medium text-left  text-[#072320]`}>
-                                        Welcome back,
-                                     
+                                        Welcome back,{userMame}!
+
                                     </h2>
-                                    {/* {user?.name}! */}
                                 </>
                             ) : (
                                 <>
-                                    <h2 className={`font-dm text-xl capitalize  font-medium text-left  text-[#072320]`}>
+                                    <h2 className={`font-dm text-xl capitalize  font-medium text-left  text-[#072320]`} >
                                         Guest Checkout Or login
                                     </h2>
                                 </>
@@ -97,7 +97,7 @@ const AccordionExample = () => {
                                     {/* ${user?.name} */}
                                     <div className="py-4 px-4 bg-[#072320] rounded-md shadow-md w-full">
                                         <Paragraph color='white'
-                                            title={`Welcome back,  Ready to complete your grocery shopping?`} />
+                                            title={`Welcome back ${userMame},  Ready to complete your grocery shopping?`} />
                                     </div>
                                     <div className='flex flex-col items-start w-full pt-4'>
                                         <Btnone title="continue" handleClick={togglelogincontinue}
@@ -114,7 +114,7 @@ const AccordionExample = () => {
                                                 title='Save time by skipping the account creation process. Just fill in your shipping and payment details, and youre done' />
                                         </div>
                                         <Btnone title="continue as guest"
-                                            //   handleClick={() => navigate('/my-account/edit-address/[2]')}
+                                            handleClick={togglelogincontinue}
                                             bgColor="#00A762" width="100%" />
                                     </div>
                                     <div className='lg:col-span-6 col-span-12'>

@@ -9,6 +9,12 @@ const initialState = {
     cartItem: {},
     deleteStatus: false,
 };
+const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") : "";
+
+const headers = {
+    'Authorization': `Bearer ${accessToken}`,
+    'Content-Type': 'application/json'
+};
 
 const cartSlice = createSlice({
     name: "addToCart",
@@ -60,7 +66,7 @@ export function getAllCartItems(cart_id) {
     return async (dispatch) => {
         try {
             dispatch(startLoading());
-            const response = await axios.get(`/cart/${cart_id}`);
+            const response = await axios.get(`/cart/${cart_id}`,);
             dispatch(getAllCartItemsSuccess(response?.data?.cart));
         } catch (error) {
             dispatch(hasError(error?.response?.data?.message));
@@ -77,7 +83,7 @@ export function addCartItems(cartItem, toast, navigate) {
             console.log("response", cartItem)
             const response = await axios.post("/addtocart", cartItem);
             dispatch(addToCartSuccess(response?.data));
-console.log("response",response)
+            console.log("response", response)
             dispatch(
                 getCartIdSuccess(response?.data?.cart_id)
             );
@@ -116,17 +122,17 @@ export function putCartItme(itemId, payload, toast) {
 
 export function deleteCartItem(itemId, toast) {
     return async (dispatch) => {
-      try {
-        const response = await axios.delete('/cart/removeItem/' + itemId);
-        dispatch(deleteCartSuccess(response?.data?.status));
-        toast.success(response?.data?.message);
-        window.location.reload();
-      } catch (error) {
-        toast.error(error?.message);
-        dispatch(hasError(error));
-      }
+        try {
+            const response = await axios.delete('/cart/removeItem/' + itemId);
+            dispatch(deleteCartSuccess(response?.data?.status));
+            toast.success(response?.data?.message);
+            window.location.reload();
+        } catch (error) {
+            toast.error(error?.message);
+            dispatch(hasError(error));
+        }
     };
-  }
+}
 
 
 
