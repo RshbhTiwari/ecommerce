@@ -9,7 +9,6 @@ import { MdOutlineArrowBackIos } from "react-icons/md";
 
 export default function ShoppingCard({ cartData, itemCount }) {
     const navigate = useNavigate();
-
     return (
         <>
             <ToastContainer />
@@ -69,11 +68,11 @@ export default function ShoppingCard({ cartData, itemCount }) {
                                             <td className='w-full text-base font-dm text-right text-white'>$4798.00</td>
                                         </tr>
                                         <hr />
-                                        <tr className='w-full flex items-center justify-between py-2'>
+                                        {/* <tr className='w-full flex items-center justify-between py-2'>
                                             <td className='text-[#00A762] text-left w-full font-dm text-lg capitalize font-medium'>Shipping</td>
                                             <td className='w-full text-base font-dm text-right text-white'>$48.00</td>
                                         </tr>
-                                        <hr />
+                                        <hr /> */}
                                         <tr className='w-full flex items-center justify-between py-2'>
                                             <td className='text-[#00A762] text-left w-full font-dm text-lg capitalize font-medium'>Total (Incl. taxes)</td>
                                             <td className='w-full text-base font-dm text-right text-white'>$4800.00</td>

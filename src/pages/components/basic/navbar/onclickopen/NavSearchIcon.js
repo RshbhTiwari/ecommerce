@@ -8,6 +8,8 @@ import { getproduct } from "../../../../../redux/slices/product";
 import { useDispatch, useSelector } from "react-redux";
 import { NoProducts } from '../../ErrorPages';
 import { useNavigate } from "react-router-dom";
+import { addCartItems } from '../../../../../redux/slices/addToCart';
+import { toast } from 'react-toastify';
 
 function NavSearchIcon() {
 
@@ -58,10 +60,23 @@ function NavSearchIcon() {
 
     const productsToDisplay = filteredProducts.slice(0, 3);
 
-    const handleRow = () => {
-        navigate(`/search`);
-        setIsSearchOpen(false)
+    const handleRow = (filterName) => {
+        navigate(`/search?filter=${encodeURIComponent(filterName)}`);
+        setIsSearchOpen(false);
     };
+
+    const handleAddToCart = (product_id) => {
+        const cart_id = localStorage?.getItem('cart_id') || null;
+        const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+        const cartItem = {
+            item_id: product_id,
+            ...(cart_id && { cart_id }),
+            ...(customer_id && { customer_id })
+        };
+        console.log("cartItem", cartItem)
+        dispatch(addCartItems(cartItem, toast, navigate));
+    };
+
 
     return (
         <>
@@ -130,24 +145,26 @@ function NavSearchIcon() {
                                                         <div className='my-2'><Paragraph title={item.short_description} shortDescription='true' lineclamp="2" /> </div>
 
                                                         <div className='flex w-full text-center justify-center'>
-                                                        {item?.discount_price ? (
-                                                            <>
-                                                                <div className="flex items-center gap-2 text-[#00A762] text-center font-dm text-lg capitalize font-medium pb-2">
-                                                                    <span className="block text-xs line-through">₹{item?.price}</span>
-                                                                    <span className="block">₹{item?.discount_price}</span>
-                                                                </div>
-                                                            </>
-                                                        ) : (
-                                                            <h2 className="text-[#00A762] font-dm text-lg capitalize font-medium pb-2">₹{item?.price}</h2>
-                                                        )}
-   </div>
+                                                            {item?.discount_price ? (
+                                                                <>
+                                                                    <div className="flex items-center gap-2 text-[#00A762] text-center font-dm text-lg capitalize font-medium pb-2">
+                                                                        <span className="block text-xs line-through">₹{item?.price}</span>
+                                                                        <span className="block">₹{item?.discount_price}</span>
+                                                                    </div>
+                                                                </>
+                                                            ) : (
+                                                                <h2 className="text-[#00A762] font-dm text-lg capitalize font-medium pb-2">₹{item?.price}</h2>
+                                                            )}
+                                                        </div>
 
                                                         <div className="absolute inset-0 flex items-center right-0 top-0 left-0 bottom-0 justify-center rounded-lg opacity-0 bg-[#00000040] hover:opacity-100 transition-opacity duration-300">
                                                             <div className="text-white text-center flex justify-center items-center gap-2">
                                                                 <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320] cursor-pointer'>
                                                                     <FaRegHeart className='text-white text-[22px]' />
                                                                 </div>
-                                                                <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320] cursor-pointer'>
+                                                                <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320] cursor-pointer' onClick={() => {
+                                    handleAddToCart(item?.id);
+                                }}>
                                                                     <HiOutlineShoppingBag className='text-white text-[22px]' />
                                                                 </div>
                                                             </div>
@@ -168,7 +185,7 @@ function NavSearchIcon() {
                                 <div className="flex justify-center mt-4">
                                     <button className={`text-white rounded-lg shadow-md font-dm px-3 py-2 
                                     capitalize nowarp bg-[#072320]`} onClick={() => {
-                                            handleRow();
+                                            handleRow(filterName);
                                         }} >
                                         view all result
                                     </button>

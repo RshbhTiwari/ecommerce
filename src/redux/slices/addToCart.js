@@ -112,8 +112,8 @@ export function putCartItme(itemId, payload, toast) {
             dispatch(startLoading());
             const response = await axios.put(`/cart/updateItem/${itemId}`, payload);
             if (response.data?.status == true) {
-                // toast.success(response.data?.message);
-                window.location.reload();
+                toast.success(response.data?.message);
+                // window.location.reload();
             } else {
                 toast.error(response.data?.message);
             }
