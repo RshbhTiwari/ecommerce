@@ -47,8 +47,8 @@ const GuestAddress = ({ handleClick }) => {
             city: sessionStorageData?.city || "",
             email: sessionStorageData?.email || "",
             addresstype: sessionStorageData?.addresstype || "",
-            defaultAddress: sessionStorageData?.defaultAddress || "",
-            is_shipping: sessionStorageData?.is_shipping || "",
+            defaultaddress: sessionStorageData?.defaultaddress || false,  
+            is_shipping: sessionStorageData?.is_shipping || false,
         }),
         [sessionStorageData]
     );
@@ -81,7 +81,7 @@ const GuestAddress = ({ handleClick }) => {
                 city: data?.city,
                 email: data?.email,
                 addresstype: data?.addresstype,
-                defaultAddress: data?.defaultAddress,
+                defaultaddress: data?.defaultaddress,
                 is_shipping: data?.is_shipping,
                 ...(cart_id && { cart_id }),
             };

@@ -1,20 +1,25 @@
+import { useDispatch, useSelector } from "react-redux";
+import { getOneUser } from "../../../redux/slices/user";
 import BreadCrum from "../basic/BreadCrum";
 import { HeadingTitle } from "../basic/title";
 import UpdateAccountFrom from "./UpdateAccountFrom";
 import { AccountSideNav } from "./sidenav";
+import { useEffect } from "react";
 
-const userData = {
-    id: "1",
-    username: "rishabh",
-    email: "rishabh@gmail.com",
-    contact: 7974842788,
-    city: 'satna',
-    pincode: 123456,
-    dob: '2000-07-24', // Correct format: YYYY-MM-DD
-    gender: 'male'
-};
 
 function Updatemyaccount() {
+
+    const dispatch = useDispatch();
+
+    const { oneuser } = useSelector(
+        (state) => state.user
+    );
+
+    useEffect(() => {
+        dispatch(getOneUser());
+    }, [dispatch]);
+
+
     return (
         <>
             <BreadCrum componentName="my account" link="/my-account" componentSecondName="update profile" />
@@ -32,7 +37,7 @@ function Updatemyaccount() {
                             <HeadingTitle title="My Profile Page" textAlign='left' />
 
                             <div className="">
-                                <UpdateAccountFrom isEdit userData={userData} />
+                                <UpdateAccountFrom isEdit userData={oneuser} />
                             </div>
                         </div>
                     </div>

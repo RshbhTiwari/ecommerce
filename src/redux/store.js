@@ -4,6 +4,7 @@ import product from './slices/product';
 import loginRegister from './slices/loginRegister';
 import addToCart from './slices/addToCart';
 import address from './slices/address';
+import user from './slices/user';
 
 const store= configureStore({
     reducer:{
@@ -12,6 +13,7 @@ const store= configureStore({
         loginRegister: loginRegister,
         addToCart:addToCart,
         address:address,
+        user:user,
     },
 })
 

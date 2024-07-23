@@ -54,12 +54,8 @@ code {
 
 /* sidebar_scrollbar_design */
 ::-webkit-scrollbar {
-  width: 0px;
+  width: 2px;
 }
-
-
-
-
 
 @media only screen and (max-width: 992px) {
   .logindrop {

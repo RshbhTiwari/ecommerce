@@ -49,8 +49,8 @@ const AddEditAddressFrom = ({ isEdit = false, id, userAdd, handleClick }) => {
             city: userAdd?.city || '',
             email: userAdd?.email || localStorageData?.email || "",
             addresstype: userAdd?.addresstype || '',
-            defaultAddress: userAdd?.defaultAddress || '',
-            is_shipping: userAdd?.is_shipping || '',
+            defaultaddress: userAdd?.defaultaddress || false,  
+            is_shipping: userAdd?.is_shipping || false,
         }),
         [userAdd]
     );
@@ -82,7 +82,7 @@ const AddEditAddressFrom = ({ isEdit = false, id, userAdd, handleClick }) => {
         const cart_id = localStorage?.getItem('cart_id') || null;
         const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
         try {
-            setLoading(true);  // Set loading to true when starting submission
+            setLoading(true);  
             await new Promise((resolve) => setTimeout(resolve, 500));
             const payload = {
                 name: data?.name,
@@ -95,19 +95,18 @@ const AddEditAddressFrom = ({ isEdit = false, id, userAdd, handleClick }) => {
                 city: data?.city,
                 email: data?.email,
                 addresstype: data?.addresstype,
-                defaultAddress: data?.defaultAddress,
+                defaultaddress: data?.defaultaddress,
                 is_shipping: data?.is_shipping,
                 ...(cart_id && { cart_id }),
                 ...(customer_id && { customer_id })
             };
-
             isEdit ? dispatch(putAddress(id, payload, toast, navigate)) : dispatch(postAddress(payload, toast, navigate));
             reset()
             handleClick()
         } catch (error) {
             console.error(error);
         } finally {
-            setLoading(false);  // Set loading to false after submission
+            setLoading(false); 
         }
     };
 
@@ -458,7 +457,7 @@ const DefaultAddress = () => {
         <div className='mt-3 flex'>
             <input
                 type="checkbox"
-                {...register('defaultAddress')}
+                {...register('defaultaddress')}
                 className='rounded '
             />
             <label className='ml-2 block text-[#072320] font-dm text-lg capitalize font-medium'>

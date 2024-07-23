@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { Checkoutuseraddress } from '../../myaccount/address';
 import { RxCross2 } from "react-icons/rx";
 
-const AddressModal = ({ isOpen, onClose }) => {
+const AddressModal = ({ isOpen, onClose, ship }) => {
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
@@ -24,12 +24,12 @@ const AddressModal = ({ isOpen, onClose }) => {
 
                 <div className="flex items-center justify-between border-b-2 pb-2 border-[#072320]">
                     <h2 className={`font-dm text-2xl capitalize font-medium text-left text-[#072320]`} >Add New Address</h2>
-                    <div className="flex items-center justify-center h-10 w-10 rounded-md bg-[#072320] cursor-pointer "  onClick={onClose}>
+                    <div className="flex items-center justify-center h-10 w-10 rounded-md bg-[#072320] cursor-pointer " onClick={onClose}>
                         <RxCross2 className='text-2xl cursor-pointer text-white' />
                     </div>
                 </div>
                 <div className='mt-2'>
-                <Checkoutuseraddress onClose={onClose}  />
+                    <Checkoutuseraddress onClose={onClose} ship={ship} />
                 </div>
             </div>
         </div>

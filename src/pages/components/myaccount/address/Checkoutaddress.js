@@ -7,7 +7,9 @@ import { postAddress } from '../../../../redux/slices/address';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
-const Checkoutuseraddress = ({ onClose }) => {
+const Checkoutuseraddress = ({ onClose, ship }) => {
+
+    console.log("ship", ship)
 
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
@@ -48,7 +50,7 @@ const Checkoutuseraddress = ({ onClose }) => {
             city: "",
             email: localStorageData?.email || "",
             addresstype: "",
-            defaultAddress: "",
+            defaultaddress: "",
             is_shipping: "",
         }),
         [localStorageData]
@@ -83,7 +85,7 @@ const Checkoutuseraddress = ({ onClose }) => {
                 city: data?.city,
                 email: data?.email,
                 addresstype: data?.addresstype,
-                defaultAddress: data?.defaultAddress,
+                defaultaddress: data?.defaultaddress,
                 is_shipping: data?.is_shipping,
                 ...(cart_id && { cart_id }),
                 ...(customer_id && { customer_id })
@@ -150,9 +152,12 @@ const Checkoutuseraddress = ({ onClose }) => {
                                 <DefaultAddress />
                             </div>
 
-                            <div className='col-span-12 md:col-span-6'>
-                                <ShipAddress />
-                            </div>
+                            {ship && (
+                                <div className='col-span-12 md:col-span-6'>
+                                    <ShipAddress />
+                                </div>
+                            )}
+
                         </div>
                     </div>
                 </div>
@@ -449,7 +454,7 @@ const DefaultAddress = () => {
         <div className='mt-3 flex'>
             <input
                 type="checkbox"
-                {...register('defaultAddress')}
+                {...register('defaultaddress')}
                 className='rounded '
             />
             <label className='ml-2 block text-[#072320] font-dm text-lg capitalize font-medium'>

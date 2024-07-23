@@ -9,14 +9,15 @@ import { toast } from 'react-toastify';
 import { useState } from 'react';
 
 function DefultAddress({ allAddressData, deletClick }) {
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [loadingId, setLoadingId] = useState(null); 
+    const [loadingId, setLoadingId] = useState(null);
 
     const handleDeleteRow = async (id) => {
         setLoadingId(id);
         try {
-         dispatch(deleteAddress(id,toast)); 
+            dispatch(deleteAddress(id, toast));
         } catch (error) {
             toast.error('Failed to delete address.');
         } finally {
@@ -29,18 +30,23 @@ function DefultAddress({ allAddressData, deletClick }) {
         navigate(`/my-account/edit-address/${id}`);
     };
 
+
+
     return (
-        <div className="grid grid-cols-12 gap-2">
+        <div className="grid grid-cols-12 gap-2 my-2">
             {allAddressData?.map((item, index) => (
-                <div className='lg:col-span-6 col-span-12' key={index}>
-                    <div className='shadow-md rounded-lg border-[#00A762] border-2 p-4 my-4'>
-                        <div className="flex sm:flex-row flex-col sm:items-center items-start justify-between w-full">
-                            <div className={`font-dm text-sm cursor-pointer uppercase flex items-center justify-end rounded-lg shadow-md border-[#00A762] border-[2px] px-3 py-1
+                <div className='lg:col-span-6 col-span-12 shadow-md rounded-lg p-4 border-[#00A762] border-2' key={index}>
+                    
+
+                        {item?.defaultaddress === true ? (
+                            <div className="flex sm:flex-row flex-col sm:items-center items-start justify-between w-full">
+                                <div className={`font-dm text-sm cursor-pointer uppercase flex items-center justify-end rounded-lg shadow-md border-[#00A762] border-[2px] px-3 py-1
                                 font-medium sm:text-left text-center text-[#00A762]`}
-                            >
-                                default address
+                                >
+                                    default address
+                                </div>
                             </div>
-                        </div>
+                        ) : null}
 
                         <div className="mt-4">
                             <Paragraph textAlign='onyleft' title={item?.addressname} />
@@ -62,7 +68,7 @@ function DefultAddress({ allAddressData, deletClick }) {
                                 onClick={() => !loadingId && handleDeleteRow(item?.id)}
                                 disabled={loadingId === item?.id}
                             >
-                                {loadingId === item?.id ? 'Deleting...' : <MdDeleteOutline className='text-[#072320] mr-2 text-xl' />} 
+                                {loadingId === item?.id ? 'Deleting...' : <MdDeleteOutline className='text-[#072320] mr-2 text-xl' />}
                                 {loadingId === item?.id ? '' : 'delete'}
                             </button>
 
@@ -73,8 +79,8 @@ function DefultAddress({ allAddressData, deletClick }) {
                                 <FaRegEdit className='text-[#072320] mr-2 text-xl' /> edit
                             </button>
                         </div>
+
                     </div>
-                </div>
             ))}
         </div>
     );

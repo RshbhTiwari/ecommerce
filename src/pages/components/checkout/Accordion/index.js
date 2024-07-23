@@ -317,11 +317,17 @@ import { AddressModal } from '../Model';
 const AccordionExample = () => {
     const dispatch = useDispatch();
     const [allAddressData, setAllAddressData] = useState([]);
+
     const [isOpen, setIsOpen] = useState(true);
     const [isShippingOpen, setIsShippingOpen] = useState(false);
     const [isBillingOpen, setIsBillingOpen] = useState(false);
     const [isPaymentOpen, setIsPaymentOpen] = useState(false);
+
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isshipModalOpen, setShipIsModalOpen] = useState(false);
+
+    const [filtereAllAddressData, setFiltereAllAddressData] = useState([]);
+
     const accessToken = localStorage?.getItem('accessToken') || null;
     const userName = JSON?.parse(localStorage?.getItem('user'))?.name || null;
     const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
@@ -334,6 +340,14 @@ const AccordionExample = () => {
     useEffect(() => {
         if (allAddress?.length) {
             setAllAddressData(allAddress);
+        }
+    }, [allAddress]);
+
+
+    useEffect(() => {
+        if (allAddress?.length) {
+            const filteredData = allAddressData.filter(address => address?.is_shipping == 1);
+            setFiltereAllAddressData(filteredData);
         }
     }, [allAddress]);
 
@@ -363,11 +377,20 @@ const AccordionExample = () => {
         setAllAddressData(allAddressData.filter(address => address.id !== id));
     };
 
-
     const openModal = () => setIsModalOpen(true);
 
     const closeModal = () => {
         setIsModalOpen(false);
+    };
+
+    const openshipModal = () => setShipIsModalOpen(true);
+
+    const closeshipModal = () => {
+        setShipIsModalOpen(false);
+    };
+
+    const handleshipDeletClick = (id) => {
+        setFiltereAllAddressData(filtereAllAddressData.filter(address => address.id !== id));
     };
 
     return (
@@ -520,6 +543,7 @@ const AccordionExample = () => {
                 )}
             </div>
 
+
             <div className='shadow-md rounded-lg mt-8'>
                 <div className='rounded-t-lg p-3 bg-gray-100'>
                     <div className="flex items-center justify-between border-b-2 pb-1 border-[#072320] ">
@@ -545,14 +569,41 @@ const AccordionExample = () => {
 
                 {isShippingOpen && (
                     <div className='p-3'>
-                        <div
-                            className={`font-dm text-lg my-2 w-fit cursor-pointer capitalize flex items-center 
-                                justify-end rounded-lg shadow-md border-[#00A762] border-[2px] px-3 py-1 font-medium text-left text-[#00A762]`}
-                            // onClick={handleAddNewAddress}
-                        >
-                            <IoMdAdd className="mr-2 text-2xl" /> Add New Address
-                        </div>
-                        <DefultAddress />
+                        <>
+                            {filtereAllAddressData?.length === 0 ? (
+                                <>
+                                    <div
+                                        onClick={openshipModal}
+                                        className="font-dm text-lg my-2 w-fit cursor-pointer capitalize flex items-center justify-end rounded-lg shadow-md border-[#00A762] border-[2px] px-3 py-1 font-medium text-left text-[#00A762]"
+                                    >
+                                        <IoMdAdd className="mr-2 text-2xl" /> Add New Address
+                                    </div>
+                                </>
+
+                            ) : (
+                                <>
+                                    <div
+                                        onClick={openshipModal}
+                                        className="font-dm text-lg my-2 w-fit cursor-pointer capitalize flex items-center justify-end rounded-lg shadow-md border-[#00A762] border-[2px] px-3 py-1 font-medium text-left text-[#00A762]"
+                                    >
+                                        <IoMdAdd className="mr-2 text-2xl" />Add New Address
+                                    </div>
+
+                                    <DefultAddress
+                                        allAddressData={filtereAllAddressData}
+                                        deletClick={handleshipDeletClick}
+                                    />
+
+                                    <div className='flex flex-col items-start w-full pt-2'>
+                                        <Btnone
+                                            title="Continue"
+                                            handleClick={() => handleAccordionToggle(setIsPaymentOpen)}
+                                            bgColor="#00A762"
+                                        />
+                                    </div>
+                                </>
+                            )}
+                        </>
                     </div>
                 )}
             </div>
@@ -585,7 +636,11 @@ const AccordionExample = () => {
             </div>
 
             {isModalOpen && (
-                <AddressModal isOpen={isModalOpen} onClose={closeModal} />
+                <AddressModal isOpen={isModalOpen} onClose={closeModal} ship={true}/>
+            )}
+
+            {isshipModalOpen && (
+                <AddressModal isOpen={isshipModalOpen} onClose={closeshipModal} ship={false} />
             )}
         </>
     );

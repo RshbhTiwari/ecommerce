@@ -2,44 +2,50 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { useForm, FormProvider, useFormContext } from 'react-hook-form';
 import { Btnone } from '../basic/button';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { putUser } from '../../../redux/slices/user';
 
 const UpdateAccountFrom = ({ isEdit = false, userData }) => {
 
-        // Function to format date to 'YYYY-MM-DD'
-const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toISOString().split('T')[0]; // Extracts 'YYYY-MM-DD' part
-};
+    const dispatch = useDispatch();
+
+    const getLocalStorageData = () => {
+        const localData = localStorage.getItem('user');
+        return localData ? JSON.parse(localData) : {};
+    };
+
+    const localStorageData = getLocalStorageData();
+    const [loading, setLoading] = useState(false);
+
+
+    // Function to format date to 'YYYY-MM-DD'
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return date.toISOString().split('T')[0]; // Extracts 'YYYY-MM-DD' part
+    };
 
     const schema = Yup.object().shape({
         email: Yup.string().email('Invalid email').required('Email is required'),
-        username: Yup.string().required('Username is required'),
+        name: Yup.string().required('name is required'),
     });
 
     const defaultValues = useMemo(
         () => ({
-            _id: userData?._id || "",
-            username: userData?.username || "",
-            email: userData?.email || "",
-            password: userData?.password || "",
-            contact: userData?.contact || "",
-            city: userData?.city || "",
-            pincode: userData?.pincode || "",
+            name: userData?.name || localStorageData?.name || "",
+            contact: userData?.contact || localStorageData?.contact || "",
+            email: userData?.email || localStorageData?.email || "",
             dob: userData?.dob ? formatDate(userData.dob) : '', // Format date function
             gender: userData?.gender || '',
         }),
         [userData]
     );
 
-
-
     const methods = useForm({
         resolver: yupResolver(schema),
         defaultValues,
     });
-
-    
 
     const {
         reset,
@@ -59,8 +65,24 @@ const formatDate = (dateString) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isEdit, userData]);
 
-
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
+        try {
+            setLoading(true);
+            await new Promise((resolve) => setTimeout(resolve, 500));
+            const payload = {
+                name: data?.name,
+                contact: data?.contact,
+                email: data?.email,
+                dob: data?.dob,
+                gender: data?.gender,
+            };
+            console.log("payload...",payload)
+            dispatch(putUser(payload, toast));
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -68,7 +90,7 @@ const formatDate = (dateString) => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="grid grid-cols-12 md:gap-6 py-6 gap-0">
                     <div className='col-span-12 lg:col-span-6'>
-                        <UsernameInput />
+                        <NameInput />
                     </div>
                     <div className='col-span-12 lg:col-span-6'>
                         <EmailInput />
@@ -79,40 +101,42 @@ const formatDate = (dateString) => {
                     <div className='col-span-12 lg:col-span-6'>
                         <ContactInput />
                     </div>
-                    <div className='col-span-12 lg:col-span-6'>
-                        <CityInput />
-                    </div>
-                    <div className='col-span-12 lg:col-span-6'>
-                        <PincodeInput />
-                    </div>
+
                     <div className='col-span-12 lg:col-span-6'>
                         <DateOfBirthInput />
                     </div>
 
                 </div>
                 <div className='mt-6'>
-                    <Btnone title="Save Changes" bgColor="#00A762" type="submit" width="100%" />
+
+                    <Btnone
+                        title={loading ? 'loading...' : 'Save Changes'}
+                        bgColor="#00A762"
+                        type="submit"
+                        width="100%"
+                        loading={loading}
+                    />
                 </div>
             </form>
         </FormProvider>
     );
 };
 
-const UsernameInput = () => {
+const NameInput = () => {
     const { register, formState: { errors } } = useFormContext();
 
     return (
         <div className='mt-3'>
-            <label className='block text-[#072320] font-dm text-lg capitalize font-medium' htmlFor="username">Username<span className=' font-medium text-red-500'>*</span></label>
+            <label className='block text-[#072320] font-dm text-lg capitalize font-medium' htmlFor="name">name<span className=' font-medium text-red-500'>*</span></label>
             <input
                 className='input_box w-full'
                 type="text"
-                id="username"
-                placeholder='Enter username'
-                {...register('username')}
+                id="name"
+                placeholder='Enter name'
+                {...register('name')}
             />
-            {errors.username && (
-                <p className="text-red-500 mt-1">{errors.username.message}</p>
+            {errors.name && (
+                <p className="text-red-500 mt-1">{errors.name.message}</p>
             )}
         </div>
     );
@@ -160,47 +184,6 @@ const ContactInput = () => {
     );
 };
 
-const CityInput = () => {
-    const { register, formState: { errors } } = useFormContext();
-
-    return (
-        <div className='mt-3'>
-            <label className='block text-[#072320] font-dm text-lg capitalize font-medium' htmlFor="city">City</label>
-            <input
-                className='input_box w-full'
-                type="text"
-                id="city"
-                placeholder='Enter city'
-                {...register('city')}
-            />
-        </div>
-    );
-};
-
-const PincodeInput = () => {
-    const { register, formState: { errors }, setValue } = useFormContext();
-
-    return (
-        <div className='mt-3'>
-            <label className='block text-[#072320] font-dm text-lg capitalize font-medium' htmlFor="pincode">Pincode</label>
-            <input
-                className='input_box w-full'
-                type="text"
-                id="pincode"
-                placeholder='Enter pincode'
-                pattern="\d{6}"
-                title="Please enter a 6-digit pincode"
-                {...register('pincode')}
-                onChange={(e) => {
-                    setValue('pincode', e.target.value);
-                }}
-            />
-            {errors.pincode && (
-                <p className="text-red-500 mt-1">{errors.pincode.message}</p>
-            )}
-        </div>
-    );
-};
 
 const DateOfBirthInput = () => {
     const { register } = useFormContext();
