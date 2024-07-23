@@ -54,7 +54,7 @@ code {
 
 /* sidebar_scrollbar_design */
 ::-webkit-scrollbar {
-  width: 2px;
+  width: 0px;
 }
 
 @media only screen and (max-width: 992px) {

@@ -359,7 +359,12 @@ const AccordionExample = () => {
         }
     }, [isModalOpen, customer_id, dispatch]);
 
-
+    useEffect(() => {
+        if (!isshipModalOpen && customer_id) {
+            console.log('Modal closed, useEffect triggered');
+            dispatch(getAddress(customer_id));
+        }
+    }, [isshipModalOpen, customer_id, dispatch]);
 
     const handleAccordionToggle = (setter) => {
         setIsOpen(false);
@@ -368,10 +373,6 @@ const AccordionExample = () => {
         setIsPaymentOpen(false);
         setter(prev => !prev);
     };
-
-    const storedData = JSON.parse(sessionStorage.getItem('addresses')) || [];
-
-    console.log('storedData', storedData?.length);
 
     const handleDeletClick = (id) => {
         setAllAddressData(allAddressData.filter(address => address.id !== id));
