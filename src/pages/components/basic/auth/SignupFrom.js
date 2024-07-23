@@ -26,8 +26,6 @@ const SignupFrom = () => {
             password: '',
             name: '',
             contact: '',
-            city: '',
-            pincode: '',
         },
     });
 
@@ -41,8 +39,6 @@ const SignupFrom = () => {
             formData.set("name", data.name);
             formData.set("contact", data.contact);
             formData.set("email", data.email);
-            formData.set("city", data.city);
-            formData.set("pincode", data.pincode);
             formData.set("password", data.password);
             dispatch(
                 postRegisterUser(
@@ -63,8 +59,6 @@ const SignupFrom = () => {
                 <UsernameInput />
                 <EmailInput />
                 <ContactInput />
-                <CityInput />
-                <PincodeInput />
                 <PasswordInput />
 
                 <div className='mt-6'>
@@ -88,7 +82,7 @@ const UsernameInput = () => {
 
     return (
         <div className='mt-3'>
-            <label className='block text-[#072320] font-dm text-lg capitalize font-medium' htmlFor="name">Username<span className=' font-medium text-red-500'>*</span></label>
+            <label className='block text-[#072320] font-dm text-lg capitalize font-medium' htmlFor="name">Full Name<span className=' font-medium text-red-500'>*</span></label>
             <input
                 className='input_box w-full'
                 type="text"
@@ -138,43 +132,6 @@ const ContactInput = () => {
                 pattern="\d{10}"
                 title="Please enter a 10-digit contact number"
             />
-        </div>
-    );
-};
-
-const CityInput = () => {
-    const { register, formState: { errors } } = useFormContext();
-
-    return (
-        <div className='mt-3'>
-            <label className='block text-[#072320] font-dm text-lg capitalize font-medium' htmlFor="city">City</label>
-            <input
-                className='input_box w-full'
-                type="text"
-                id="city"
-                placeholder='Enter city'
-                {...register('city')}
-            />
-        </div>
-    );
-};
-
-const PincodeInput = () => {
-    const { register, formState: { errors } } = useFormContext();
-
-    return (
-        <div className='mt-3'>
-            <label className='block text-[#072320] font-dm text-lg capitalize font-medium' htmlFor="pincode">Pincode</label>
-            <input
-                className='input_box w-full'
-                type="text"
-                id="pincode"
-                placeholder='Enter pincode'
-                {...register('pincode')}
-                pattern="\d{6}"
-                title="Please enter a 6-digit pincode"
-            />
-
         </div>
     );
 };

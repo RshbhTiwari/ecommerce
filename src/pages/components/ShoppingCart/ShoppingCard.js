@@ -7,7 +7,7 @@ import ShoppingCartTable from './ShoppingCartTable';
 import CartEmpty from '../basic/ErrorPages/cartempty';
 import { MdOutlineArrowBackIos } from "react-icons/md";
 
-export default function ShoppingCard({ cartData, itemCount }) {
+export default function ShoppingCard({ cartData, itemCount, allCartItems }) {
     const navigate = useNavigate();
     return (
         <>
@@ -65,7 +65,7 @@ export default function ShoppingCard({ cartData, itemCount }) {
                                     <tbody>
                                         <tr className='w-full flex items-center justify-between py-2'>
                                             <td className='text-[#00A762] text-left w-full font-dm text-lg capitalize font-medium'>Subtotal</td>
-                                            <td className='w-full text-base font-dm text-right text-white'>$4798.00</td>
+                                            <td className='w-full text-base font-dm text-right text-white'>₹ {allCartItems?.subtotal}</td>
                                         </tr>
                                         <hr />
                                         {/* <tr className='w-full flex items-center justify-between py-2'>
@@ -75,7 +75,7 @@ export default function ShoppingCard({ cartData, itemCount }) {
                                         <hr /> */}
                                         <tr className='w-full flex items-center justify-between py-2'>
                                             <td className='text-[#00A762] text-left w-full font-dm text-lg capitalize font-medium'>Total (Incl. taxes)</td>
-                                            <td className='w-full text-base font-dm text-right text-white'>$4800.00</td>
+                                            <td className='w-full text-base font-dm text-right text-white'>₹ {allCartItems?.grand_total_cart}</td>
                                         </tr>
                                         <hr />
                                     </tbody>

@@ -40,6 +40,8 @@ function App() {
   const cartData = allCartItems?.items || [];
   const itemCount = cartData.length;
 
+  console.log("allCartItems",allCartItems)
+
   useEffect(() => {
     if (token) {
       const payload = {
@@ -81,8 +83,8 @@ function App() {
           <Route path="/my-account/address-book" element={<Addressbook />} />
           <Route path="/my-account/add-address" element={<AddAddressBook />} />
           <Route path="/my-account/edit-address/:id" element={<EditAddressBook />} />
-          <Route path="/cart" element={<Cart cartData={cartData} itemCount={itemCount}/>} />
-          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/cart" element={<Cart cartData={cartData} itemCount={itemCount} allCartItems={allCartItems}/>} />
+          <Route path="/checkout" element={<Checkout cartData={cartData} itemCount={itemCount} allCartItems={allCartItems}/>} />
           <Route path="/my-account/wishlist" element={<Wishlist />} />
           <Route path="/my-account/orders" element={<Orders />} />
           <Route path="/my-account/orders/:id" element={<OrdersDetails />} />

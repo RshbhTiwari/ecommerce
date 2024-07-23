@@ -2,12 +2,33 @@ import { useNavigate } from "react-router-dom";
 import { IoMdAdd } from "react-icons/io";
 import BreadCrum from "../../basic/BreadCrum";
 import { AccountSideNav } from "../sidenav";
-import { Paragraph } from "../../basic/title";
-import { Btnone } from "../../basic/button";
 import DefultAddress from "./DefultAddress";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { getAddress } from "../../../../redux/slices/address";
 
 function UserAddbook() {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+    const [allAddressData, setAllAddressData] = useState([]);
+
+    const { allAddress } = useSelector(state => state.address);
+
+    useEffect(() => {
+        dispatch(getAddress(customer_id));
+    }, [dispatch, customer_id]);
+
+    useEffect(() => {
+        if (allAddress?.length) {
+            setAllAddressData(allAddress);
+        }
+    }, [allAddress]);
+
+    const handleDeletClick = (id) => {
+        setAllAddressData(allAddressData.filter(address => address.id !== id));
+    };
+ 
     return (
         <>
             <BreadCrum componentName="my account" link="/my-account" componentSecondName="My Addresses" />
@@ -29,13 +50,14 @@ function UserAddbook() {
 
                             <div className={`font-dm text-lg cursor-pointer capitalize flex items-center justify-end rounded-lg shadow-md border-[#00A762] border-[2px] px-3 py-1
                       font-medium  text-left  text-[#00A762]`} onClick={() =>
-                        navigate('/my-account/add-address')
-                    }>
+                                    navigate('/my-account/add-address')
+                                }>
                                 <IoMdAdd className="mr-2 text-2xl" />Add New Address</div>
                         </div>
 
-
-                        <DefultAddress />
+                        <DefultAddress
+                            allAddressData={allAddressData}
+                            deletClick={handleDeletClick} />
                     </div>
                 </div>
             </div>

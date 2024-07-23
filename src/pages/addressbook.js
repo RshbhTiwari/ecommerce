@@ -1,7 +1,5 @@
 import UserAddbook from "./components/myaccount/address/UserAddbook";
 
-
-
 function Addressbook() {
     return (
         <>

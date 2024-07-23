@@ -3,23 +3,22 @@ import * as Yup from 'yup';
 import { useForm, FormProvider, useFormContext } from 'react-hook-form';
 import { useEffect, useMemo, useState } from 'react';
 import { Btnone } from '../../basic/button';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { postAddress, putAddress } from '../../../../redux/slices/address';
+import { postAddress } from '../../../../redux/slices/address';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
-const AddEditAddressFrom = ({ isEdit = false, id, userAdd, handleClick }) => {
-
+const Checkoutuseraddress = ({ onClose }) => {
 
     const dispatch = useDispatch();
-    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+
+
     const getLocalStorageData = () => {
         const localData = localStorage.getItem('user');
         return localData ? JSON.parse(localData) : {};
     };
 
     const localStorageData = getLocalStorageData();
-    const [loading, setLoading] = useState(false);
 
     const schema = Yup.object().shape({
         name: Yup.string().required('First Name is required'),
@@ -39,20 +38,20 @@ const AddEditAddressFrom = ({ isEdit = false, id, userAdd, handleClick }) => {
 
     const defaultValues = useMemo(
         () => ({
-            name: userAdd?.name || localStorageData?.name || "",
-            contact: userAdd?.contact || localStorageData?.contact || "",
-            landmarkname: userAdd?.landmarkname || "",
-            addressname: userAdd?.addressname || "",
-            pincode: userAdd?.pincode || "",
-            locality: userAdd?.locality || '',
-            state: userAdd?.state || "",
-            city: userAdd?.city || '',
-            email: userAdd?.email || localStorageData?.email || "",
-            addresstype: userAdd?.addresstype || '',
-            defaultAddress: userAdd?.defaultAddress || '',
-            is_shipping: userAdd?.is_shipping || '',
+            name: localStorageData?.name || "",
+            contact: localStorageData?.contact || "",
+            landmarkname: "",
+            addressname: "",
+            pincode: "",
+            locality: "",
+            state: "",
+            city: "",
+            email: localStorageData?.email || "",
+            addresstype: "",
+            defaultAddress: "",
+            is_shipping: "",
         }),
-        [userAdd]
+        [localStorageData]
     );
 
     const methods = useForm({
@@ -67,22 +66,11 @@ const AddEditAddressFrom = ({ isEdit = false, id, userAdd, handleClick }) => {
         formState: { errors },
     } = methods;
 
-
-    useEffect(() => {
-        if (isEdit && userAdd) {
-            reset(defaultValues);
-        }
-        if (!isEdit) {
-            reset(defaultValues);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isEdit, userAdd]);
-
     const onSubmit = async (data) => {
         const cart_id = localStorage?.getItem('cart_id') || null;
         const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+        setLoading(true);
         try {
-            setLoading(true);  // Set loading to true when starting submission
             await new Promise((resolve) => setTimeout(resolve, 500));
             const payload = {
                 name: data?.name,
@@ -100,19 +88,18 @@ const AddEditAddressFrom = ({ isEdit = false, id, userAdd, handleClick }) => {
                 ...(cart_id && { cart_id }),
                 ...(customer_id && { customer_id })
             };
-
-            isEdit ? dispatch(putAddress(id, payload, toast, navigate)) : dispatch(postAddress(payload, toast, navigate));
-            reset()
-            handleClick()
+            dispatch(postAddress(payload, toast));
+            onClose()
+            // window.location.reload();
         } catch (error) {
             console.error(error);
         } finally {
-            setLoading(false);  // Set loading to false after submission
+            setLoading(false);
         }
     };
 
-
     return (
+
         <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="grid grid-cols-12 md:gap-6 gap-0">
@@ -147,6 +134,8 @@ const AddEditAddressFrom = ({ isEdit = false, id, userAdd, handleClick }) => {
                     <div className='col-span-12 lg:col-span-6'>
                         <StateInput />
                     </div>
+
+
                     <div className='col-span-12 lg:col-span-6'>
                         <CityInput />
                     </div>
@@ -169,15 +158,16 @@ const AddEditAddressFrom = ({ isEdit = false, id, userAdd, handleClick }) => {
                 </div>
                 <div className='mt-6'>
                     <Btnone
-                        title={isEdit ? (loading ? 'Editing...' : 'Edit Address') : (loading ? 'Posting...' : 'Post Address')}
+                        title={loading ? 'Posting...' : 'Post address'}  // Change button text based on loading state
                         bgColor="#00A762"
                         type="submit"
                         width="100%"
-                        loading={loading}
+                        loading={loading}  // Disable the button while loading
                     />
                 </div>
             </form>
         </FormProvider>
+
     );
 };
 
@@ -451,6 +441,7 @@ const ShipAddress = () => {
     );
 };
 
+
 const DefaultAddress = () => {
     const { register, formState: { errors } } = useFormContext();
 
@@ -469,5 +460,4 @@ const DefaultAddress = () => {
     );
 };
 
-
-export default AddEditAddressFrom;
+export default Checkoutuseraddress;

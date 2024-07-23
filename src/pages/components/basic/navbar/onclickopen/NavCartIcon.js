@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import { RxCross2 } from "react-icons/rx";
 import { Btnone, Btnoutline } from "../../button";
 import { Paragraph } from "../../title";
-import { useDispatch, useSelector } from "react-redux";
-import { getAllCartItems } from "../../../../../redux/slices/addToCart";
 import ShoppingCartTable from "../../../ShoppingCart/ShoppingCartTable";
 import CartEmpty from "../../ErrorPages/cartempty";
 import { useNavigate } from "react-router-dom";

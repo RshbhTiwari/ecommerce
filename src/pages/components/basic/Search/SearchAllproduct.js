@@ -60,16 +60,15 @@ function SearchAllproduct() {
 
     return (
         <>
-            <div className="text-center flex justify-center items-center my-10 gap-4">
+            <div className="text-center flex w-full justify-center items-center my-10 gap-4">
                 <input
-                    className='input_box w-full'
+                    className='input_box w-2/4'
                     type="text"
                     id="search"
                     placeholder='Start typing...'
                     value={filterName}
                     onChange={handleSearchChange}
                 />
-               
             </div>
 
             {/* Display filtered products in a grid */}
@@ -131,7 +130,7 @@ function SearchAllproduct() {
                 ) : (
                     <div className='col-span-12 relative my-10'>
                         <div className="flex justify-center items-center w-full">
-                            <NoProducts message="Sorry, no products found!" height='200px' />
+                            <NoProducts height='200px' />
                         </div>
                     </div>
                 )}

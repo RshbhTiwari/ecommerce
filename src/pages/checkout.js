@@ -1,9 +1,9 @@
 import { CheckoutCard } from "./components/checkout";
 
-function Checkout() {
+function Checkout({cartData, itemCount, allCartItems}) {
     return (
         <>
-            <CheckoutCard />
+            <CheckoutCard cartData={cartData} itemCount={itemCount} allCartItems={allCartItems}/>
         </>
     );
 }

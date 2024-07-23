@@ -224,6 +224,7 @@ import { useDispatch } from 'react-redux';
 import { deleteCartItem, putCartItme } from "../../../redux/slices/addToCart";
 import { toast } from 'react-toastify';
 import { RxCross2 } from "react-icons/rx";
+import { MdEdit } from "react-icons/md";
 
 export default function ShoppingCartTable({ shoppingcart, minicart }) {
     const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
@@ -285,10 +286,12 @@ export default function ShoppingCartTable({ shoppingcart, minicart }) {
 
     // Update the cart item
     const handleUpdate = (itemId, quantity, totalPrice) => {
+        const cart_id = localStorage?.getItem('cart_id') || null;
         const payload = {
-            item_id : itemId,
+            item_id: itemId,
             quantity,
-            total_prize: totalPrice
+            total_prize: totalPrice,
+            ...(cart_id && { cart_id }),
         };
         dispatch(putCartItme(itemId, payload, toast));
     };
@@ -359,8 +362,7 @@ export default function ShoppingCartTable({ shoppingcart, minicart }) {
                                     <th className="py-2 px-4 font-dm text-[#00A762] capitalize">Prize of the Month</th>
                                     <th className="py-2 px-4 font-dm text-[#00A762] capitalize">Quantity</th>
                                     <th className="py-2 px-4 font-dm text-[#00A762] capitalize">Total Price</th>
-                                    <th className="py-2 px-4 font-dm text-[#00A762] capitalize">Update</th>
-                                    <th className="py-2 px-4 font-dm text-[#00A762] capitalize">Actions</th>
+                                    <th className="py-2 px-4 font-dm text-[#00A762] capitalize" colSpan={2}>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -405,15 +407,13 @@ export default function ShoppingCartTable({ shoppingcart, minicart }) {
                                         <td className="py-2 px-4 text-base font-dm">
                                             ₹{item?.totalPrice || 8}
                                         </td>
-                                        <td className="py-2 px-4">
-                                            <div onClick={() => handleUpdate(item?.id, item?.quantity, item?.totalPrice)}>
-                                                update
-                                            </div>
+
+                                        <td className="py-2" onClick={() => handleUpdate(item?.id, item?.quantity, item?.totalPrice)}>
+                                            <h1 className="text-[#00A762] font-dm cursor-pointer">Update</h1>
                                         </td>
-                                        <td className="py-2 px-4">
-                                            <div onClick={() => handleDelete(item?.id)}>
-                                                <MdDeleteForever className="text-[#072320] text-2xl" />
-                                            </div>
+
+                                        <td className="py-2" onClick={() => handleDelete(item?.id)}>
+                                            <MdDeleteForever className="text-[#00A762] text-2xl" />
                                         </td>
                                     </tr>
                                 ))}

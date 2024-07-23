@@ -3,7 +3,7 @@ import { HeadingTitle } from '../basic/title';
 import AccordionExample from './Accordion';
 import OrderSummary from './Accordion/OrderSummary';
 
-export default function CheckoutCard() {
+export default function CheckoutCard({ cartData, itemCount, allCartItems }) {
     return (
         <>
             <BreadCrum componentName="checkout" link="/checkout" />
@@ -13,16 +13,16 @@ export default function CheckoutCard() {
 
                         <div className='lg:col-span-7 col-span-12'>
                             <AccordionExample />
-                        </div> 
+                        </div>
 
                         <div className='lg:col-span-5 col-span-12'>
 
                             <div className='shadow-md rounded-lg bg-[#072320] p-4'>
 
-                                <HeadingTitle title="Order Summary ( 1 item )" textAlign='left' color='white' border='white' />
+                                <HeadingTitle title={`Order Summary(${itemCount} item)`} textAlign='left' color='white' border='white' />
 
                                 <div className=''>
-                                <OrderSummary />
+                                    <OrderSummary cartData={cartData}/>
                                 </div>
 
                                 <table className='w-full my-4'>
@@ -30,18 +30,18 @@ export default function CheckoutCard() {
                                         <td className='text-[#00A762] text-left w-full
                                                              font-dm text-lg capitalize font-medium'>Sub Total</td>
 
-                                        <td className='w-full text-base font-dm text-right text-white'>$4800.00</td>
+                                        <td className='w-full text-base font-dm text-right text-white'>₹ {allCartItems?.subtotal}</td>
                                     </tr>
                                     <hr />
                                     <tr className='w-full flex items-center justify-between py-2'>
                                         <td className='text-[#00A762] text-left w-full
                                                              font-dm text-lg capitalize font-medium'>Total Payable</td>
 
-                                        <td className='w-full text-base font-dm text-right text-white'>$4800.00</td>
+                                        <td className='w-full text-base font-dm text-right text-white'>₹ {allCartItems?.grand_total_cart}</td>
                                     </tr>
                                     <hr />
                                 </table>
-                                
+
                             </div>
 
                         </div>

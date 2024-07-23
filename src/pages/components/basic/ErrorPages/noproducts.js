@@ -1,7 +1,7 @@
 
 import error from '../../../../assets/error/error1.jpg';
 
-export default function NoProducts({ massage, height, }) {
+export default function NoProducts({ height, }) {
     const titleStyle = {
         height: height,
     };
@@ -18,7 +18,7 @@ export default function NoProducts({ massage, height, }) {
                 </div>
                 <h2 className=" my-4
                     font-dm text-2xl capitalize font-medium text-center text-[#00A762]">
-                    {massage}
+                    Sorry no products found
                 </h2>
 
             </div>

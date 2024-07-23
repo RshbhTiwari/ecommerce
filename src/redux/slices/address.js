@@ -66,11 +66,11 @@ export const {
 export default Slice.reducer;
 
 // Thunk action to fetch all Address
-export const getAddress = () => async (dispatch) => {
+export const getAddress = (id) => async (dispatch) => {
     try {
         dispatch(startLoading());
-        const response = await axios.get("/products");
-        dispatch(getAllAddressSuccess(response?.data?.products));
+        const response = await axios.get(`/addresses/${id}`);
+        dispatch(getAllAddressSuccess(response?.data?.addresses));
     } catch (error) {
         console.error("Error fetching product:", error?.response?.data?.message);
         dispatch(hasError(error?.response?.data?.message));
@@ -81,35 +81,40 @@ export const getAddress = () => async (dispatch) => {
 export const getOneAddress = (id) => async (dispatch) => {
     try {
         dispatch(startLoading());
-        const response = await axios.get(`/oneaddress/${id}`);
-        dispatch(getOneAddressSuccess(response?.data));
+        const response = await axios.get(`/getAddresses/${id}`);
+        console.log("response",response)
+        dispatch(getOneAddressSuccess(response?.data?.address));
     } catch (error) {
         console.error("Error fetching :", error.response?.data?.message);
         dispatch(hasError(error.response?.data?.message));
     }
 };
 
-export function postAddress(formData, toast) {
+export function postAddress(payload, toast, navigate) {
     return async (dispatch) => {
         try {
             dispatch(startLoading());
-            const response = await axios.post('/testimonials/add', formData, { headers: jsonheader });
+            const response = await axios.post('/storeAddresses', payload);
             dispatch(postAddressSuccess(response.data.testimonial));
             toast.success(response.data.message)
+            if(navigate){
+            navigate('/my-account/address-book')}
         } catch (error) {
-            toast.success(error.message)
+            toast.success(error?.message)
             dispatch(hasError(error));
         }
     };
 }
 
-export function putAddress(id, formData, toast) {
+export function putAddress(id, payload, toast,navigate) {
     return async (dispatch) => {
         try {
             dispatch(startLoading());
-            const response = await axios.put('/testimonials/update/' + id, formData, { headers: jsonheader });
-            dispatch(postAddressSuccess(response.data.testimonial));
+            const response = await axios.put(`/updateAddresses/${id}`, payload);
+            console.log("responseresponse",response)
+            dispatch(postAddressSuccess(response?.data));
             toast.success(response.data.message)
+            navigate('/my-account/address-book')
         } catch (error) {
             dispatch(hasError(error));
         }
@@ -120,7 +125,7 @@ export function deleteAddress(id, toast) {
     return async (dispatch) => {
         try {
             dispatch(startLoading());
-            const response = await axios.delete('/testimonials/delete/' + id, { headers: headers });
+            const response = await axios.delete(`/deleteAddresses/${id}`);
             dispatch(deleteAddressSuccess(response.data.status));
             toast.success(response.data?.message)
         } catch (error) {
