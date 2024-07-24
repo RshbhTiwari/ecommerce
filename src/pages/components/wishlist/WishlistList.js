@@ -1,10 +1,32 @@
 import BreadCrum from "../basic/BreadCrum";
 import { HeadingTitle } from "../basic/title";
 import { AccountSideNav } from "../myaccount/sidenav";
-import productcard from '../../../data/productcard';
-import WishlistPagination from "./WishlistPagination";
-
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { getwishlist } from "../../../redux/slices/wishlist";
+import WishlistTable from "./WishlistTable";
+ 
 function WishlistList() {
+
+    const dispatch = useDispatch();
+    const [wishlistData, setWishlistData] = useState([]);
+
+    const { wishlist } = useSelector(
+        (state) => state.wishlist
+    );
+
+    useEffect(() => {
+        dispatch(getwishlist());
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (wishlist?.length) {
+            setWishlistData(wishlist);
+        }
+    }, [wishlist]);
+
+
+      console.log("itemId,itemId",wishlist)
 
     return (
         <>
@@ -23,7 +45,7 @@ function WishlistList() {
                             <HeadingTitle title="My wishlist" textAlign='left' />
 
                             <div className="">
-                              <WishlistPagination wishlistdata={productcard}/>
+                                <WishlistTable wishlistitems={wishlistData} />
                             </div>
                         </div>
                     </div>

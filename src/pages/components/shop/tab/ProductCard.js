@@ -6,11 +6,16 @@ import { Paragraph } from '../../basic/title';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { addCartItems } from '../../../../redux/slices/addToCart';
+import { postWishlistUser } from '../../../../redux/slices/wishlist';
 
 const ProductCard = ({ allProducts }) => {
     const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
+
+    const accessToken = localStorage?.getItem('accessToken') || null;
+
+    
+    const navigate = useNavigate(); 
+    const dispatch = useDispatch(); 
     const location = useLocation();
 
     const isHomePath = location.pathname === '/';
@@ -33,6 +38,16 @@ const ProductCard = ({ allProducts }) => {
         };
         console.log("cartItem", cartItem)
         dispatch(addCartItems(cartItem, toast, navigate));
+    };
+
+    const handleAddWishlist = (product_id) => {
+        const user_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+        const payload = {
+            product_id: product_id,
+            ...(user_id && { user_id })
+        };
+        console.log("payload....", payload)
+        dispatch(postWishlistUser(payload, toast, navigate));
     };
 
     return (
@@ -98,7 +113,11 @@ const ProductCard = ({ allProducts }) => {
                     </div>
 
                     <div className='flex justify-center items-center px-2 py-2 gap-2'>
-                        <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320] cursor-pointer'>
+                        <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320] cursor-pointer'
+                            onClick={() => {
+                                handleAddWishlist(item?.id);
+                            }}
+                        >
                             <FaRegHeart className='text-white text-[22px]' />
                         </div>
 

@@ -151,7 +151,7 @@ export function postForgotPasswordUser(payload, toast, reset) {
     return async (dispatch) => {
         try {
             dispatch(startLoading());
-            const response = await axios.post("/forgot-password", payload, { headers: jsonheader });
+            const response = await axios.post("/forgot-password", payload, { headers });
             dispatch(getForgotPassworSuccess(response?.data));
             toast.success(response?.data?.message);
             reset();

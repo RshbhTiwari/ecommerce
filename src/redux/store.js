@@ -5,6 +5,7 @@ import loginRegister from './slices/loginRegister';
 import addToCart from './slices/addToCart';
 import address from './slices/address';
 import user from './slices/user';
+import wishlist from './slices/wishlist';
 
 const store= configureStore({
     reducer:{
@@ -14,6 +15,7 @@ const store= configureStore({
         addToCart:addToCart,
         address:address,
         user:user,
+        wishlist:wishlist,
     },
 })
 

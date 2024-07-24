@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { Paragraph } from "../title";
 import { FaRegHeart } from "react-icons/fa";
 import { HiOutlineShoppingBag } from "react-icons/hi";
+import { postWishlistUser } from "../../../../redux/slices/wishlist";
 
 function SearchAllproduct() {
     const { search } = useLocation();
@@ -57,6 +58,15 @@ function SearchAllproduct() {
         dispatch(addCartItems(cartItem, toast, navigate));
     };
 
+    const handleAddWishlist = (product_id) => {
+        const user_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+        const payload = {
+            product_id: product_id,
+            ...(user_id && { user_id })
+        };
+        console.log("payload....", payload)
+        dispatch(postWishlistUser(payload, toast, navigate));
+    };
 
     return (
         <>
@@ -116,7 +126,9 @@ function SearchAllproduct() {
                             </div>
 
                             <div className='flex justify-center items-center px-2 py-2 gap-2'>
-                                <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320] cursor-pointer'>
+                                <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320] cursor-pointer' onClick={() => {
+                                handleAddWishlist(item?.id);
+                            }}>
                                     <FaRegHeart className='text-white text-[22px]' />
                                 </div>
                                 <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320] cursor-pointer' onClick={() => {

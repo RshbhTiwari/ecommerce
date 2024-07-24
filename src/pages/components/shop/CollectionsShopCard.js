@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { addCartItems } from '../../../redux/slices/addToCart';
+import { postWishlistUser } from '../../../redux/slices/wishlist';
 
 const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
 
@@ -72,6 +73,16 @@ const CollectionsShopCard = ({ allproducts }) => {
         dispatch(addCartItems(cartItem, toast, navigate));
     };
 
+    const handleAddWishlist = (product_id) => {
+        const user_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+        const payload = {
+            product_id: product_id,
+            ...(user_id && { user_id })
+        };
+        console.log("payload....", payload)
+        dispatch(postWishlistUser(payload, toast, navigate));
+    };
+
 
     return (
         <Slider {...settings} className=''>
@@ -100,7 +111,9 @@ const CollectionsShopCard = ({ allproducts }) => {
                                     className="block w-full h-full opacity-0 absolute top-0 left-0 transition-all duration-300 ease-in-out group-hover:opacity-100"
                                 />
                             </div>
-                            <div className="show_box flex justify-evenly items-center absolute h-10 w-10 bg-[#072320c7] mx-auto px-2 py-1 rounded-full">
+                            <div className="show_box flex justify-evenly items-center absolute h-10 w-10 bg-[#072320c7] mx-auto px-2 py-1 rounded-full" onClick={() => {
+                                handleAddWishlist(item?.id);
+                            }}>
                                 <FaRegHeart className='text-white text-[20px]' />
                             </div>
                         </div>

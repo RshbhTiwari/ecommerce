@@ -15,7 +15,7 @@ const ReviewsSidebar = ({ title }) => {
     const toggleSidebar = () => {
         setSidebarOpen(!sidebarOpen);
 
-        // Toggle body scroll lock
+        //  body scroll lock
         if (!sidebarOpen) {
             document.body.style.overflow = 'hidden';
         } else {

@@ -7,18 +7,26 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { postForgotPasswordUser } from '../../../../redux/slices/loginRegister';
 
-const ForgotPasswordForm = () => {
+const ForgotPasswordForm = ({token}) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const schema = Yup.object().shape({
         email: Yup.string().email('Invalid email').required('Email is required'),
+        password: Yup.string()
+            .required('Password is required')
+            .min(8, 'Password must be at least 8 characters'),
+        confirmPassword: Yup.string()
+            .oneOf([Yup.ref('password'), null], 'Passwords must match')
+            .required('Confirm Password is required'),
     });
 
     const methods = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
             email: '',
+            password: '',
+            confirmPassword: '',
         },
     });
 
@@ -28,9 +36,12 @@ const ForgotPasswordForm = () => {
         try {
             await new Promise((resolve) => setTimeout(resolve, 500));
             const payload = {
+                token,
                 email: data.email,
+                password: data.password,
             };
             dispatch(postForgotPasswordUser(payload, toast, reset));
+            navigate('/login');
         } catch (error) {
             console.error(error);
         }
@@ -40,9 +51,11 @@ const ForgotPasswordForm = () => {
         <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <EmailInput />
+                <NewPassword />
+                <ConfirmPassword />
 
                 <div className='mt-6'>
-                    <Btnone title="Send Password Reset Link"
+                    <Btnone title="Reset Password"
                         bgColor="#00A762" type="submit" width="100%" loading={isSubmitting} />
                 </div>
             </form>
@@ -69,4 +82,45 @@ const EmailInput = () => {
         </div>
     );
 };
+
+const NewPassword = () => {
+    const { register, formState: { errors } } = useFormContext();
+
+    return (
+        <div className='mt-3'>
+            <label className='block text-[#072320] font-dm text-lg capitalize font-medium' htmlFor="password">New Password<span className=' font-medium text-red-500'>*</span></label>
+            <input
+                className='input_box w-full'
+                type="password"
+                id="password"
+                placeholder='Create new password'
+                {...register('password')}
+            />
+            {errors.password && (
+                <p className="text-red-500 mt-1">{errors.password.message}</p>
+            )}
+        </div>
+    );
+};
+
+const ConfirmPassword = () => {
+    const { register, formState: { errors } } = useFormContext();
+
+    return (
+        <div className='mt-3'>
+            <label className='block text-[#072320] font-dm text-lg capitalize font-medium' htmlFor="confirmPassword">Confirm Password<span className=' font-medium text-red-500'>*</span></label>
+            <input
+                className='input_box w-full'
+                type="password"
+                id="confirmPassword"
+                placeholder='Confirm your password'
+                {...register('confirmPassword')}
+            />
+            {errors.confirmPassword && (
+                <p className="text-red-500 mt-1">{errors.confirmPassword.message}</p>
+            )}
+        </div>
+    );
+};
+
 export default ForgotPasswordForm;

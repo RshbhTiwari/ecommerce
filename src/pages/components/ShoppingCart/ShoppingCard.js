@@ -93,27 +93,3 @@ export default function ShoppingCard({ cartData, itemCount, allCartItems }) {
     );
 }
 
-
-// export function getAllCartItems(cart_id, status) {
-//     return async (dispatch) => {
-//         try {
-//             dispatch(startLoading());
-//             console.log('status', status);
-//             const response = await axios.get(`/cart/${cart_id}`, {
-//                 params: { status }  // Directly pass status as a query parameter
-//             });
-//             dispatch(getAllCartItemsSuccess(response?.data?.cart));
-//         } catch (error) {
-//             dispatch(hasError(error?.response?.data?.message));
-//         }
-//     };
-// }
-
-// // In useEffect
-// useEffect(() => {
-//     if (token) {
-//         dispatch(getAllCartItems(customer_id, true));
-//     } else {
-//         dispatch(getAllCartItems(cart_id, false));
-//     }
-// }, [dispatch, cart_id, customer_id, token]);

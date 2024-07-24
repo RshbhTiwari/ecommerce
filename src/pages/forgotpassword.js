@@ -37,7 +37,7 @@ function Forgotpassword() {
 
                     <div className="my-8 py-4 px-4 bg-[#072320] rounded-md shadow-md">
                         <Paragraph color='white'
-                         title='Lost your password? Please enter your username or email address. You will receive a link to create a new password via email.' />
+                         title='Lost your password? Please enter your email address. You will receive a link to create a new password via email.' />
                     </div>
                     <div className="">
                         <ForgotPasswordFrom />

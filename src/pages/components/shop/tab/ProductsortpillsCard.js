@@ -6,6 +6,7 @@ import { Paragraph } from '../../basic/title';
 import { addCartItems } from '../../../../redux/slices/addToCart';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
+import { postWishlistUser } from '../../../../redux/slices/wishlist';
 
 const ProductsortpillsCard = ({ allProducts }) => {
 
@@ -26,6 +27,15 @@ const ProductsortpillsCard = ({ allProducts }) => {
         dispatch(addCartItems(cartItem, toast, navigate));
     };
 
+    const handleAddWishlist = (product_id) => {
+        const user_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+        const payload = {
+            product_id: product_id,
+            ...(user_id && { user_id })
+        };
+        console.log("payload....", payload)
+        dispatch(postWishlistUser(payload, toast, navigate));
+    };
 
     return (
 
@@ -79,7 +89,9 @@ const ProductsortpillsCard = ({ allProducts }) => {
                     <div className="absolute inset-0 flex items-center right-0 top-0 left-0 bottom-0
                         justify-center rounded-lg opacity-0 bg-[#00000040] hover:opacity-100 transition-opacity duration-300">
                         <div className="text-white text-center flex justify-center items-center gap-2">
-                            <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320] cursor-pointer '>
+                            <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320] cursor-pointer'  onClick={() => {
+                                handleAddWishlist(item?.id);
+                            }}>
                                 <FaRegHeart className='text-white text-[22px]' />
                             </div>
 

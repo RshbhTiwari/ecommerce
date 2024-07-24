@@ -26,6 +26,7 @@ import SearchProduct from "./pages/searchProduct";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllCartItems } from "./redux/slices/addToCart";
 import { useEffect } from "react";
+import ResetPasswordPage from "./pages/resetpasswordpage";
 
 function App() {
   const dispatch = useDispatch();
@@ -78,6 +79,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/forgotpassword" element={<Forgotpassword />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/my-account" element={<UserAccount />} />
           <Route path="/my-account/update-profile" element={<Updateaccount />} />
           <Route path="/my-account/address-book" element={<Addressbook />} />

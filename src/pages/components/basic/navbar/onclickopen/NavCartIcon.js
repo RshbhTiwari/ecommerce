@@ -18,22 +18,24 @@ function NavCartIcon({cartData, itemCount}) {
             setTimeout(() => {
                 setIsCartOpen(false);
                 setIsClosing(false);
-                document.body.style.overflow = 'unset';
+                // document.body.style.overflow = 'unset';
             }, 300);
         } else {
             setIsCartOpen(true);
-            document.body.style.overflow = 'hidden';
+            // document.body.style.overflow = 'hidden';
         }
     };
 
     const handleClickCheckout = () => {
         navigate(`/checkout`);
         setIsCartOpen(false);
+        // window.location.reload();
     };
 
     const handleClickCart = () => {
         navigate(`/cart`);
         setIsCartOpen(false);
+        // window.location.reload();
     };
 
     return (
