@@ -18,10 +18,12 @@ const AccordionExample = () => {
     const [isBillingOpen, setIsBillingOpen] = useState(false);
     const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
+    const [isNewOpen, setIsNewOpen] = useState(false);
+
     const [trigger, setTrigger] = useState(false);
 
+    const [filtereAllAddressData, setFiltereAllAddressData] = useState([]);
 
-    const [isNewOpen, setIsNewOpen] = useState(false);
     const accessToken = localStorage?.getItem('accessToken') || null;
     const userName = JSON?.parse(localStorage?.getItem('user'))?.name || null;
     const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
@@ -37,7 +39,16 @@ const AccordionExample = () => {
         }
     }, [allAddress]);
 
-    console.log("allAddress", allAddress, customer_id)
+    useEffect(() => {
+        if (allAddress?.length) {
+            const filteredData = allAddressData.filter(address => address?.is_shipping == true);
+            setFiltereAllAddressData(filteredData);
+        }
+    }, [allAddress]);
+
+    const handleAddNewAddress = () => {
+        setIsNewOpen(prevState => !prevState);
+    };
 
     const handleAccordionToggle = (setter) => {
         setIsOpen(false);
@@ -47,19 +58,9 @@ const AccordionExample = () => {
         setter(prev => !prev);
     };
 
-
-    const handleAddNewAddress = () => {
-        setIsNewOpen(prevState => !prevState);
-    };
-
-    const storedData = JSON.parse(sessionStorage.getItem('addresses')) || [];
-
-    console.log('storedData', storedData?.length);
-
     const handleDeletClick = (id) => {
         setAllAddressData(allAddressData.filter(address => address.id !== id));
     };
-
 
     useEffect(() => {
         if (trigger) {
@@ -69,19 +70,21 @@ const AccordionExample = () => {
         }
     }, [trigger, customer_id, dispatch]);
 
-    const handleClick = () => {
+    const handlebilClick = () => {
         setTrigger(true);
+        setIsBillingOpen(false)
+        setIsShippingOpen(true);
     };
 
-
-    const getSessionStorageData = () => {
-        const sessionData = sessionStorage.getItem('addressData');
-        return sessionData ? JSON.parse(sessionData) : {};
+    const handleshipClick = () => {
+        setTrigger(true);
+        setIsShippingOpen(false);
+        setIsPaymentOpen(true);
     };
 
-    const sessionStorageData = getSessionStorageData();
-
-    console.log("sessionStorageData", sessionStorageData?.is_shipping)
+    const handleshipDeletClick = (id) => {
+        setFiltereAllAddressData(filtereAllAddressData.filter(address => address.id !== id));
+    };
 
     return (
         <>
@@ -189,12 +192,10 @@ const AccordionExample = () => {
                                 <>
                                     {isNewOpen || allAddressData?.length === 0 ? (
                                         <div className='shadow-md rounded-lg border-[#00A762] border-2 p-4 my-4'>
-                                            <Checkoutuseraddress ship={true} handleClick={handleClick}
-                                                handlenextClick={() => handleAccordionToggle(setIsShippingOpen)}
+                                            <Checkoutuseraddress ship={true} handleClick={handlebilClick}
                                             />
                                         </div>
                                     ) : null}
-
                                     {allAddressData?.length > 0 ? (
                                         <>
                                             <div
@@ -260,15 +261,14 @@ const AccordionExample = () => {
                         <div className='p-3'>
                             {accessToken ? (
                                 <>
-                                    {isNewOpen || allAddressData?.length === 0 ? (
+                                    {isNewOpen || filtereAllAddressData?.length === 0 ? (
                                         <div className='shadow-md rounded-lg border-[#00A762] border-2 p-4 my-4'>
-                                            <Checkoutuseraddress handleClick={handleClick}
-                                                handlenextClick={() => handleAccordionToggle(setIsPaymentOpen)}
+                                            <Checkoutuseraddress handleClick={handleshipClick}
                                             />
                                         </div>
                                     ) : null}
 
-                                    {allAddressData?.length > 0 ? (
+                                    {filtereAllAddressData?.length > 0 ? (
                                         <>
                                             <div
                                                 className={`font-dm text-lg my-2 w-fit cursor-pointer capitalize flex items-center justify-end rounded-lg shadow-md border-[#00A762] border-[2px] px-3 py-1
@@ -279,8 +279,8 @@ const AccordionExample = () => {
                                             </div>
 
                                             <DefultAddress
-                                                allAddressData={allAddressData}
-                                                deletClick={handleDeletClick} />
+                                                allAddressData={filtereAllAddressData}
+                                                deletClick={handleshipDeletClick} />
 
                                             <div className='flex flex-col items-start w-full pt-2'>
                                                 <Btnone
@@ -337,6 +337,9 @@ const AccordionExample = () => {
 };
 
 export default AccordionExample;
+
+
+
 
 // import { useEffect, useState } from 'react';
 // import { Paragraph } from '../../basic/title';

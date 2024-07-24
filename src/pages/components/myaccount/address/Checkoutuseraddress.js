@@ -7,7 +7,7 @@ import { postAddress } from '../../../../redux/slices/address';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
-const Checkoutuseraddress = ({ ship, handleClick, handlenextClick }) => {
+const Checkoutuseraddress = ({ ship, handleClick }) => {
 
     console.log("ship", ship)
 
@@ -92,7 +92,6 @@ const Checkoutuseraddress = ({ ship, handleClick, handlenextClick }) => {
             };
             dispatch(postAddress(payload, toast));
             handleClick()
-            handlenextClick()
         } catch (error) {
             console.error(error);
         } finally {
