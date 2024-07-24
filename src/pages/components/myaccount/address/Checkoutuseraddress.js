@@ -9,7 +9,6 @@ import { toast } from 'react-toastify';
 
 const Checkoutuseraddress = ({ ship, handleClick }) => {
 
-    console.log("ship", ship)
 
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
