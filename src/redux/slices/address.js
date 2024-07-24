@@ -97,8 +97,6 @@ export function postAddress(payload, toast, navigate) {
             const response = await axios.post('/storeAddresses', payload);
             dispatch(postAddressSuccess(response.data.testimonial));
             toast.success(response.data.message)
-            if(navigate){
-            navigate('/my-account/address-book')}
         } catch (error) {
             toast.success(error?.message)
             dispatch(hasError(error));

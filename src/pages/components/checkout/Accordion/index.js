@@ -7,7 +7,6 @@ import { IoMdAdd } from "react-icons/io";
 import { useDispatch, useSelector } from 'react-redux';
 import { getAddress } from '../../../../redux/slices/address';
 import DefultAddress from '../../myaccount/address/DefultAddress';
-import AddEditAddressFrom from '../../myaccount/address/AddEditAddressFrom';
 import { Checkoutuseraddress, GuestAddress } from '../../myaccount/address';
 
 
@@ -66,7 +65,6 @@ const AccordionExample = () => {
         if (trigger) {
             console.log('useEffect is triggered');
             dispatch(getAddress(customer_id));
-            setIsNewOpen(false);
             setTrigger(false);
         }
     }, [trigger, customer_id, dispatch]);
@@ -83,7 +81,7 @@ const AccordionExample = () => {
 
     const sessionStorageData = getSessionStorageData();
 
-    console.log("sessionStorageData", sessionStorageData)
+    console.log("sessionStorageData", sessionStorageData?.is_shipping)
 
     return (
         <>
@@ -191,13 +189,9 @@ const AccordionExample = () => {
                                 <>
                                     {isNewOpen || allAddressData?.length === 0 ? (
                                         <div className='shadow-md rounded-lg border-[#00A762] border-2 p-4 my-4'>
-
-                                            <Checkoutuseraddress
-                                                handleClick={() => handleClick()}
-
-                                                // handleClick={() => handleAccordionToggle(setIsBillingOpen)}
+                                            <Checkoutuseraddress ship={true} handleClick={handleClick}
+                                                handlenextClick={() => handleAccordionToggle(setIsShippingOpen)}
                                             />
-
                                         </div>
                                     ) : null}
 
@@ -222,14 +216,13 @@ const AccordionExample = () => {
                                                     bgColor="#00A762"
                                                 />
                                             </div>
-
                                         </>
                                     ) : null}
                                 </>
                             ) : (
                                 <>
                                     <div className='shadow-md rounded-lg border-[#00A762] border-2 p-4 my-4'>
-                                        <GuestAddress handleClick={() => handleAccordionToggle(setIsShippingOpen)} />
+                                        <GuestAddress ship={true} handleClick={() => handleAccordionToggle(setIsShippingOpen)} />
                                     </div>
                                 </>
                             )}
@@ -238,8 +231,6 @@ const AccordionExample = () => {
                 )}
             </div>
 
-
-            {/* {sessionStorageData?.is_shipping== true} */}
             <div className='shadow-md rounded-lg mt-8'>
                 <div className='rounded-t-lg p-3 bg-gray-100'>
                     <div className="flex items-center justify-between border-b-2 pb-1 border-[#072320] ">
@@ -262,22 +253,57 @@ const AccordionExample = () => {
                         </div>
                     </div>
                 </div>
+
+
                 {isShippingOpen && (
-                    <div className='p-3'>
-                        <div
-                            className={`font-dm text-lg my-2 w-fit cursor-pointer capitalize flex items-center justify-end rounded-lg shadow-md border-[#00A762] border-[2px] px-3 py-1 font-medium text-left text-[#00A762]`}
-                            onClick={handleAddNewAddress}
-                        >
-                            <IoMdAdd className="mr-2 text-2xl" /> Add New Address
+                    <>
+                        <div className='p-3'>
+                            {accessToken ? (
+                                <>
+                                    {isNewOpen || allAddressData?.length === 0 ? (
+                                        <div className='shadow-md rounded-lg border-[#00A762] border-2 p-4 my-4'>
+                                            <Checkoutuseraddress handleClick={handleClick}
+                                                handlenextClick={() => handleAccordionToggle(setIsPaymentOpen)}
+                                            />
+                                        </div>
+                                    ) : null}
+
+                                    {allAddressData?.length > 0 ? (
+                                        <>
+                                            <div
+                                                className={`font-dm text-lg my-2 w-fit cursor-pointer capitalize flex items-center justify-end rounded-lg shadow-md border-[#00A762] border-[2px] px-3 py-1
+                                                         font-medium text-left text-[#00A762]`}
+                                                onClick={handleAddNewAddress}
+                                            >
+                                                <IoMdAdd className="mr-2 text-2xl" /> Add New Address
+                                            </div>
+
+                                            <DefultAddress
+                                                allAddressData={allAddressData}
+                                                deletClick={handleDeletClick} />
+
+                                            <div className='flex flex-col items-start w-full pt-2'>
+                                                <Btnone
+                                                    title="continue"
+                                                    handleClick={() => handleAccordionToggle(setIsPaymentOpen)}
+                                                    bgColor="#00A762"
+                                                />
+                                            </div>
+                                        </>
+                                    ) : null}
+                                </>
+                            ) : (
+                                <>
+                                    <div className='shadow-md rounded-lg border-[#00A762] border-2 p-4 my-4'>
+                                        <GuestAddress ship={false} handleClick={() => handleAccordionToggle(setIsPaymentOpen)} />
+                                    </div>
+                                </>
+                            )}
                         </div>
-                        <DefultAddress />
-
-                        {isNewOpen && <AddEditAddressFrom />}
-
-                    </div>
+                    </>
                 )}
-            </div>
 
+            </div>
 
 
             <div className='shadow-md rounded-lg mt-8'>
@@ -311,8 +337,6 @@ const AccordionExample = () => {
 };
 
 export default AccordionExample;
-
-
 
 // import { useEffect, useState } from 'react';
 // import { Paragraph } from '../../basic/title';

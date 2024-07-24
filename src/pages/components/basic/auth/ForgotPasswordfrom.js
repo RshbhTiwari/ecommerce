@@ -7,8 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { postForgotPasswordUser } from '../../../../redux/slices/loginRegister';
 
-const ForgotPasswordForm = () => {
-    const navigate = useNavigate();
+const ForgotPasswordForm = () => { 
     const dispatch = useDispatch();
 
     const schema = Yup.object().shape({

@@ -7,18 +7,21 @@ import { postAddress } from '../../../../redux/slices/address';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
-const GuestAddress = ({ handleClick ,ship}) => {
+const Checkoutuseraddress = ({ ship, handleClick, handlenextClick }) => {
+
+    console.log("ship", ship)
 
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
-    const getSessionStorageData = () => {
-        const sessionData = sessionStorage.getItem('addressData');
-        return sessionData ? JSON.parse(sessionData) : {};
+
+
+    const getLocalStorageData = () => {
+        const localData = localStorage.getItem('user');
+        return localData ? JSON.parse(localData) : {};
     };
 
-    const sessionStorageData = getSessionStorageData();
+    const localStorageData = getLocalStorageData();
 
-    console.log(sessionStorageData, "sessionStorageData")
     const schema = Yup.object().shape({
         name: Yup.string().required('First Name is required'),
         contact: Yup.string()
@@ -37,20 +40,20 @@ const GuestAddress = ({ handleClick ,ship}) => {
 
     const defaultValues = useMemo(
         () => ({
-            name: sessionStorageData?.name || "",
-            contact: sessionStorageData?.contact || "",
-            landmarkname: sessionStorageData?.landmarkname || "",
-            addressname: sessionStorageData?.addressname || "",
-            pincode: sessionStorageData?.pincode || "",
-            locality: sessionStorageData?.locality || "",
-            state: sessionStorageData?.state || "",
-            city: sessionStorageData?.city || "",
-            email: sessionStorageData?.email || "",
-            addresstype: sessionStorageData?.addresstype || "",
-            defaultaddress: sessionStorageData?.defaultaddress || false,
-            is_shipping: sessionStorageData?.is_shipping || false,
+            name: localStorageData?.name || "",
+            contact: localStorageData?.contact || "",
+            landmarkname: "",
+            addressname: "",
+            pincode: "",
+            locality: "",
+            state: "",
+            city: "",
+            email: localStorageData?.email || "",
+            addresstype: "",
+            defaultaddress: "",
+            is_shipping: "",
         }),
-        [sessionStorageData]
+        [localStorageData]
     );
 
     const methods = useForm({
@@ -67,6 +70,7 @@ const GuestAddress = ({ handleClick ,ship}) => {
 
     const onSubmit = async (data) => {
         const cart_id = localStorage?.getItem('cart_id') || null;
+        const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
         setLoading(true);
         try {
             await new Promise((resolve) => setTimeout(resolve, 500));
@@ -84,10 +88,11 @@ const GuestAddress = ({ handleClick ,ship}) => {
                 defaultaddress: data?.defaultaddress,
                 is_shipping: data?.is_shipping,
                 ...(cart_id && { cart_id }),
+                ...(customer_id && { customer_id })
             };
-            sessionStorage.setItem('addressData', JSON.stringify(data));
-            handleClick()
             dispatch(postAddress(payload, toast));
+            handleClick()
+            handlenextClick()
         } catch (error) {
             console.error(error);
         } finally {
@@ -140,21 +145,29 @@ const GuestAddress = ({ handleClick ,ship}) => {
                         <AddressTypeInput />
                     </div>
 
-                    {ship && (
-                        <div className='col-span-12'>
-                            <ShipAddress />
+                    <div className='col-span-12'>
+                        <div className="grid grid-cols-12 md:gap-6 gap-0">
+
+                            <div className='col-span-12 md:col-span-6'>
+                                <DefaultAddress />
+                            </div>
+
+                            {ship && (
+                                <div className='col-span-12 md:col-span-6'>
+                                    <ShipAddress />
+                                </div>
+                            )}
+
                         </div>
-                    )}
-
-
+                    </div>
                 </div>
                 <div className='mt-6'>
                     <Btnone
-                        title={loading ? 'Posting...' : 'Go to Next Step'} 
+                        title={loading ? 'Posting...' : 'Go to Next Step'}  // Change button text based on loading state
                         bgColor="#00A762"
                         type="submit"
                         width="100%"
-                        loading={loading}
+                        loading={loading}  // Disable the button while loading
                     />
                 </div>
             </form>
@@ -434,4 +447,22 @@ const ShipAddress = () => {
 };
 
 
-export default GuestAddress;
+const DefaultAddress = () => {
+    const { register, formState: { errors } } = useFormContext();
+
+    return (
+        <div className='mt-3 flex'>
+            <input
+                type="checkbox"
+                {...register('defaultaddress')}
+                className='rounded '
+            />
+            <label className='ml-2 block text-[#072320] font-dm text-lg capitalize font-medium'>
+                Make This My Default Address
+            </label>
+
+        </div>
+    );
+};
+
+export default Checkoutuseraddress;

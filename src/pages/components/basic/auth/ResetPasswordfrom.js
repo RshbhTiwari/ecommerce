@@ -5,9 +5,9 @@ import { toast } from 'react-toastify';
 import { Btnone } from '../button';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { postForgotPasswordUser } from '../../../../redux/slices/loginRegister';
+import { postResetPasswordUser } from '../../../../redux/slices/loginRegister';
 
-const ForgotPasswordForm = ({token}) => {
+const ResetPasswordfrom = ({token}) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -39,8 +39,9 @@ const ForgotPasswordForm = ({token}) => {
                 token,
                 email: data.email,
                 password: data.password,
+                password_confirmation: data.confirmPassword, 
             };
-            dispatch(postForgotPasswordUser(payload, toast, reset));
+            dispatch(postResetPasswordUser(payload, toast, reset));
             navigate('/login');
         } catch (error) {
             console.error(error);
@@ -123,4 +124,4 @@ const ConfirmPassword = () => {
     );
 };
 
-export default ForgotPasswordForm;
+export default ResetPasswordfrom;

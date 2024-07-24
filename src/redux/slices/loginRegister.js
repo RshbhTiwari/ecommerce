@@ -164,6 +164,23 @@ export function postForgotPasswordUser(payload, toast, reset) {
     };
 }
 
+// POST Reset Password
+export function postResetPasswordUser(payload, toast, reset) {
+    return async (dispatch) => {
+        try {
+            dispatch(startLoading());
+            const response = await axios.post("/reset-password", payload, { headers });
+            toast.success(response?.data?.message);
+            reset();
+        } catch (error) {
+            reset();
+            console.error("Error fetching Forgot Password:", error?.response?.data);
+            dispatch(hasError(error?.response?.data?.message));
+            toast.error(error?.message);
+        }
+    };
+}
+
 
 // USER LOG OUT
 export function postLogoutUser({ toast, navigate }) {
