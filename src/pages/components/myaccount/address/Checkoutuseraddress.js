@@ -7,8 +7,7 @@ import { postAddress } from '../../../../redux/slices/address';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
-const Checkoutuseraddress = ({ ship, handleClick }) => {
-
+const Checkoutuseraddress = ({ ship, handleClick , checkship }) => {
 
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
@@ -70,6 +69,7 @@ const Checkoutuseraddress = ({ ship, handleClick }) => {
     const onSubmit = async (data) => {
         const cart_id = localStorage?.getItem('cart_id') || null;
         const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+        const is_shipping = data?.is_shipping 
         setLoading(true);
         try {
             await new Promise((resolve) => setTimeout(resolve, 500));
@@ -85,7 +85,7 @@ const Checkoutuseraddress = ({ ship, handleClick }) => {
                 email: data?.email,
                 addresstype: data?.addresstype,
                 defaultaddress: data?.defaultaddress,
-                is_shipping: data?.is_shipping,
+                ...(checkship ? { is_shipping: true } : { is_shipping }),
                 ...(cart_id && { cart_id }),
                 ...(customer_id && { customer_id })
             };

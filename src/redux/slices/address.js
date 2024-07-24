@@ -90,10 +90,11 @@ export const getOneAddress = (id) => async (dispatch) => {
     }
 };
 
-export function postAddress(payload, toast, navigate) {
+export function postAddress(payload, toast) {
     return async (dispatch) => {
         try {
             dispatch(startLoading());
+            console.log('payload123',payload)
             const response = await axios.post('/storeAddresses', payload);
             dispatch(postAddressSuccess(response.data.testimonial));
             toast.success(response.data.message)
