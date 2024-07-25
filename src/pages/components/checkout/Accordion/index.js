@@ -6,19 +6,25 @@ import PaymentOptions from './PaymentOptions';
 import { IoMdAdd } from 'react-icons/io';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAddress } from '../../../../redux/slices/address';
-import DefultAddress from '../../myaccount/address/DefultAddress';
+import { CheckoutAddress } from '../../myaccount/address/DefultAddress';
 import { Checkoutuseraddress, GuestAddress } from '../../myaccount/address';
 
 const AccordionExample = () => {
     const dispatch = useDispatch();
     const [allAddressData, setAllAddressData] = useState([]);
+    const [shipAddress, setShipAddress] = useState([]);
+    const [billAddress, setBillingAddress] = useState([]);
+
+
+    // const [isChecked, setIsChecked] = useState(false);
+
     const [isOpen, setIsOpen] = useState(true);
     const [isShippingOpen, setIsShippingOpen] = useState(false);
     const [isBillingOpen, setIsBillingOpen] = useState(false);
     const [isPaymentOpen, setIsPaymentOpen] = useState(false);
     const [isNewOpen, setIsNewOpen] = useState(false);
     const [trigger, setTrigger] = useState(false);
-    const [filteredAllAddressData, setFilteredAllAddressData] = useState([]);
+
 
     const accessToken = localStorage.getItem('accessToken') || null;
     const userName = JSON.parse(localStorage.getItem('user'))?.name || null;
@@ -37,10 +43,19 @@ const AccordionExample = () => {
 
     useEffect(() => {
         if (allAddressData?.length > 0) {
-            const filteredData = allAddressData.filter(address => address.is_shipping);
-            setFilteredAllAddressData(filteredData);
+            const filteredData = allAddressData.filter(address => address?.is_shipping);
+            setShipAddress(filteredData);
         }
     }, [allAddressData]);
+
+    useEffect(() => {
+        if (allAddressData?.length > 0) {
+            const filteredData = allAddressData.filter(address => address?.is_billing);
+            setBillingAddress(filteredData);
+        }
+    }, [allAddressData]);
+
+
 
     const handleAddNewAddress = () => {
         setIsNewOpen(prevState => !prevState);
@@ -55,7 +70,7 @@ const AccordionExample = () => {
     };
 
     const handleDeleteClick = id => {
-        setAllAddressData(prevAddresses => prevAddresses.filter(address => address.id !== id));
+        setBillingAddress(prevAddresses => prevAddresses.filter(address => address.id !== id));
     };
 
     useEffect(() => {
@@ -78,8 +93,10 @@ const AccordionExample = () => {
     };
 
     const handleShippingDeleteClick = id => {
-        setFilteredAllAddressData(prevAddresses => prevAddresses.filter(address => address.id !== id));
+        setShipAddress(prevAddresses => prevAddresses.filter(address => address.id !== id));
     };
+
+
 
     return (
         <>
@@ -91,7 +108,7 @@ const AccordionExample = () => {
                         </h2>
                         <div
                             className="flex items-center justify-center h-8 w-8 rounded-md bg-[#072320] cursor-pointer"
-                            onClick={() => handleAccordionToggle(setIsOpen)}
+                        // onClick={() => handleAccordionToggle(setIsOpen)}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -163,7 +180,7 @@ const AccordionExample = () => {
                         </h2>
                         <div
                             className="flex items-center justify-center h-8 w-8 rounded-md bg-[#072320] cursor-pointer"
-                            onClick={() => handleAccordionToggle(setIsBillingOpen)}
+                        // onClick={() => handleAccordionToggle(setIsBillingOpen)}
                         >
 
                             <svg
@@ -184,12 +201,12 @@ const AccordionExample = () => {
                         <div className="p-3">
                             {accessToken ? (
                                 <>
-                                    {isNewOpen || allAddressData.length === 0 ? (
+                                    {isNewOpen || billAddress.length === 0 ? (
                                         <div className="shadow-md rounded-lg border-[#00A762] border-2 p-4 my-4">
-                                            <Checkoutuseraddress ship={true} handleClick={handleBillingClick} />
+                                            <Checkoutuseraddress checkbil={true} ship={true} handleClick={handleBillingClick} />
                                         </div>
                                     ) : null}
-                                    {allAddressData.length > 0 && (
+                                    {billAddress.length > 0 && (
                                         <>
                                             <div
                                                 className="font-dm text-lg my-2 w-fit cursor-pointer capitalize flex items-center justify-end rounded-lg shadow-md border-[#00A762] border-[2px] px-3 py-1 font-medium text-left text-[#00A762]"
@@ -198,15 +215,8 @@ const AccordionExample = () => {
                                                 <IoMdAdd className="mr-2 text-2xl" /> Add New Address
                                             </div>
 
-                                            <DefultAddress allAddressData={allAddressData} deletClick={handleDeleteClick} />
-
-                                            <div className="flex flex-col items-start w-full pt-2">
-                                                <Btnone
-                                                    title="continue"
-                                                    handleClick={() => handleAccordionToggle(setIsShippingOpen)}
-                                                    bgColor="#00A762"
-                                                />
-                                            </div>
+                                            <CheckoutAddress
+                                                allAddressData={billAddress} deletClick={handleDeleteClick} handleClick={() => handleAccordionToggle(setIsShippingOpen)} />
                                         </>
                                     )}
                                 </>
@@ -230,7 +240,7 @@ const AccordionExample = () => {
                         </h2>
                         <div
                             className="flex items-center justify-center h-8 w-8 rounded-md bg-[#072320] cursor-pointer"
-                            onClick={() => handleAccordionToggle(setIsShippingOpen)}
+                        // onClick={() => handleAccordionToggle(setIsShippingOpen)}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -250,13 +260,13 @@ const AccordionExample = () => {
                         <div className="p-3">
                             {accessToken ? (
                                 <>
-                                    {isNewOpen || filteredAllAddressData.length === 0 ? (
+                                    {isNewOpen || shipAddress.length === 0 ? (
                                         <div className="shadow-md rounded-lg border-[#00A762] border-2 p-4 my-4">
                                             <Checkoutuseraddress checkship={true} handleClick={handleShippingClick} />
                                         </div>
                                     ) : null}
 
-                                    {filteredAllAddressData.length > 0 && (
+                                    {shipAddress.length > 0 && (
                                         <>
                                             <div
                                                 className="font-dm text-lg my-2 w-fit cursor-pointer capitalize flex items-center justify-end rounded-lg shadow-md border-[#00A762] border-[2px] px-3 py-1 font-medium text-left text-[#00A762]"
@@ -265,18 +275,12 @@ const AccordionExample = () => {
                                                 <IoMdAdd className="mr-2 text-2xl" /> Add New Address
                                             </div>
 
-                                            <DefultAddress
-                                                allAddressData={filteredAllAddressData}
+                                            <CheckoutAddress
+                                                allAddressData={shipAddress}
                                                 deletClick={handleShippingDeleteClick}
+                                                handleClick={() => handleAccordionToggle(setIsPaymentOpen)}
                                             />
 
-                                            <div className="flex flex-col items-start w-full pt-2">
-                                                <Btnone
-                                                    title="continue"
-                                                    handleClick={() => handleAccordionToggle(setIsPaymentOpen)}
-                                                    bgColor="#00A762"
-                                                />
-                                            </div>
                                         </>
                                     )}
                                 </>
@@ -300,7 +304,7 @@ const AccordionExample = () => {
                         </h2>
                         <div
                             className="flex items-center justify-center h-8 w-8 rounded-md bg-[#072320] cursor-pointer"
-                            onClick={() => handleAccordionToggle(setIsPaymentOpen)}
+                        // onClick={() => handleAccordionToggle(setIsPaymentOpen)}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"

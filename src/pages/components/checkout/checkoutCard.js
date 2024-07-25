@@ -1,9 +1,12 @@
+import { useNavigate } from 'react-router-dom';
 import BreadCrum from '../basic/BreadCrum';
 import { HeadingTitle } from '../basic/title';
 import AccordionExample from './Accordion';
 import OrderSummary from './Accordion/OrderSummary';
+import { Btnone } from '../basic/button';
 
 export default function CheckoutCard({ cartData, itemCount, allCartItems }) {
+    const navigate = useNavigate();
     return (
         <>
             <BreadCrum componentName="checkout" link="/checkout" />
@@ -22,7 +25,7 @@ export default function CheckoutCard({ cartData, itemCount, allCartItems }) {
                                 <HeadingTitle title={`Order Summary(${itemCount} item)`} textAlign='left' color='white' border='white' />
 
                                 <div className=''>
-                                    <OrderSummary cartData={cartData}/>
+                                    <OrderSummary cartData={cartData} />
                                 </div>
 
                                 <table className='w-full my-4'>
@@ -40,6 +43,11 @@ export default function CheckoutCard({ cartData, itemCount, allCartItems }) {
                                         <td className='w-full text-base font-dm text-right text-white'>₹ {allCartItems?.grand_total_cart}</td>
                                     </tr>
                                     <hr />
+
+                                    <div className='w-full mt-6'>
+                                        <Btnone title="Confirm Order" handleClick={() => navigate('/checkout')} bgColor="#00A762" borderColor="#00A762" width="100%" />
+                                    </div>
+
                                 </table>
 
                             </div>

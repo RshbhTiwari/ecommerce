@@ -74,13 +74,20 @@ const CollectionsShopCard = ({ allproducts }) => {
     };
 
     const handleAddWishlist = (product_id) => {
-        const user_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
-        const payload = {
-            product_id: product_id,
-            ...(user_id && { user_id })
-        };
-        console.log("payload....", payload)
-        dispatch(postWishlistUser(payload, toast, navigate));
+        const accessToken = localStorage.getItem('accessToken') || null;
+        if (accessToken) {
+            const user_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+            const payload = {
+                product_id: product_id,
+                ...(user_id && { user_id })
+            };
+            console.log("payload....", payload)
+            dispatch(postWishlistUser(payload, toast, navigate));
+        } else {
+            navigate('/login')
+            // window.location.reload();
+            toast.error("You need to log in to add to wishlist");
+        }
     };
 
 

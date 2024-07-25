@@ -9,11 +9,13 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+
   <ReduxProvider store={store}>
     <React.StrictMode>
       <App />
     </React.StrictMode>
   </ReduxProvider>
+  
 );
 
 // If you want to start measuring performance in your app, pass a function

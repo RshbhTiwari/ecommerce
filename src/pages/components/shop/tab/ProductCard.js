@@ -13,9 +13,9 @@ const ProductCard = ({ allProducts }) => {
 
     const accessToken = localStorage?.getItem('accessToken') || null;
 
-    
-    const navigate = useNavigate(); 
-    const dispatch = useDispatch(); 
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const location = useLocation();
 
     const isHomePath = location.pathname === '/';
@@ -41,13 +41,20 @@ const ProductCard = ({ allProducts }) => {
     };
 
     const handleAddWishlist = (product_id) => {
-        const user_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
-        const payload = {
-            product_id: product_id,
-            ...(user_id && { user_id })
-        };
-        console.log("payload....", payload)
-        dispatch(postWishlistUser(payload, toast, navigate));
+        const accessToken = localStorage.getItem('accessToken') || null;
+        if (accessToken) {
+            const user_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+            const payload = {
+                product_id: product_id,
+                ...(user_id && { user_id })
+            };
+            console.log("payload....", payload)
+            dispatch(postWishlistUser(payload, toast, navigate));
+        } else {
+            navigate('/login')
+            // window.location.reload();
+            toast.error("You need to log in to add to wishlist");
+        }
     };
 
     return (

@@ -7,7 +7,7 @@ import { postAddress } from '../../../../redux/slices/address';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
-const Checkoutuseraddress = ({ ship, handleClick , checkship }) => {
+const Checkoutuseraddress = ({ ship, handleClick , checkship,checkbil }) => {
 
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
@@ -86,6 +86,7 @@ const Checkoutuseraddress = ({ ship, handleClick , checkship }) => {
                 addresstype: data?.addresstype,
                 defaultaddress: data?.defaultaddress,
                 ...(checkship ? { is_shipping: true } : { is_shipping }),
+                ...(checkbil ? { is_billing: true } : { }),
                 ...(cart_id && { cart_id }),
                 ...(customer_id && { customer_id })
             };

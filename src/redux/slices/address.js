@@ -96,7 +96,7 @@ export function postAddress(payload, toast) {
             dispatch(startLoading());
             console.log('payload123',payload)
             const response = await axios.post('/storeAddresses', payload);
-            dispatch(postAddressSuccess(response.data.testimonial));
+         
             toast.success(response.data.message)
         } catch (error) {
             toast.success(error?.message)
@@ -104,6 +104,21 @@ export function postAddress(payload, toast) {
         }
     };
 }
+
+export function postCheckboxAddress(payload, toast) {
+    return async (dispatch) => {
+        try {
+            dispatch(startLoading());
+            console.log('payload123',payload)
+            const response = await axios.post('/storeAddresses', payload);
+            toast.success(response.data.message)
+        } catch (error) {
+            toast.success(error?.message)
+            dispatch(hasError(error));
+        }
+    };
+}
+
 
 export function putAddress(id, payload, toast,navigate) {
     return async (dispatch) => {

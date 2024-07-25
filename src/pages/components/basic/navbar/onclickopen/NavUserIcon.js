@@ -12,11 +12,7 @@ function NavUserIcon() {
     const loginRef = useRef(null);
     const dropdownRef = useRef(null);
 
-    //     const user = JSON.parse(localStorage.getItem('user'));
-
-    const storedUserData = localStorage.getItem('user');
-    // const userData = storedUserData ? JSON.parse(storedUserData) : null;
-
+    const userName = JSON.parse(localStorage.getItem('user'))?.name || null;
 
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
@@ -49,10 +45,10 @@ function NavUserIcon() {
             {hasAccessToken ? (
                 <>
                     <div className='flex items-center cursor-pointer' onClick={toggleMenu} ref={loginRef}>
-                        {/* {userData?.name} */}
+
                         <FaRegUserCircle className='text-white text-[24px]' />
                         <h6 className='text-white font-dm text-sm ml-2 capitalize'>
-                            username
+                            {userName}
                         </h6>
                     </div>
                     {isOpen && (

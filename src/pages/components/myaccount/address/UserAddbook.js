@@ -2,10 +2,10 @@ import { useNavigate } from "react-router-dom";
 import { IoMdAdd } from "react-icons/io";
 import BreadCrum from "../../basic/BreadCrum";
 import { AccountSideNav } from "../sidenav";
-import DefultAddress from "./DefultAddress";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getAddress } from "../../../../redux/slices/address";
+import { UserAddress } from "./DefultAddress";
 
 function UserAddbook() {
     const navigate = useNavigate();
@@ -55,9 +55,9 @@ function UserAddbook() {
                                 <IoMdAdd className="mr-2 text-2xl" />Add New Address</div>
                         </div>
 
-                        <DefultAddress
+                        <UserAddress
                             allAddressData={allAddressData}
-                            deletClick={handleDeletClick} />
+                            deletClick={handleDeletClick} /> 
                     </div>
                 </div>
             </div>
