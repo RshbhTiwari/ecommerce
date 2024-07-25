@@ -7,7 +7,6 @@ import { deleteAddress } from '../../../../../redux/slices/address';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
-import AddressCheckbox from './AddressCheckbox';
 
 function UserAddress({ allAddressData, deletClick }) {
 
@@ -37,11 +36,6 @@ function UserAddress({ allAddressData, deletClick }) {
         <div className="grid grid-cols-12 gap-2 my-2">
             {allAddressData?.map((item, index) => (
                 <div className='lg:col-span-6 col-span-12 shadow-md rounded-lg p-4 border-[#00A762] border-2' key={index}>
-
-                    <div className="mb-2">
-                        <AddressCheckbox />
-                    </div>
-
                     {item?.defaultaddress === true ? (
                         <div className="flex sm:flex-row flex-col sm:items-center items-start justify-between w-full">
                             <div className={`font-dm text-sm cursor-pointer uppercase flex items-center justify-end rounded-lg shadow-md border-[#00A762] border-[2px] px-3 py-1

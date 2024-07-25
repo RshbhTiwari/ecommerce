@@ -110,7 +110,7 @@ export function postCheckboxAddress(payload, toast) {
         try {
             dispatch(startLoading());
             console.log('payload123',payload)
-            const response = await axios.post('/storeAddresses', payload);
+            const response = await axios.post('/cart/attach-address', payload);
             toast.success(response.data.message)
         } catch (error) {
             toast.success(error?.message)
