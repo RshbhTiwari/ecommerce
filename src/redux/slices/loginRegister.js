@@ -14,14 +14,8 @@ const initialState = {
 
 const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") : "";
 
-const jsonheader = {
-    "Content-Type": "application/json",
-    "access_token": accessToken,
-};
-
-// const access_token = localStorage.getItem('accessToken');
 const headers = {
-    'Authorization': `Bearer ${accessToken}`, // Adjust based on how you store the token
+    'Authorization': `Bearer ${accessToken}`, 
     'Content-Type': 'application/json'
 };
 
@@ -31,7 +25,7 @@ const Slice = createSlice({
     reducers: {
         startLoading(state) {
             state.isLoading = true;
-            state.error = null; // Reset error state on loading start
+            state.error = null; 
         },
         startLoadingLogin(state) {
             state.isLoadingLogin = true;
@@ -40,23 +34,26 @@ const Slice = createSlice({
             state.isLoading = false;
             state.error = action.payload;
         },
+
         // POST RAGISTER
         getRegisterSuccess(state, action) {
             state.isLoading = false;
             state.registerUser = action.payload;
         },
+
         // LOGIN RAGISTER
         getLoginSuccess(state, action) {
             state.isLoading = false;
             state.isLoadingLogin = false;
             state.loginUser = action.payload;
         },
+
         // ACCESS TOKEN
         getLoginAccessTokenSuccess(state, action) {
             state.isLoadingLogin = false;
             state.userAccessToken = action.payload;
         },
-        // ACCESS TOKEN
+        
         getForgotPassworSuccess(state, action) {
             state.isLoading = false;
             state.userForgotPassword = action.payload;
@@ -81,22 +78,22 @@ export default Slice.reducer;
 export function postRegisterUser(formData, reset, toast, navigate) {
     return async (dispatch) => {
         try {
-
             dispatch(startLoading());
             const response = await axios.post("/register", formData);
             dispatch(getRegisterSuccess(response?.data));
+
             if (response?.data?.status == true) {
                 reset();
-                toast.success(response?.data?.message);
+                toast.success("Log in to get started or verify your email for full access.");
                 navigate('/login');
             } else {
-                toast.error(response?.data?.message);
+                toast.error("Ensure your information is correct and try registering again");
             }
         } catch (error) {
             reset();
-            console.error("Error fetching Register:", error?.response?.data);
-            dispatch(hasError(error?.response?.data?.message));
-            toast.error(error?.message);
+            console.error("Ensure your information is correct and try registering again.", error);
+            dispatch(hasError(error));
+            toast.error("Ensure your information is correct and try registering again");
             if (error?.response?.data?.status == false) {
                 toast.error(error?.response?.data?.message);
                 toast.error(error?.response?.data?.errors?.email[0]);
@@ -124,28 +121,25 @@ export function postLoginUser(payload, toast, reset, navigate, handleClick) {
                     navigate('/');
                 }
                 window.location.reload();
-                toast.success(response?.data?.message);
+                toast.success("You’re logged in. Check out new updates or start using your account.");
                 localStorage.setItem("user", JSON.stringify(response?.data?.user));
                 localStorage.setItem("cartid", response?.data?.cart_id);
                 localStorage.setItem("accessToken", response?.data?.access_token);
             } else {
-                toast.error(response?.data?.message);
+                toast.error("Check your credentials and try again");
             }
         } catch (error) {
             reset();
-            console.error("Error fetching login:", error?.response?.data?.status);
-            dispatch(hasError(error?.response?.data?.message));
-            toast.error(error?.response?.data?.message);
+            console.error("Check your credentials and try again", error);
+            dispatch(hasError(error));
+            toast.error("Check your credentials and try again");
             if (error?.response?.data?.status == false) {
                 dispatch(getLoginSuccess(null));
                 dispatch(getLoginAccessTokenSuccess(null));
             }
-
         }
     };
 }
-
-
 
 // POST Forgot Password
 export function postForgotPasswordUser(payload, toast, reset) {
@@ -154,13 +148,17 @@ export function postForgotPasswordUser(payload, toast, reset) {
             dispatch(startLoading());
             const response = await axios.post("/forgot-password", payload, { headers });
             dispatch(getForgotPassworSuccess(response?.data));
-            toast.success(response?.data?.message);
-            reset();
+            if (response?.data?.status == true) {
+                toast.success("Check your email to proceed with resetting your password.");
+                reset();
+            } else {
+                toast.error("Double-check your email address and try again");
+            }
         } catch (error) {
             reset();
-            console.error("Error fetching Forgot Password:", error?.response?.data);
-            dispatch(hasError(error?.response?.data?.message));
-            toast.error(error?.message);
+            console.error("Double-check your email address and try again", error);
+            toast.error("Double-check your email address and try again");
+            dispatch(hasError(error));
         }
     };
 }
@@ -171,12 +169,16 @@ export function postResetPasswordUser(payload, toast, reset) {
         try {
             dispatch(startLoading());
             const response = await axios.post("/reset-password", payload, { headers });
-            toast.success(response?.data?.message);
-            reset();
+            if (response?.data?.status == true) {
+                toast.success("Your password has been successfully changed. Please log in");
+                reset();
+            } else {
+                toast.error("Ensure the link is correct and not expired, then try again.");
+            }
         } catch (error) {
             reset();
-            console.error("Error fetching Forgot Password:", error?.response?.data);
-            dispatch(hasError(error?.response?.data?.message));
+            console.error("Ensure the link is correct and not expired, then try again.", error);
+            dispatch(hasError(error));
             toast.error(error?.message);
         }
     };
@@ -199,12 +201,13 @@ export function postLogoutUser({ toast, navigate }) {
                 dispatch(getLoginSuccess(null));
                 dispatch(getLoginAccessTokenSuccess(null));
                 navigate('/login');
-                toast.success(response?.data?.message);
+                toast.success("You’ve Successfully Logged Out");
             } else {
-                throw new Error('Failed to log out');
+                toast.error("Try again or reach out for support if the issue persists");
             }
         } catch (error) {
             dispatch(hasError(error));
+            toast.error("Try again or reach out for support if the issue persists");
         }
     };
 }

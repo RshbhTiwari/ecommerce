@@ -3,13 +3,16 @@ import * as Yup from 'yup';
 import { useForm, FormProvider, useFormContext } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { Btnone } from '../button';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { postResetPasswordUser } from '../../../../redux/slices/loginRegister';
+import { useEffect, useState } from 'react';
 
-const ResetPasswordfrom = ({token}) => {
+const ResetPasswordfrom = ({ token }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    const [defaultEmail, setDefaultEmail] = useState('');
 
     const schema = Yup.object().shape({
         email: Yup.string().email('Invalid email').required('Email is required'),
@@ -21,16 +24,24 @@ const ResetPasswordfrom = ({token}) => {
             .required('Confirm Password is required'),
     });
 
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const emailFromUrl = urlParams.get('email');
+        if (emailFromUrl) {
+            setDefaultEmail(emailFromUrl);
+        }
+    }, []);
+
     const methods = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
-            email: '',
+            email: defaultEmail,
             password: '',
             confirmPassword: '',
         },
     });
-
-    const {reset, handleSubmit, formState: { isSubmitting, isValid, errors } } = methods;
+    
+    const { reset, handleSubmit, formState: { isSubmitting, isValid, errors } } = methods;
 
     const onSubmit = async (data) => {
         try {
@@ -39,7 +50,7 @@ const ResetPasswordfrom = ({token}) => {
                 token,
                 email: data.email,
                 password: data.password,
-                password_confirmation: data.confirmPassword, 
+                password_confirmation: data.confirmPassword,
             };
             dispatch(postResetPasswordUser(payload, toast, reset));
             navigate('/login');
