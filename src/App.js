@@ -41,8 +41,6 @@ function App() {
   const cartData = allCartItems?.items || [];
   const itemCount = cartData.length;
 
-  console.log("allCartItems",allCartItems)
-
   useEffect(() => {
     if (token) {
       const payload = {

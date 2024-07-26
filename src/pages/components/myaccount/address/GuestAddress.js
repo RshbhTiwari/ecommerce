@@ -1,13 +1,13 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { useForm, FormProvider, useFormContext } from 'react-hook-form';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Btnone } from '../../basic/button';
 import { postAddress } from '../../../../redux/slices/address';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
-const GuestAddress = ({ handleClick ,ship}) => {
+const GuestAddress = ({backCLick, handleClick ,ship, checkship, checkbil}) => {
 
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
@@ -18,7 +18,6 @@ const GuestAddress = ({ handleClick ,ship}) => {
 
     const sessionStorageData = getSessionStorageData();
 
-    console.log(sessionStorageData, "sessionStorageData")
     const schema = Yup.object().shape({
         name: Yup.string().required('First Name is required'),
         contact: Yup.string()
@@ -47,7 +46,6 @@ const GuestAddress = ({ handleClick ,ship}) => {
             city: sessionStorageData?.city || "",
             email: sessionStorageData?.email || "",
             addresstype: sessionStorageData?.addresstype || "",
-            defaultaddress: sessionStorageData?.defaultaddress || false,
             is_shipping: sessionStorageData?.is_shipping || false,
         }),
         [sessionStorageData]
@@ -67,6 +65,9 @@ const GuestAddress = ({ handleClick ,ship}) => {
 
     const onSubmit = async (data) => {
         const cart_id = localStorage?.getItem('cart_id') || null;
+
+        const is_shipping = data?.is_shipping 
+
         setLoading(true);
         try {
             await new Promise((resolve) => setTimeout(resolve, 500));
@@ -81,8 +82,8 @@ const GuestAddress = ({ handleClick ,ship}) => {
                 city: data?.city,
                 email: data?.email,
                 addresstype: data?.addresstype,
-                defaultaddress: data?.defaultaddress,
-                is_shipping: data?.is_shipping,
+                 ...(checkship ? { is_shipping: true } : { is_shipping }),
+                ...(checkbil ? { is_billing: true } : { }),
                 ...(cart_id && { cart_id }),
             };
             sessionStorage.setItem('addressData', JSON.stringify(data));
@@ -148,10 +149,17 @@ const GuestAddress = ({ handleClick ,ship}) => {
 
 
                 </div>
-                <div className='mt-6'>
+                <div className='mt-6 flex gap-4'>
+                <Btnone
+                        title='Back'
+                        bgColor="#072320"
+                        width="100%"
+                        handleClick={backCLick}
+                    />
+
                     <Btnone
                         title={loading ? 'Posting...' : 'Go to Next Step'} 
-                        bgColor="#00A762"
+                        bgColor="#072320"
                         type="submit"
                         width="100%"
                         loading={loading}

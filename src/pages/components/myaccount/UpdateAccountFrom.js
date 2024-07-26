@@ -76,7 +76,6 @@ const UpdateAccountFrom = ({ isEdit = false, userData }) => {
                 dob: data?.dob,
                 gender: data?.gender,
             };
-            console.log("payload...",payload)
             dispatch(putUser(payload, toast));
         } catch (error) {
             console.error(error);

@@ -12,7 +12,6 @@ export default function Myaccountdrop({toggle}) {
     const dispatch = useDispatch();
 
     const handleLogout = async () => {
-        console.log('cammand',)
         dispatch(postLogoutUser(toast, navigate));
         toggle();
     };

@@ -126,6 +126,7 @@ export function postLoginUser(payload, toast, reset, navigate, handleClick) {
                 window.location.reload();
                 toast.success(response?.data?.message);
                 localStorage.setItem("user", JSON.stringify(response?.data?.user));
+                localStorage.setItem("cartid", response?.data?.cart_id);
                 localStorage.setItem("accessToken", response?.data?.access_token);
             } else {
                 toast.error(response?.data?.message);
@@ -188,11 +189,12 @@ export function postLogoutUser({ toast, navigate }) {
         try {
             dispatch(startLoading());
             const response = await axios.post('/logout', {}, { headers });
-            console.log("response123", response)
             if (response?.data?.status == true) {
                 localStorage.removeItem('user');
                 localStorage.removeItem('accessToken');
                 localStorage.removeItem('cart_id');
+                localStorage.removeItem('shipAddress');
+                localStorage.removeItem('billAddress');
                 window.location.reload();
                 dispatch(getLoginSuccess(null));
                 dispatch(getLoginAccessTokenSuccess(null));

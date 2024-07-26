@@ -554,7 +554,7 @@ const AccordionExample = () => {
                                 <>
                                     {isNewOpen || billAddress.length === 0 ? (
                                         <div className="shadow-md rounded-lg border-[#00A762] border-2 p-4 my-4">
-                                            <Checkoutuseraddress checkbil={true} ship={true} handleClick={handleBillingClick} />
+                                            <Checkoutuseraddress backCLick={() => handlebackBillClick()}  checkbil={true} ship={true} handleClick={handleBillingClick} />
                                         </div>
                                     ) : null}
                                     {billAddress.length > 0 && (
@@ -578,7 +578,7 @@ const AccordionExample = () => {
                             ) : (
                                 <>
                                     <div className="shadow-md rounded-lg border-[#00A762] border-2 p-4 my-4">
-                                        <GuestAddress ship={true} handleClick={() => handleAccordionToggle(setIsShippingOpen)} />
+                                        <GuestAddress backCLick={() => handlebackBillClick()} checkbil={true} ship={true} handleClick={() => handleAccordionToggle(setIsShippingOpen)} />
                                     </div>
                                 </>
                             )}
@@ -617,7 +617,7 @@ const AccordionExample = () => {
                                 <>
                                     {isNewOpen || shipAddress.length === 0 ? (
                                         <div className="shadow-md rounded-lg border-[#00A762] border-2 p-4 my-4">
-                                            <Checkoutuseraddress checkship={true} handleClick={handleShippingClick} />
+                                            <Checkoutuseraddress backCLick={() => handlebackShipClick()} checkship={true} handleClick={handleShippingClick} />
                                         </div>
                                     ) : null}
 
@@ -642,7 +642,7 @@ const AccordionExample = () => {
                             ) : (
                                 <>
                                     <div className="shadow-md rounded-lg border-[#00A762] border-2 p-4 my-4">
-                                        <GuestAddress ship={false} handleClick={() => handleAccordionToggle(setIsPaymentOpen)} />
+                                        <GuestAddress backCLick={() => handlebackShipClick()} checkship={true} ship={false} handleClick={() => handleAccordionToggle(setIsPaymentOpen)} />
                                     </div>
                                 </>
                             )}

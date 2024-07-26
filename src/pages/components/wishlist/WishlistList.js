@@ -26,8 +26,6 @@ function WishlistList() {
     }, [wishlist]);
 
 
-      console.log("itemId,itemId",wishlist)
-
     return (
         <>
             <BreadCrum componentName="my account" link="/my-account" componentSecondName="wishlist" />

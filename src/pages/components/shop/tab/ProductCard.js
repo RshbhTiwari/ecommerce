@@ -36,7 +36,6 @@ const ProductCard = ({ allProducts }) => {
             ...(cart_id && { cart_id }),
             ...(customer_id && { customer_id })
         };
-        console.log("cartItem", cartItem)
         dispatch(addCartItems(cartItem, toast, navigate));
     };
 
@@ -48,7 +47,6 @@ const ProductCard = ({ allProducts }) => {
                 product_id: product_id,
                 ...(user_id && { user_id })
             };
-            console.log("payload....", payload)
             dispatch(postWishlistUser(payload, toast, navigate));
         } else {
             navigate('/login')

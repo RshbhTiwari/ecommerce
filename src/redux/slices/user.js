@@ -58,7 +58,6 @@ export const getOneUser = () => async (dispatch) => {
 
 export const putUser = (payload,toast) => async (dispatch) => {
     try {
-        console.log("payload...",payload)
         dispatch(startLoading());
         const response = await axios.put("/userUpdate", payload, { headers: headers });
         if (response?.data?.status == true) {

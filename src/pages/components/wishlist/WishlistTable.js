@@ -21,7 +21,6 @@ export default function WishlistTable({ wishlistitems }) {
     };
 
     const handlemovetocart = (itemId) => {
-        console.log("itemId,itemId",itemId)
         const payload = {
             product_id: itemId,
         };

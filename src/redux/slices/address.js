@@ -10,7 +10,6 @@ const initialState = {
     deleteStatus: false
 };
 
-
 const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") : "";
 
 const jsonheader = {
@@ -19,7 +18,7 @@ const jsonheader = {
 };
 
 const headers = {
-    'Authorization': `Bearer ${accessToken}`, 
+    'Authorization': `Bearer ${accessToken}`,
     'Content-Type': 'application/json'
 };
 
@@ -65,28 +64,25 @@ export const {
 
 export default Slice.reducer;
 
-// Thunk action to fetch all Address
 export const getAddress = (id) => async (dispatch) => {
     try {
         dispatch(startLoading());
         const response = await axios.get(`/addresses/${id}`);
         dispatch(getAllAddressSuccess(response?.data?.addresses));
     } catch (error) {
-        console.error("Error fetching product:", error?.response?.data?.message);
-        dispatch(hasError(error?.response?.data?.message));
+        console.error("Unable to retrieve address list. Please try again later", error);
+        dispatch(hasError(error));
     }
 };
 
-// Thunk action to fetch one Address by id
 export const getOneAddress = (id) => async (dispatch) => {
     try {
         dispatch(startLoading());
         const response = await axios.get(`/getAddresses/${id}`);
-        console.log("response",response)
         dispatch(getOneAddressSuccess(response?.data?.address));
     } catch (error) {
-        console.error("Error fetching :", error.response?.data?.message);
-        dispatch(hasError(error.response?.data?.message));
+        console.error("Failed to load address details. Please try again later", error);
+        dispatch(hasError(error));
     }
 };
 
@@ -94,12 +90,15 @@ export function postAddress(payload, toast) {
     return async (dispatch) => {
         try {
             dispatch(startLoading());
-            console.log('payload123',payload)
             const response = await axios.post('/storeAddresses', payload);
-         
-            toast.success(response.data.message)
+            if (response?.data?.status == true) {
+                toast.success("Address added successfully!");
+            } else {
+                toast.error('Unable to add address. Please try again later');
+            }
         } catch (error) {
-            toast.success(error?.message)
+            console.error("Unable to add address. Please try again later", error);
+            toast.error('Unable to add address. Please try again later');
             dispatch(hasError(error));
         }
     };
@@ -109,28 +108,37 @@ export function postCheckboxAddress(payload, toast) {
     return async (dispatch) => {
         try {
             dispatch(startLoading());
-            console.log('payload123',payload)
             const response = await axios.post('/cart/attach-address', payload);
-            toast.success(response.data.message)
+            if (response?.data?.status == true) {
+                toast.success(response?.data?.message)
+            } else {
+                toast.error("Address Linking Failed")
+            }
         } catch (error) {
-            toast.success(error?.message)
+            console.error("Address Linking Failed", error);
+            toast.error("Address Linking Failed")
             dispatch(hasError(error));
         }
     };
 }
 
-
-export function putAddress(id, payload, toast,navigate) {
+export function putAddress(id, payload, toast, navigate) {
     return async (dispatch) => {
         try {
             dispatch(startLoading());
             const response = await axios.put(`/updateAddresses/${id}`, payload);
-            console.log("responseresponse",response)
             dispatch(postAddressSuccess(response?.data));
-            toast.success(response.data.message)
-            navigate('/my-account/address-book')
+
+            if (response?.data?.status == true) {
+                toast.success("Address updated successfully!")
+                navigate('/my-account/address-book')
+            } else {
+                toast.error("Please check your input and try again.")
+            }
         } catch (error) {
             dispatch(hasError(error));
+            toast.error("Please check your input and try again.")
+            console.error("Please check your input and try again.", error);
         }
     };
 }
@@ -141,10 +149,15 @@ export function deleteAddress(id, toast) {
             dispatch(startLoading());
             const response = await axios.delete(`/deleteAddresses/${id}`);
             dispatch(deleteAddressSuccess(response.data.status));
-            toast.success(response.data?.message)
+            if (response?.data?.status == true) {
+                toast.success(response.data?.message)
+            } else {
+                toast.error("Unable to remove address. It might be in use.")
+            }
         } catch (error) {
-            toast.error(error?.message)
             dispatch(hasError(error));
+            toast.error("Unable to remove address. It might be in use.")
+            console.error("Unable to remove address. It might be in use.", error);
         }
     };
 }

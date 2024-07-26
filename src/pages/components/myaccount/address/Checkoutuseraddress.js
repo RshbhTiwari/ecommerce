@@ -7,7 +7,7 @@ import { postAddress } from '../../../../redux/slices/address';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
-const Checkoutuseraddress = ({ ship, handleClick , checkship,checkbil }) => {
+const Checkoutuseraddress = ({ backCLick, ship, handleClick , checkship,checkbil }) => {
 
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
@@ -160,7 +160,13 @@ const Checkoutuseraddress = ({ ship, handleClick , checkship,checkbil }) => {
                         </div>
                     </div>
                 </div>
-                <div className='mt-6'>
+                <div className='mt-6 flex gap-4'>
+                <Btnone
+                        title='Back'
+                        bgColor="#072320"
+                        width="100%"
+                        handleClick={backCLick}
+                    />
                     <Btnone
                         title={loading ? 'Posting...' : 'Go to Next Step'}  // Change button text based on loading state
                         bgColor="#00A762"

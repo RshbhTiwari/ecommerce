@@ -38,7 +38,6 @@ const ProductSingleContentPage = ({ oneproduct }) => {
             ...(cart_id && { cart_id }),
             ...(customer_id && { customer_id })
         };
-        console.log("cartItem", cartItem)
         dispatch(addCartItems(cartItem, toast, navigate));
     };
 

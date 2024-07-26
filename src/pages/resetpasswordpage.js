@@ -6,9 +6,7 @@ import { useParams } from "react-router-dom";
 function Forgotpassword() {
 
     const { token } = useParams();
-    console.log("token", token);
   
-
     return (
         <>
             <div className="container mx-auto flex items-center justify-center max-w-7xl px-2 sm:px-6 lg:px-8">
