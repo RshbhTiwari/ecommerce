@@ -450,6 +450,11 @@ const AccordionExample = () => {
         setIsShippingOpen(true);
     };
 
+
+    const handleConfirmOrder = () => {
+        console.log('Order confirmed from parent component');
+    };
+
     return (
         <>
             <div className="shadow-md rounded-lg">
@@ -460,7 +465,7 @@ const AccordionExample = () => {
                         </h2>
                         <div
                             className="flex items-center justify-center h-8 w-8 rounded-md bg-[#072320] cursor-pointer"
-                            // onClick={() => handleAccordionToggle(setIsOpen)}
+                        // onClick={() => handleAccordionToggle(setIsOpen)}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -532,7 +537,7 @@ const AccordionExample = () => {
                         </h2>
                         <div
                             className="flex items-center justify-center h-8 w-8 rounded-md bg-[#072320] cursor-pointer"
-                            // onClick={() => handleAccordionToggle(setIsBillingOpen)}
+                        // onClick={() => handleAccordionToggle(setIsBillingOpen)}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -554,7 +559,7 @@ const AccordionExample = () => {
                                 <>
                                     {isNewOpen || billAddress.length === 0 ? (
                                         <div className="shadow-md rounded-lg border-[#00A762] border-2 p-4 my-4">
-                                            <Checkoutuseraddress backCLick={() => handlebackBillClick()}  checkbil={true} ship={true} handleClick={handleBillingClick} />
+                                            <Checkoutuseraddress backCLick={() => handlebackBillClick()} checkbil={true} ship={true} handleClick={handleBillingClick} />
                                         </div>
                                     ) : null}
                                     {billAddress.length > 0 && (
@@ -595,7 +600,7 @@ const AccordionExample = () => {
                         </h2>
                         <div
                             className="flex items-center justify-center h-8 w-8 rounded-md bg-[#072320] cursor-pointer"
-                            // onClick={() => handleAccordionToggle(setIsShippingOpen)}
+                        // onClick={() => handleAccordionToggle(setIsShippingOpen)}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -659,7 +664,7 @@ const AccordionExample = () => {
                         </h2>
                         <div
                             className="flex items-center justify-center h-8 w-8 rounded-md bg-[#072320] cursor-pointer"
-                            // onClick={() => handleAccordionToggle(setIsPaymentOpen)}
+                        // onClick={() => handleAccordionToggle(setIsPaymentOpen)}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -675,10 +680,12 @@ const AccordionExample = () => {
                 </div>
                 {isPaymentOpen && (
                     <>
-                        <PaymentOptions />
+                        {/* <PaymentOptions /> */}
                         {/* <div className="flex items-start w-full gap-2">
-                            <Btnone title="Back" handleClick={handlebackPayClick} bgColor="#00A762" />
+                            
                         </div> */}
+                        <PaymentOptions onConfirmOrder={handleConfirmOrder} backCLick={handlebackPayClick}/>
+                      
                     </>
                 )}
             </div>

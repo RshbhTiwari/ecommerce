@@ -113,7 +113,7 @@ export function postLoginUser(payload, toast, reset, navigate, handleClick) {
             dispatch(
                 getLoginAccessTokenSuccess(response?.data?.access_token)
             );
-            if (response.data.status == true) {
+            if (response?.data?.status == true) {
                 reset();
                 if (handleClick) {
                     handleClick()

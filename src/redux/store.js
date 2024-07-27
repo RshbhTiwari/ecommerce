@@ -6,6 +6,7 @@ import addToCart from './slices/addToCart';
 import address from './slices/address';
 import user from './slices/user';
 import wishlist from './slices/wishlist';
+import initiaterazorpay from './slices/initiaterazorpay';
 
 const store= configureStore({
     reducer:{
@@ -16,6 +17,7 @@ const store= configureStore({
         address:address,
         user:user,
         wishlist:wishlist,
+        initiaterazorpay:initiaterazorpay,
     },
 })
 

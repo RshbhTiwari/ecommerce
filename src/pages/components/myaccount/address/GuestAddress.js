@@ -65,9 +65,7 @@ const GuestAddress = ({backCLick, handleClick ,ship, checkship, checkbil}) => {
 
     const onSubmit = async (data) => {
         const cart_id = localStorage?.getItem('cart_id') || null;
-
         const is_shipping = data?.is_shipping 
-
         setLoading(true);
         try {
             await new Promise((resolve) => setTimeout(resolve, 500));

@@ -43,11 +43,6 @@ export default function CheckoutCard({ cartData, itemCount, allCartItems }) {
                                         <td className='w-full text-base font-dm text-right text-white'>₹ {allCartItems?.grand_total_cart}</td>
                                     </tr>
                                     <hr />
-
-                                    <div className='w-full mt-6'>
-                                        <Btnone title="Confirm Order" handleClick={() => navigate('/checkout')} bgColor="#00A762" borderColor="#00A762" width="100%" />
-                                    </div>
-
                                 </table>
 
                             </div>
