@@ -2,11 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Slider from "react-slick";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { useSelector, useDispatch } from "react-redux";
-import {
-    fetchAllCategories,
-    startLoading,
-    hasError,
-} from "../../../redux/slices/category";
+import { fetchAllCategories } from "../../../redux/slices/category";
 import { Paragraph } from "../basic/title";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -47,13 +43,18 @@ const CategoriesCard = () => {
     const dispatch = useDispatch();
     const sliderRef = useRef(null);
     const [allCategoriesData, setAllCategoriesData] = useState([]);
+    const [isDelayedLoading, setIsDelayedLoading] = useState(true); // New state for delay simulation
 
     const { isLoading, error, categories } = useSelector(
         (state) => state.category
     );
 
     useEffect(() => {
-        dispatch(fetchAllCategories());
+        const timer = setTimeout(() => {
+            dispatch(fetchAllCategories());
+            setIsDelayedLoading(false);
+        }, 1000);
+        return () => clearTimeout(timer);
     }, [dispatch]);
 
     useEffect(() => {
@@ -74,70 +75,77 @@ const CategoriesCard = () => {
         navigate(`/categories/${id}`);
     };
 
+    if (isDelayedLoading || isLoading) {
+        return (
+            <Slider ref={sliderRef} {...settings} className="">
+                {[...Array(5)].map((_, index) => (
+                    <div key={index} className="animate-pulse border border-blue-200 shadow rounded-md">
+                        <div className="flex flex-col items-center justify-center rounded-lg p-3 ">
+                            <div className="w-[75px] h-[75px] bg-gray-300 mb-2 mx-auto rounded-lg"></div>
+                            <div className="h-4 w-20 bg-gray-300 rounded-full mb-2"></div>
+                            <div className="h-4 w-32 bg-gray-300 rounded-full"></div>
+                        </div>
+                    </div>
+                ))}
+            </Slider>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="text-center text-red-500">
+                <p>Error loading categories. Please try again later.</p>
+            </div>
+        );
+    }
+
     return (
         <div className="relative">
-            {isLoading ? (
-                <div className="grid grid-cols-5 gap-4">
-                    {[...Array(5)].map((_, index) => (
-                        <div key={index} className="animate-pulse border border-blue-200 shadow rounded-md">
-                            <div className="flex flex-col items-center justify-center rounded-lg p-3 ">
-                                <div className="w-[75px] h-[75px] bg-gray-300 mb-2 mx-auto rounded-lg"></div>
-                                <div className="h-4 w-20 bg-gray-300 rounded-full mb-2"></div>
-                                <div className="h-4 w-32 bg-gray-300 rounded-full"></div>
+            <Slider ref={sliderRef} {...settings} className="">
+                {allCategoriesData.map((item, index) => (
+                    <div key={index} className="px-2">
+                        <div className="flex flex-col items-center justify-center rounded-lg p-3 border-2 border-[#072320] cursor-pointer"
+                            onClick={() => categoriDetailsRow(item.id)}>
+
+                            <div className="w-[75px] mb-2 mx-auto">
+                                {item?.thumbnail_image ? (
+                                    <img
+                                        src={BASE_IMAGE_URL + item?.thumbnail_image}
+                                        alt="image"
+                                        className=""
+                                        onClick={() => categoriDetailsRow(item.id)}
+                                    />
+                                ) : (
+                                    <img
+                                        src={defultimage}
+                                        alt="image"
+                                        className=""
+                                        onClick={() => categoriDetailsRow(item.id)}
+                                    />
+                                )}
                             </div>
+                            <h2 className="text-[#00A762] text-center font-dm text-lg capitalize font-medium">
+                                {item?.name}
+                            </h2>
+                            <Paragraph title={`${item?.total_product_count} Products`} />
                         </div>
-                    ))}
-                </div>
-            ) : (
-                <>
-                    <Slider ref={sliderRef} {...settings} className="">
-                        {allCategoriesData.map((item, index) => (
-                            <div key={index} className="px-2" >
-                                <div className="flex flex-col items-center justify-center rounded-lg p-3 border-2 border-[#072320] cursor-pointer"
-                                    onClick={() => categoriDetailsRow(item.id)}>
-
-                                    <div className="w-[75px] mb-2 mx-auto" >
-
-                                        {item?.thumbnail_image ? (
-                                            <img
-                                                src={BASE_IMAGE_URL + item?.thumbnail_image}
-                                                alt="image"
-                                                className=""
-                                                onClick={() => categoriDetailsRow(item.id)}
-                                            />
-                                        ) : (
-                                            <img
-                                                src={defultimage}
-                                                alt="image"
-                                                className=""
-                                                onClick={() => categoriDetailsRow(item.id)}
-                                            />
-                                        )}
-                                    </div>
-                                    <h2 className="text-[#00A762] text-center font-dm text-lg capitalize font-medium">
-                                        {item?.name}
-                                    </h2>
-                                    <Paragraph title={`${item?.total_product_count} Products`} /> 
-                                </div>
-                            </div>
-                        ))}
-                    </Slider>
-                    <div className="flex justify-between items-center absolute left_right_btn">
-                        <button
-                            className="left_btn flex justify-center items-center animate-bounce w-11 h-11 rounded-full bg-[#00A762]"
-                            onClick={prevSlide}
-                        >
-                            <MdKeyboardArrowLeft className="text-white text-4xl" />
-                        </button>
-                        <button
-                            className="right_btn flex justify-center items-center animate-bounce w-11 h-11 rounded-full bg-[#00A762]"
-                            onClick={nextSlide}
-                        >
-                            <MdKeyboardArrowRight className="text-white text-4xl" />
-                        </button>
                     </div>
-                </>
-            )}
+                ))}
+            </Slider>
+            <div className="flex justify-between items-center absolute left_right_btn">
+                <button
+                    className="left_btn flex justify-center items-center animate-bounce w-11 h-11 rounded-full bg-[#00A762]"
+                    onClick={prevSlide}
+                >
+                    <MdKeyboardArrowLeft className="text-white text-4xl" />
+                </button>
+                <button
+                    className="right_btn flex justify-center items-center animate-bounce w-11 h-11 rounded-full bg-[#00A762]"
+                    onClick={nextSlide}
+                >
+                    <MdKeyboardArrowRight className="text-white text-4xl" />
+                </button>
+            </div>
         </div>
     );
 };

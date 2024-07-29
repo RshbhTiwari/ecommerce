@@ -35,16 +35,15 @@ const settings = {
     }
   ]
 };
-const CarouselCard = () => {
 
+const CarouselCard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [allfeaturedData, setAllfeaturedData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const { isLoading, error, featured } = useSelector(
-    (state) => state.category
-  );
+  const { isLoading: featuredLoading, error, featured } = useSelector((state) => state.category);
 
   useEffect(() => {
     dispatch(fetchAllFeaturedCategories());
@@ -52,7 +51,12 @@ const CarouselCard = () => {
 
   useEffect(() => {
     if (featured?.length) {
-      setAllfeaturedData(featured);
+      const timer = setTimeout(() => {
+        setAllfeaturedData(featured);
+        setIsLoading(false);
+      }, 1000);
+
+      return () => clearTimeout(timer);
     }
   }, [featured]);
 
@@ -60,41 +64,61 @@ const CarouselCard = () => {
     navigate(`/categories/${id}`);
   };
 
+  if (isLoading || featuredLoading) {
+    // Skeleton loader while data is loading
+    return (
+      <Slider {...settings} className='py-10'>
+        {[...Array(3)].map((_, index) => (
+          <div key={index} className="animate-pulse border border-blue-200 shadow rounded-md p-3">
+            <div className="flex flex-col items-center justify-center rounded-lg p-3">
+              <div className="w-[150px] h-[150px] bg-gray-300 mb-2 mx-auto rounded-lg"></div>
+              <div className="h-4 w-24 bg-gray-300 rounded-full mb-2"></div>
+              <div className="h-4 w-32 bg-gray-300 rounded-full"></div>
+            </div>
+          </div>
+        ))}
+      </Slider>
+    );
+  }
+
+  if (error) {
+    // Error handling
+    return (
+      <div className="py-10 text-center text-red-600">
+        <p>Something went wrong. Please try again later.</p>
+      </div>
+    );
+  }
+
   return (
     <Slider {...settings} className='py-10'>
       {allfeaturedData.map((item, index) => (
-        <div key={index} className='px-2 relative h-full cursor-pointer' onClick={() => categoriDetailsRow(item.id)}>
-          <div className='relative h-full'>
+        <div key={index} className='px-2 relative h-full'>
+          <div className='relative h-full cursor-pointer' onClick={() => categoriDetailsRow(item.id)}>
             <div className='overflow-hidden rounded-lg h-full'>
-
               {item?.feature_image ? (
                 <img
                   src={BASE_IMAGE_URL + item?.feature_image}
                   alt="image"
-                  onClick={() => categoriDetailsRow(item.id)}
-                  className=" shadow rounded-lg overflow-hidden object-cover hover:scale-110 transition-all duration-500 cursor-pointer h-full"
+                  className="shadow rounded-lg overflow-hidden object-cover hover:scale-110 transition-all duration-500 cursor-pointer h-full"
                 />
               ) : (
                 <img
                   src={defultimage}
                   alt="image"
-                  onClick={() => categoriDetailsRow(item.id)}
-                  className=" shadow rounded-lg overflow-hidden object-cover hover:scale-110 transition-all duration-500 cursor-pointer h-full"
+                  className="shadow rounded-lg overflow-hidden object-cover hover:scale-110 transition-all duration-500 cursor-pointer h-full"
                 />
               )}
-
             </div>
-
-            {/* Absolute box */}
             <div className='absolute card_gradient px-3 py-3'>
               <div className='relative h-full'>
                 <p className='text-white font-dm'>{item?.name}</p>
               </div>
             </div>
-
           </div>
+
           <div className='absolute card_btn_box'>
-            <Btnone title="Shop Now" bgColor="#072320" borderColor="#00A762" />
+            <Btnone title="Shop Now" bgColor="#072320" borderColor="#00A762" handleClick={() => navigate('/shop')} />
           </div>
         </div>
       ))}

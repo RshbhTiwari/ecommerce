@@ -12,7 +12,7 @@ const ShopSingleDetails = ({ id }) => {
 
     const [allSingleProductsData, setSingleProductsData] = useState([]);
 
-    const { isLoading, error, oneproduct, products } = useSelector(
+    const { isLoading:singleProductIsloading, error:singleProductError, oneproduct, products } = useSelector(
         (state) => state.product
     );
     useEffect(() => {
@@ -41,7 +41,8 @@ const ShopSingleDetails = ({ id }) => {
                     </div>
 
                     <div className='lg:col-span-7 col-span-12'>
-                        <ProductSingleContentPage oneproduct={allSingleProductsData} />
+                        <ProductSingleContentPage oneproduct={allSingleProductsData}
+                         singleProductError={singleProductError} singleProductIsloading={singleProductIsloading} />
                     </div>
                 </div>
 

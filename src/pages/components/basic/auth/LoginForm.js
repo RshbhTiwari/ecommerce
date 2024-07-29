@@ -37,7 +37,12 @@ const LoginForm = ({handleClick}) => {
                 password: data.password,
                 ...(cart_id && { cart_id }),
             };
-            dispatch(postLoginUser(payload, toast, reset, navigate, handleClick));
+            dispatch(postLoginUser(payload, toast, reset));
+            if (handleClick) {
+                handleClick()
+            }else {
+                navigate('/');
+            }
         } catch (error) {
             console.error(error);
         }

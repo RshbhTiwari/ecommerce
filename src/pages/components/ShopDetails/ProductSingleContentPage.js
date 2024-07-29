@@ -11,13 +11,20 @@ import { useDispatch } from 'react-redux';
 import { addCartItems } from '../../../redux/slices/addToCart';
 import { toast } from 'react-toastify';
 
-const ProductSingleContentPage = ({ oneproduct }) => {
+const ProductSingleContentPage = ({ oneproduct, singleProductIsloading, singleProductError }) => {
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [quantity, setQuantity] = useState(1);
 
-    const { name, description, discount_price, sku, price, stock_status, additional_images, short_description } = oneproduct;
+    const [loading, setLoading] = useState(true);
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+        return () => clearTimeout(timer);
+    }, []);
 
     const handleIncrement = () => {
         setQuantity(prev => prev + 1);
@@ -31,7 +38,7 @@ const ProductSingleContentPage = ({ oneproduct }) => {
         const cart_id = localStorage?.getItem('cart_id') || null;
         const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
 
-        const finalPrice = discount_price || price;
+        const finalPrice = oneproduct.discount_price || oneproduct.price;
         const cartItem = {
             item_id: oneproduct.id,
             quantity,
@@ -41,59 +48,94 @@ const ProductSingleContentPage = ({ oneproduct }) => {
         dispatch(addCartItems(cartItem, toast, navigate));
     };
 
+    const { name, description, discount_price, sku, price, stock_status } = oneproduct;
+
+    if (!oneproduct) {
+        return (
+            <div className="text-center text-gray-600">
+                <p>No product information available.</p>
+            </div>
+        );
+    }
+
 
     return (
         <>
-            <div className="mb-4">
-                <StockBtn title={stock_status === 'in_stock' ? 'In Stock' : 'Out of Stock'} />
-            </div>
+            {singleProductIsloading || loading  ? (
+                <>
+                    <div className="animate-pulse">
+                        <div className="h-8 bg-gray-300 rounded mb-4"></div>
 
-            <div className="mb-4">
-                <HeadingBanner title={name} color='#072320' />
-            </div>
+                        <div className="h-5 w-[150px] bg-gray-300 mb-4 rounded"></div>
 
-            <div className="mb-4">
-                {discount_price ? (
-                    <>
-                        <div className="flex items-center sm:justify-start justify-center gap-2 text-[#00A762] text-center font-dm text-lg capitalize font-medium pb-2">
-                            <span className="block text-xs line-through">₹{price}</span>
-                            <span className="block">₹{discount_price}</span>
+                        <div className="h-4 bg-gray-300 rounded mb-2"></div>
+                        <div className="h-4 bg-gray-300 rounded mb-2"></div>
+                        <div className="h-4 w-2/4 bg-gray-300 rounded mb-4"></div>
+
+                        <div className="h-10 w-[150px] bg-gray-300 mb-4 rounded"></div>
+
+                        <div className="flex gap-4 mb-8">
+                            <div className="h-12 w-1/2 bg-gray-300 rounded"></div>
+                            <div className="h-12 w-1/2 bg-gray-300 rounded"></div>
                         </div>
-                    </>
-                ) : (
-                    <h2 className="text-[#00A762] font-dm text-lg sm:text-left text-center capitalize font-medium pb-2">
-                        ₹{price}
-                    </h2>
-                )}
-            </div>
-            <div className="mb-8">
-                <Paragraph title={description} textAlign='left' />
-            </div>
+                    </div>
+                </>
+            ) : singleProductError ? (
+                <p>There was an error loading the product.</p>
+            ) : (
+                <>
+                    <div className="mb-4">
+                        <StockBtn title={stock_status === 'in_stock' ? 'In Stock' : 'Out of Stock'} />
+                    </div>
 
-            <div className="mb-8 flex items-center sm:justify-start justify-center">
-                <div className="">
-                    <h2 className="text-[#00A762] font-dm text-lg capitalize font-medium">Quantity</h2>
-                </div>
+                    <div className="mb-4">
+                        <HeadingBanner title={name} color='#072320' />
+                    </div>
 
-                <div className="quantity_btn ml-4" name="quantity">
-                    <button className="btn_plus hover:bg-gray-200 hover:rounded-l-lg" type="button" onClick={handleIncrement}>
-                        <MdAdd className='text-[#00A762]' />
-                    </button>
-                    <input className="w-full focus:outline-none text-center bg-transparent" value={quantity} disabled style={{ border: "0px solid" }} />
-                    <button className="btn_minus hover:bg-gray-200 hover:rounded-r-lg" type="button" onClick={handleDecrement}>
-                        <FiMinus style={{ color: "#00A762" }} />
-                    </button>
-                </div>
-            </div>
+                    <div className="mb-4">
+                        {discount_price ? (
+                            <div className="flex items-center sm:justify-start justify-center gap-2 text-[#00A762] text-center font-dm text-lg capitalize font-medium pb-2">
+                                <span className="block text-xs line-through">₹{price}</span>
+                                <span className="block">₹{discount_price}</span>
+                            </div>
+                        ) : (
+                            <h2 className="text-[#00A762] font-dm text-lg sm:text-left text-center capitalize font-medium pb-2">
+                                ₹{price}
+                            </h2>
+                        )}
+                    </div>
+                    <div className="mb-8">
+                        <Paragraph title={description} textAlign='left' />
+                    </div>
+                    <div className="mb-8 flex items-center sm:justify-start justify-center">
+                        <div className="">
+                            <h2 className="text-[#00A762] font-dm text-lg capitalize font-medium">Quantity</h2>
+                        </div>
 
-            <div className="grid grid-cols-12 gap-4 mb-8">
-                <div className='md:col-span-6 col-span-12'>
-                    <Btnoutline title="add to cart" width="100%" handleClick={handleAddToCart} />
-                </div>
-                <div className='md:col-span-6 col-span-12'>
-                    <Btnone title="buy now" bgColor="#00A762" width="100%" />
-                </div>
-            </div>
+                        <div className="quantity_btn ml-4" name="quantity">
+                            <button className="btn_plus hover:bg-gray-200 hover:rounded-l-lg" type="button" onClick={handleIncrement}>
+                                <MdAdd className='text-[#00A762]' />
+                            </button>
+                            <input className="w-full focus:outline-none text-center bg-transparent" value={quantity} disabled style={{ border: "0px solid" }} />
+                            <button className="btn_minus hover:bg-gray-200 hover:rounded-r-lg" type="button" onClick={handleDecrement}>
+                                <FiMinus style={{ color: "#00A762" }} />
+                            </button>
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-12 gap-4 mb-8">
+                        <div className='md:col-span-6 col-span-12'>
+                            <Btnoutline title="add to cart" width="100%" handleClick={handleAddToCart} />
+                        </div>
+                        <div className='md:col-span-6 col-span-12'>
+                            <Btnone title="buy now" bgColor="#00A762" width="100%" />
+                        </div>
+                    </div>
+                </>
+            )}
+
+
+
+
 
             <div className="flex items-center justify-between">
                 <div className="">
@@ -120,8 +162,11 @@ const ProductSingleContentPage = ({ oneproduct }) => {
             </div>
 
             <ProductRatings title='4' />
+
+
         </>
     );
 };
 
 export default ProductSingleContentPage;
+

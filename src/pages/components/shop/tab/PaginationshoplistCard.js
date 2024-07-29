@@ -4,7 +4,7 @@ import { Paragraph } from '../../basic/title';
 import { FaAngleRight } from "react-icons/fa";
 import { FaAngleLeft } from "react-icons/fa";
 
-const PaginationshoplistCard = ({ products }) => {
+const PaginationshoplistCard = ({ products, productIsLoading, productError }) => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 6;
@@ -29,7 +29,8 @@ const PaginationshoplistCard = ({ products }) => {
     return (
         <>
 
-            <ProductsortpillsCard allProducts={currentProducts} />
+            <ProductsortpillsCard skeletonCount={currentProducts?.length} allProducts={currentProducts} productIsLoading={productIsLoading}
+                productError={productError} />
 
             {products?.length ? (
                 <div className="flex justify-center  mt-8 w-full">

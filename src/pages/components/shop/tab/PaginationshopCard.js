@@ -5,7 +5,7 @@ import { Paragraph } from '../../basic/title';
 import { FaAngleRight } from "react-icons/fa";
 import { FaAngleLeft } from "react-icons/fa";
 
-const PaginationshopCard = ({ products }) => {
+const PaginationshopCard = ({ products, productIsLoading, productError }) => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 6;
@@ -29,7 +29,8 @@ const PaginationshopCard = ({ products }) => {
 
     return (
         <>
-            <ProductCard allProducts={currentProducts} />
+            <ProductCard skeletonCount={currentProducts?.length} allProducts={currentProducts} productIsLoading={productIsLoading}
+                productError={productError} />
 
 
             {products?.length ? (

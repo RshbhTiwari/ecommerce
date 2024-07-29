@@ -4,7 +4,7 @@ import { CgMenuGridR } from "react-icons/cg";
 import PaginationshopCard from './PaginationshopCard';
 import PaginationshoplistCard from './PaginationshoplistCard';
 
-const ProductTab = ({ allproducts }) => {
+const ProductTab = ({ allproducts, productIsLoading, productError }) => {
     const [activeTab, setActiveTab] = useState('tab_a');
 
     const handleTabClick = (tab) => {
@@ -35,10 +35,12 @@ const ProductTab = ({ allproducts }) => {
 
             <div className="mt-4 h-full" >
                 {activeTab === 'tab_a' && (
-                    <PaginationshopCard products={allproducts} />
+                    <PaginationshopCard products={allproducts} productIsLoading={productIsLoading}
+                        productError={productError} />
                 )}
                 {activeTab === 'tab_b' && (
-                    <PaginationshoplistCard products={allproducts} />
+                    <PaginationshoplistCard products={allproducts} productIsLoading={productIsLoading}
+                        productError={productError} />
                 )}
             </div>
         </>

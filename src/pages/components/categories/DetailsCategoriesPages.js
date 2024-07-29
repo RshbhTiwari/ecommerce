@@ -15,7 +15,6 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ProductTab from '../shop/tab/productTab';
 import CollectionsShopCard from '../shop/CollectionsShopCard';
-import { ErrorPages } from '../basic/ErrorPages';
 import { getproduct } from '../../../redux/slices/product';
 
 export default function DetailsCategoriesPages({ id }) {
@@ -25,7 +24,10 @@ export default function DetailsCategoriesPages({ id }) {
     const [reloadPage, setReloadPage] = useState(false);
     const [allCategoriesData, setAllCategoriesData] = useState([]);
     const [allSubProductsData, setAllSubProductsData] = useState([]);
-    const { isLoading, error, categories, oneCategory, oneSubCategory } = useSelector(
+
+    const [loading, setLoading] = useState(true);
+
+    const { isLoading: categoryIsLoading, error: categoryError, categories, oneCategory, oneSubCategory } = useSelector(
         (state) => state.category
     );
     const { isLoading: productIsLoading, error: productError, products } = useSelector(
@@ -58,10 +60,19 @@ export default function DetailsCategoriesPages({ id }) {
     }, [reloadPage]);
 
     useEffect(() => {
-        if (oneCategory && oneCategory.all_products) {
-            setAllSubProductsData(oneCategory.all_products);
+        if (oneCategory && oneCategory?.all_products) {
+            setAllSubProductsData(oneCategory?.all_products);
         }
     }, [oneCategory, id]);
+
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+        return () => clearTimeout(timer);
+    }, []);
+
 
 
     const categoriDetailsRow = (id) => {
@@ -79,19 +90,6 @@ export default function DetailsCategoriesPages({ id }) {
         }
     }, [oneSubCategory]);
 
-    if (isLoading) {
-        return <p>Loading...</p>;
-    }
-
-    if (error) {
-        return <div className='my-10'>
-            <ErrorPages
-                title="Oops! Page Not Found"
-                massage="It seems like you've taken a wrong turn. Don't worry, you can head back to our homepage to continue your shopping journey."
-                height="350px"
-                handleClick={() => { navigate('/') }}
-            /></div>;
-    }
 
     return (
         <>
@@ -103,9 +101,22 @@ export default function DetailsCategoriesPages({ id }) {
 
 
                     <div className='md:col-span-4 lg:col-span-3 col-span-12'>
-                        {allCategoriesData.length > 0 ? (
-                            <div className='pb-10'>
-                                <HeadingTitle title="Categories" textAlign='left' />
+
+                        <div className='pb-10'>
+                            <HeadingTitle title="Categories" textAlign='left' />
+
+                            {categoryIsLoading || loading ? (
+                                <>
+                                    {allCategoriesData.map((_, index) => (
+                                        <div key={index} className='animate-pulse flex justify-between pt-4' >
+                                            <div className='w-[150px]  py-2 bg-gray-300  rounded'></div>
+                                            <div className='w-10 bg-gray-300 rounded'></div>
+                                        </div>
+                                    ))}
+                                </>
+                            ) : categoryError ? (
+                                <p className="font-dm ">Error loading categories</p>
+                            ) : allCategoriesData.length > 0 ? (
                                 <table className='w-full my-2'>
                                     <tbody>
                                         {allCategoriesData.map((row, index) => (
@@ -114,13 +125,13 @@ export default function DetailsCategoriesPages({ id }) {
                                                 row={row}
                                                 onDetailsRow={() => categoriDetailsRow(row.id)}
                                             />
-                                        ))
-                                        }
-
+                                        ))}
                                     </tbody>
                                 </table>
-                            </div>
-                        ) : null}
+                            ) : null}
+                        </div>
+
+
                         <div className='pb-10'>
                             <HeadingTitle title="Best Seller" textAlign='left' />
 
@@ -144,62 +155,104 @@ export default function DetailsCategoriesPages({ id }) {
                     <div className='md:col-span-8 lg:col-span-9 col-span-12'>
 
                         <div className='px-4 pb-4'>
-                            <HeadingBanner color='#072320'
-                                title={oneCategory?.name}
-                                textAlign='left' />
-
-                            <div>
-                                <Paragraph
-                                    title={oneCategory?.description} textAlign='left' />
-                            </div>
-
-                            {oneCategory?.children && oneCategory?.children?.length > 0 ? (
+                            {categoryIsLoading || loading ? (
                                 <>
-                                    <div className='my-6'>
-                                        <HeadingTitle title="Sub Categories" textAlign='left' />
+                                    <div className='animate-pulse' >
+                                        <div className='w-[200px] h-6  py-2 bg-gray-300  rounded'></div>
+                                        <div className='mt-2'>
+                                            <div className='w-full h-4 bg-gray-300 rounded '></div>
+                                            <div className='w-full h-4 bg-gray-300 rounded my-2'></div>
+                                            {/* <div className='w-full h-4 bg-gray-300 rounded my-2'></div> */}
+                                            <div className='w-2/4 h-4 bg-gray-300 rounded'></div>
+                                        </div>
+
                                     </div>
+                                </>
+                            ) : categoryError ? (
+                                <p className="font-dm ">Error loading categories</p>
+                            ) : (
+                                <>
+                                    <HeadingBanner color='#072320'
+                                        title={oneCategory?.name}
+                                        textAlign='left' />
+                                    <div>
+                                        <Paragraph
+                                            title={oneCategory?.description} textAlign='left' />
+                                    </div>
+                                </>
+                            )}
 
-
+                            <div className='my-6'>
+                                <HeadingTitle title="Sub Categories" textAlign='left' />
+                            </div>
+                            {categoryIsLoading || loading ? (
+                                <>
                                     <div className='mb-6'>
                                         <div className="grid grid-cols-12 gap-6">
-                                            {oneCategory?.children?.map((row, index) => (
-                                                <div key={index}
-                                                    onClick={() => handleSubProductsRow(row?.id)}
-                                                    className='md:col-span-6 lg:col-span-3 col-span-12 cursor-pointer 
-                                                    flex flex-col justify-center p-3 relative h-full items-center rounded-lg
-                                                     border-[2px] border-[#072320]'>
-
-                                                    <div className='flex justify-center items-center bg-[#00A762] rounded-lg p-3'>
-                                                        <div className='overflow-hidden rounded-lg'>
-                                                            <img
-                                                                src={BASE_IMAGE_URL + row?.thumbnail_image}
-                                                                alt="image"
-                                                                className="overflow-hidden rounded-lg
-                                                     hover:scale-110 transition-all duration-500 cursor-pointer"
-                                                            />
-                                                        </div>
+                                            {oneCategory?.children?.map((_, index) => (
+                                                <div key={index} className='md:col-span-6 lg:col-span-3 col-span-12 
+                                                cursor-pointer flex flex-col justify-center p-3 relative h-full
+                                                 items-center rounded-lg border-2'>
+                                                    <div className='flex justify-center items-center rounded-lg p-3'>
+                                                        {/* <Skeleton height={100} width={100} /> */}
                                                     </div>
-
                                                     <div className='pt-2'>
-                                                        <h2 className="text-[#00A762] text-center 
-                                               font-dm text-lg capitalize font-medium 
-                                                ">{row?.name}</h2>
+                                                        {/* <Skeleton height={20} width={100} /> */}
                                                     </div>
-
-                                                    <h1 className='font-dm text-center'>{row?.products_count} Products</h1>
-
+                                                    {/* <Skeleton height={20} width={150} /> */}
                                                 </div>
-                                            ))
-                                            }
+                                            ))}
                                         </div>
                                     </div>
                                 </>
-                            ) : null}
+                            ) : categoryError ? (
+                                <p className="font-dm ">Error loading categories</p>
+                            ) : (
+                                <>
+                                    {oneCategory?.children && oneCategory?.children?.length > 0 ? (
+                                        <>
+                                            <div className='mb-6'>
+                                                <div className="grid grid-cols-12 gap-6">
+                                                    {oneCategory?.children?.map((row, index) => (
+                                                        <div key={index}
+                                                            onClick={() => handleSubProductsRow(row?.id)}
+                                                            className='md:col-span-6 lg:col-span-3 col-span-12 cursor-pointer 
+                                                    flex flex-col justify-center p-3 relative h-full items-center rounded-lg
+                                                     border-[2px] border-[#072320]'>
+
+                                                            <div className='flex justify-center items-center bg-[#00A762] rounded-lg p-3'>
+                                                                <div className='overflow-hidden rounded-lg'>
+                                                                    <img
+                                                                        src={BASE_IMAGE_URL + row?.thumbnail_image}
+                                                                        alt="image"
+                                                                        className="overflow-hidden rounded-lg
+                                                     hover:scale-110 transition-all duration-500 cursor-pointer"
+                                                                    />
+                                                                </div>
+                                                            </div>
+
+                                                            <div className='pt-2'>
+                                                                <h2 className="text-[#00A762] text-center 
+                                               font-dm text-lg capitalize font-medium 
+                                                ">{row?.name}</h2>
+                                                            </div>
+
+                                                            <h1 className='font-dm text-center'>{row?.products_count} Products</h1>
+
+                                                        </div>
+                                                    ))
+                                                    }
+                                                </div>
+                                            </div>
+                                        </>
+                                    ) : null}
+                                </>
+                            )}
                         </div>
 
                         <div className="max-w-screen-lg mx-auto p-4">
                             <ProductTab
-                                allproducts={allSubProductsData}
+                                allproducts={allSubProductsData} productIsLoading={productIsLoading} productError={productError}
                             />
                         </div>
                     </div>
@@ -220,3 +273,12 @@ export default function DetailsCategoriesPages({ id }) {
 
     );
 }
+
+
+{/* <div className='my-10'>
+    <ErrorPages
+        title="Oops! Page Not Found"
+        massage="It seems like you've taken a wrong turn. Don't worry, you can head back to our homepage to continue your shopping journey."
+        height="350px"
+        handleClick={() => { navigate('/') }}
+    /></div>; */}

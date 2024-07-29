@@ -74,8 +74,12 @@ const HomePage = () => {
                 {allProductsData?.length > 0 ? (
                     <div className="pb-10">
                         <HeadingTitle title="Bestsellers in September" />
+                        
                         <div className="mt-4">
-                            <ProductCard allProducts={productsToDisplay} /> 
+                            <ProductCard skeletonCount={4}
+                            allProducts={productsToDisplay} 
+                            productIsLoading={productIsLoading}
+                             productError={productError} /> 
                         </div>
                     </div>
                 ) : null}

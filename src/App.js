@@ -73,6 +73,7 @@ function App() {
           <Route path="/blog" element={<Blog />} />
           <Route exact path="/blog/:id" element={<DetailsBlog />} />
           <Route exact path="/categories/:id" element={<DetailsCategories />} />
+          
           <Route path="/search" element={<SearchProduct />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />

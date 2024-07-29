@@ -2,8 +2,10 @@ import { HeadingBanner } from '../basic/title';
 import Btnone from '../basic/button/one';
 import React from 'react';
 import video from '../../../assets/video/Supermarket.mp4';
+import { useNavigate } from 'react-router-dom';
 
 const Banner = () => {
+    const navigate = useNavigate();
     return (
         <div className="relative lg:h-[450px] md:h-[350px] h-[333px]">
             <div className="absolute inset-0">
@@ -23,7 +25,7 @@ const Banner = () => {
                 <div className='mt-2'>
 
                     <Btnone title="shop Now"
-                        // onClick={handleClick} 
+                        handleClick={() => navigate('/shop')}
                         bgColor="#00A762" borderColor="#00A762" />
                 </div>
             </div>
