@@ -185,7 +185,7 @@ export default function DetailsCategoriesPages({ id }) {
                             <div className='my-6'>
                                 <HeadingTitle title="Sub Categories" textAlign='left' />
                             </div>
-                            {categoryIsLoading || loading ? (
+                            {categoryIsLoading || loading  ? (
                                 <>
                                     <div className='mb-6'>
                                         <div className="grid grid-cols-12 gap-6">
@@ -195,7 +195,7 @@ export default function DetailsCategoriesPages({ id }) {
                                                     className='md:col-span-6 lg:col-span-3 col-span-12 cursor-pointer flex flex-col justify-center p-3 relative h-full items-center rounded-lg border-2 animate-pulse'
                                                 >
                                                     <div className='flex justify-center items-center rounded-lg p-3'>
-                                                        <div className="w-[150px] h-[150px] bg-gray-400 rounded-lg"></div>
+                                                        <div className="w-[150px] h-[150px] bg-gray-300 rounded-lg"></div>
                                                     </div>
 
                                                     <div className='pt-2'>
