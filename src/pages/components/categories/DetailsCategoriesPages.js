@@ -190,16 +190,19 @@ export default function DetailsCategoriesPages({ id }) {
                                     <div className='mb-6'>
                                         <div className="grid grid-cols-12 gap-6">
                                             {oneCategory?.children?.map((_, index) => (
-                                                <div key={index} className='md:col-span-6 lg:col-span-3 col-span-12 
-                                                cursor-pointer flex flex-col justify-center p-3 relative h-full
-                                                 items-center rounded-lg border-2'>
+                                                <div
+                                                    key={index}
+                                                    className='md:col-span-6 lg:col-span-3 col-span-12 cursor-pointer flex flex-col justify-center p-3 relative h-full items-center rounded-lg border-2 animate-pulse'
+                                                >
                                                     <div className='flex justify-center items-center rounded-lg p-3'>
-                                                        {/* <Skeleton height={100} width={100} /> */}
+                                                        <div className="w-[150px] h-[150px] bg-gray-400 rounded-lg"></div>
                                                     </div>
+
                                                     <div className='pt-2'>
-                                                        {/* <Skeleton height={20} width={100} /> */}
+                                                        <div className="w-[100px] h-4 bg-gray-300 rounded mb-2"></div>
                                                     </div>
-                                                    {/* <Skeleton height={20} width={150} /> */}
+
+                                                    <div className="w-[150px] h-4 bg-gray-300 rounded mb-2"></div>
                                                 </div>
                                             ))}
                                         </div>
