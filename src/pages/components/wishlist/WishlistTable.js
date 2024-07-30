@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Btnone } from '../basic/button';
 import { useDispatch } from "react-redux";
 import { toast } from 'react-toastify';
-import { deletewishlistCartItem, postMoveCartItme } from "../../../redux/slices/wishlist";
+import { deleteWishlistCartItem, deletewishlistCartItem, postMoveCartItem, postMoveCartItme } from "../../../redux/slices/wishlist";
 import { useCallback } from "react";
 
 export default function WishlistTable({ wishlistitems }) {
@@ -24,11 +24,11 @@ export default function WishlistTable({ wishlistitems }) {
         const payload = {
             product_id: itemId,
         };
-        dispatch(postMoveCartItme(payload, toast, navigate));
+        dispatch(postMoveCartItem(payload, toast, navigate));
     };
 
     const handleDelete = useCallback((itemId) => {
-        dispatch(deletewishlistCartItem(itemId, toast));
+        dispatch(deleteWishlistCartItem(itemId, toast));
     }, [dispatch]);
 
 

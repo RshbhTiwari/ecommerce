@@ -2,7 +2,6 @@ import BreadCrum from '../basic/BreadCrum';
 import { HeadingTitle, Paragraph } from '../basic/title';
 import { Btnone } from '../basic/button';
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
 import ShoppingCartTable from './ShoppingCartTable';
 import CartEmpty from '../basic/ErrorPages/cartempty';
 import { MdOutlineArrowBackIos } from "react-icons/md";
@@ -11,7 +10,6 @@ export default function ShoppingCard({ cartData, itemCount, allCartItems }) {
     const navigate = useNavigate();
     return (
         <>
-            <ToastContainer />
             <BreadCrum componentName="Cart" link="/shop" />
 
             <div className="container mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">

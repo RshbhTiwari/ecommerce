@@ -1,10 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../utils/axios";
-import { getAllCartItems } from "./addToCart";
 
 const initialState = {
-    isLoadingLogin: false,
     isLoading: false,
+    isLoadingLogin: false,
     error: null,
     registerUser: {},
     loginUser: {},
@@ -15,46 +14,40 @@ const initialState = {
 const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") : "";
 
 const headers = {
-    'Authorization': `Bearer ${accessToken}`, 
+    'Authorization': `Bearer ${accessToken}`,
     'Content-Type': 'application/json'
 };
 
-const Slice = createSlice({
-    name: "LoginRegister",
+const slice = createSlice({
+    name: "auth",
     initialState,
     reducers: {
         startLoading(state) {
             state.isLoading = true;
-            state.error = null; 
+            state.error = null;
         },
         startLoadingLogin(state) {
             state.isLoadingLogin = true;
         },
         hasError(state, action) {
             state.isLoading = false;
+            state.isLoadingLogin = false;
             state.error = action.payload;
         },
-
-        // POST RAGISTER
         getRegisterSuccess(state, action) {
             state.isLoading = false;
             state.registerUser = action.payload;
         },
-
-        // LOGIN RAGISTER
         getLoginSuccess(state, action) {
             state.isLoading = false;
             state.isLoadingLogin = false;
             state.loginUser = action.payload;
         },
-
-        // ACCESS TOKEN
         getLoginAccessTokenSuccess(state, action) {
             state.isLoadingLogin = false;
             state.userAccessToken = action.payload;
         },
-        
-        getForgotPassworSuccess(state, action) {
+        getForgotPasswordSuccess(state, action) {
             state.isLoading = false;
             state.userForgotPassword = action.payload;
         },
@@ -62,19 +55,17 @@ const Slice = createSlice({
 });
 
 export const {
-    startLoadingLogin,
     startLoading,
+    startLoadingLogin,
     hasError,
     getRegisterSuccess,
-    getLoginAccessTokenSuccess,
-    getForgotPassworSuccess,
     getLoginSuccess,
-} = Slice.actions;
+    getLoginAccessTokenSuccess,
+    getForgotPasswordSuccess,
+} = slice.actions;
 
-export default Slice.reducer;
+export default slice.reducer;
 
-
-// POST RAGISTER
 export function postRegisterUser(formData, reset, toast, navigate) {
     return async (dispatch) => {
         try {
@@ -82,7 +73,7 @@ export function postRegisterUser(formData, reset, toast, navigate) {
             const response = await axios.post("/register", formData);
             dispatch(getRegisterSuccess(response?.data));
 
-            if (response?.data?.status == true) {
+            if (response?.data?.status === true) {
                 reset();
                 toast.success("Log in to get started or verify your email for full access.");
                 navigate('/login');
@@ -91,59 +82,47 @@ export function postRegisterUser(formData, reset, toast, navigate) {
             }
         } catch (error) {
             reset();
-            console.error("Ensure your information is correct and try registering again.", error);
-            dispatch(hasError(error));
-            toast.error("Ensure your information is correct and try registering again");
-            if (error?.response?.data?.status == false) {
-                toast.error(error?.response?.data?.message);
-                toast.error(error?.response?.data?.errors?.email[0]);
-                toast.error(error?.response?.data?.errors?.contact[0]);
-            }
+            console.error("Error during registration:", error);
+            dispatch(hasError(error.response?.data?.message || "Registration failed"));
+            toast.error(error.response?.data?.message || "Ensure your information is correct and try registering again");
         }
     };
 }
 
-// LOGIN RAGISTER
 export function postLoginUser(payload, toast, reset) {
     return async (dispatch) => {
         try {
             dispatch(startLoadingLogin());
             const response = await axios.post("/login", payload);
             dispatch(getLoginSuccess(response?.data?.user));
-            dispatch(
-                getLoginAccessTokenSuccess(response?.data?.access_token)
-            );
-            if (response?.data?.status == true) {
+            dispatch(getLoginAccessTokenSuccess(response?.data?.access_token));
+
+            if (response?.data?.status === true) {
                 reset();
-                window.location.reload();
                 toast.success("You’re logged in. Check out new updates or start using your account.");
                 localStorage.setItem("user", JSON.stringify(response?.data?.user));
-                localStorage.setItem("cartid", response?.data?.cart_id);
+                localStorage.setItem("cart_id", response?.data?.cart_id);
                 localStorage.setItem("accessToken", response?.data?.access_token);
             } else {
                 toast.error("Check your credentials and try again");
             }
         } catch (error) {
             reset();
-            console.error("Check your credentials and try again", error);
-            dispatch(hasError(error));
-            toast.error("Check your credentials and try again");
-            if (error?.response?.data?.status == false) {
-                dispatch(getLoginSuccess(null));
-                dispatch(getLoginAccessTokenSuccess(null));
-            }
+            console.error("Error during login:", error);
+            dispatch(hasError(error.response?.data?.message || "Login failed"));
+            toast.error(error.response?.data?.message || "Check your credentials and try again");
         }
     };
 }
 
-// POST Forgot Password
 export function postForgotPasswordUser(payload, toast, reset) {
     return async (dispatch) => {
         try {
             dispatch(startLoading());
-            const response = await axios.post("/forgot-password", payload, { headers });
-            dispatch(getForgotPassworSuccess(response?.data));
-            if (response?.data?.status == true) {
+            const response = await axios.post("/forgot-password", payload);
+            dispatch(getForgotPasswordSuccess(response?.data));
+
+            if (response?.data?.status === true) {
                 toast.success("Check your email to proceed with resetting your password.");
                 reset();
             } else {
@@ -151,20 +130,20 @@ export function postForgotPasswordUser(payload, toast, reset) {
             }
         } catch (error) {
             reset();
-            console.error("Double-check your email address and try again", error);
-            toast.error("Double-check your email address and try again");
-            dispatch(hasError(error));
+            console.error("Error during forgot password request:", error);
+            dispatch(hasError(error.response?.data?.message || "Forgot password request failed"));
+            toast.error(error.response?.data?.message || "Double-check your email address and try again");
         }
     };
 }
 
-// POST Reset Password
 export function postResetPasswordUser(payload, toast, reset) {
     return async (dispatch) => {
         try {
             dispatch(startLoading());
-            const response = await axios.post("/reset-password", payload, { headers });
-            if (response?.data?.status == true) {
+            const response = await axios.post("/reset-password", payload);
+
+            if (response?.data?.status === true) {
                 toast.success("Your password has been successfully changed. Please log in");
                 reset();
             } else {
@@ -172,38 +151,35 @@ export function postResetPasswordUser(payload, toast, reset) {
             }
         } catch (error) {
             reset();
-            console.error("Ensure the link is correct and not expired, then try again.", error);
-            dispatch(hasError(error));
-            toast.error(error?.message);
+            console.error("Error during reset password request:", error);
+            dispatch(hasError(error.response?.data?.message || "Reset password request failed"));
+            toast.error(error.response?.data?.message || "Ensure the link is correct and not expired, then try again.");
         }
     };
 }
 
-
-// USER LOG OUT
 export function postLogoutUser({ toast, navigate }) {
     return async (dispatch) => {
         try {
             dispatch(startLoading());
             const response = await axios.post('/logout', {}, { headers });
-            if (response?.data?.status == true) {
+
+            if (response?.data?.status === true) {
                 localStorage.removeItem('user');
                 localStorage.removeItem('accessToken');
                 localStorage.removeItem('cart_id');
                 localStorage.removeItem('shipAddress');
                 localStorage.removeItem('billAddress');
-                window.location.reload();
                 dispatch(getLoginSuccess(null));
                 dispatch(getLoginAccessTokenSuccess(null));
                 navigate('/login');
-                toast.success("You’ve Successfully Logged Out");
+                toast.success("You’ve successfully logged out");
             } else {
                 toast.error("Try again or reach out for support if the issue persists");
             }
         } catch (error) {
-            dispatch(hasError(error));
-            toast.error("Try again or reach out for support if the issue persists");
+            dispatch(hasError(error.response?.data?.message || "Logout failed"));
+            toast.error(error.response?.data?.message || "Try again or reach out for support if the issue persists");
         }
     };
 }
-

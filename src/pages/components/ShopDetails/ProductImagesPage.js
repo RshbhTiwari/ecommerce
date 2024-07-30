@@ -16,7 +16,7 @@ const ProductImagesPage = ({ id }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [autoplay, setAutoplay] = useState(true);
 
-    const { isLoading, error, oneproduct } = useSelector(
+    const { isLoading, error, oneProduct } = useSelector(
         (state) => state.product
     );
 
@@ -25,10 +25,10 @@ const ProductImagesPage = ({ id }) => {
     }, [dispatch, id]);
 
     useEffect(() => {
-        if (oneproduct) {
-            setCarouselcarddata(oneproduct?.additional_images);
+        if (oneProduct) {
+            setCarouselcarddata(oneProduct?.additional_images);
         }
-    }, [oneproduct]);
+    }, [oneProduct]);
 
     useEffect(() => {
         let interval;

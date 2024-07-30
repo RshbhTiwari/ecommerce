@@ -16,7 +16,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import comLogo from '../../../assets/home/5.jpg';
-import { getproduct } from '../../../redux/slices/product';
+import { getproduct, getProducts } from '../../../redux/slices/product';
 
 export default function ProductPage() {
     const navigate = useNavigate();
@@ -43,7 +43,7 @@ export default function ProductPage() {
    
 
     useEffect(() => {
-        dispatch(getproduct());
+        dispatch(getProducts());
     }, [dispatch]);
 
 

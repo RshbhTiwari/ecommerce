@@ -46,8 +46,8 @@ export const {
     hasError,
     getAllCategoriesSuccess,
     getFeaturedSuccess,
-    getOneSubCategorySuccess,
     getOneCategorySuccess,
+    getOneSubCategorySuccess,
 } = categorySlice.actions;
 
 export default categorySlice.reducer;
@@ -56,10 +56,10 @@ export const fetchAllFeaturedCategories = () => async (dispatch) => {
     try {
         dispatch(startLoading());
         const response = await axios.get("/categories/featured");
-        dispatch(getFeaturedSuccess(response?.data?.featuredCategory));
+        dispatch(getFeaturedSuccess(response?.data?.featuredCategory || []));
     } catch (error) {
-        console.error("Refresh the page and try again later.", error);
-        dispatch(hasError(error));
+        console.error("Error fetching featured categories. Refresh the page and try again later.", error);
+        dispatch(hasError(error.message || "Error fetching featured categories."));
     }
 };
 
@@ -67,10 +67,10 @@ export const fetchAllCategories = () => async (dispatch) => {
     try {
         dispatch(startLoading());
         const response = await axios.get("/categories");
-        dispatch(getAllCategoriesSuccess(response?.data?.categories));
+        dispatch(getAllCategoriesSuccess(response?.data?.categories || []));
     } catch (error) {
-        console.error("Refresh the page and try again later.", error);
-        dispatch(hasError(error));
+        console.error("Error fetching categories. Refresh the page and try again later.", error);
+        dispatch(hasError(error.message || "Error fetching categories."));
     }
 };
 
@@ -78,10 +78,10 @@ export const fetchOneCategory = (id) => async (dispatch) => {
     try {
         dispatch(startLoading());
         const response = await axios.get(`/category/${id}`);
-        dispatch(getOneCategorySuccess(response?.data?.category));
+        dispatch(getOneCategorySuccess(response?.data?.category || {}));
     } catch (error) {
-        console.error("Verify the category details or contact support.", error);
-        dispatch(hasError(error));
+        console.error("Error fetching category details. Verify the category details or contact support.", error);
+        dispatch(hasError(error.message || "Error fetching category details."));
     }
 };
 
@@ -89,9 +89,9 @@ export const fetchOneSubCategory = (id) => async (dispatch) => {
     try {
         dispatch(startLoading());
         const response = await axios.get(`/subcategory/${id}`);
-        dispatch(getOneSubCategorySuccess(response?.data?.subcategory));
+        dispatch(getOneSubCategorySuccess(response?.data?.subcategory || {}));
     } catch (error) {
-        console.error("Please try again or check your internet connection.", error);
-        dispatch(hasError(error));
+        console.error("Error fetching subcategory details. Please try again or check your internet connection.", error);
+        dispatch(hasError(error.message || "Error fetching subcategory details."));
     }
 };

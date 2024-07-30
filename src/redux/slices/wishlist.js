@@ -8,11 +8,12 @@ const initialState = {
     deleteStatus: false,
 };
 
-const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") : "";
-
-const headers = {
-    'Authorization': `Bearer ${accessToken}`,
-    'Content-Type': 'application/json'
+const getHeaders = () => {
+    const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") : "";
+    return {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+    };
 };
 
 const wishlistSlice = createSlice({
@@ -21,14 +22,13 @@ const wishlistSlice = createSlice({
     reducers: {
         startLoading(state) {
             state.isLoading = true;
-            state.error = null; // Reset error state on loading start
+            state.error = null; 
         },
         hasError(state, action) {
             state.isLoading = false;
             state.error = action.payload;
         },
-
-        getwishlistSuccess(state, action) {
+        getWishlistSuccess(state, action) {
             state.isLoading = false;
             state.wishlist = action.payload;
         },
@@ -43,63 +43,59 @@ export const {
     startLoading,
     hasError,
     deleteCartSuccess,
-    getwishlistSuccess,
+    getWishlistSuccess,
 } = wishlistSlice.actions;
 
 export default wishlistSlice.reducer;
 
-
-export const getwishlist = () => async (dispatch) => {
+export const getWishlist = () => async (dispatch) => {
     try {
         dispatch(startLoading());
-        const response = await axios.get('/getWishlist', { headers });
-        dispatch(getwishlistSuccess(response?.data?.wishlistItems));
+        const response = await axios.get('/getWishlist', { headers: getHeaders() });
+        dispatch(getWishlistSuccess(response?.data?.wishlistItems || []));
     } catch (error) {
-        dispatch(hasError(error?.response?.data?.message));
+        dispatch(hasError(error?.response?.data?.message || "Failed to fetch wishlist"));
     }
-}; 
+};
 
-export function postWishlistUser(payload, toast,navigate) {
+export function postWishlistUser(payload, toast, navigate) {
     return async (dispatch) => {
         try {
             dispatch(startLoading());
-            const response = await axios.post("/addWishlist", payload, { headers });
-            toast.success(response?.data?.message);
-            navigate('/my-account/wishlist')
+            const response = await axios.post("/addWishlist", payload, { headers: getHeaders() });
+            toast.success(response?.data?.message || "Item added to wishlist");
+            navigate('/my-account/wishlist');
         } catch (error) {
-            dispatch(hasError(error?.response?.data?.message));
-            toast.error(error?.message);
+            dispatch(hasError(error?.response?.data?.message || "Failed to add item to wishlist"));
+            toast.error(error?.message || "An error occurred");
         }
     };
 }
 
-export function postMoveCartItme(payload, toast, navigate) {
+export function postMoveCartItem(payload, toast, navigate) {
     return async (dispatch) => {
         try {
             dispatch(startLoading());
-            const response = await axios.post("/wishlist/move-to-cart", payload, { headers });
-            toast.success(response?.data?.message);
-            navigate('/cart')
-            window.location.reload();
+            const response = await axios.post("/wishlist/move-to-cart", payload, { headers: getHeaders() });
+            toast.success(response?.data?.message || "Item moved to cart");
+            navigate('/cart');
         } catch (error) {
-            dispatch(hasError(error?.response?.data?.message));
-            toast.error(error?.message);
+            dispatch(hasError(error?.response?.data?.message || "Failed to move item to cart"));
+            toast.error(error?.message || "An error occurred");
         }
     };
 }
 
-
-
-export function deletewishlistCartItem(itemId, toast) {
+export function deleteWishlistCartItem(itemId, toast) {
     return async (dispatch) => {
         try {
-            const response = await axios.delete(`/wishlist/${itemId}`, { headers });
-            dispatch(deleteCartSuccess(response?.data?.status));
-            toast.success(response?.data?.message);
-            window.location.reload();
+            dispatch(startLoading());
+            const response = await axios.delete(`/wishlist/${itemId}`, { headers: getHeaders() });
+            dispatch(deleteCartSuccess(response?.data?.status || false));
+            toast.success(response?.data?.message || "Item removed from wishlist");
         } catch (error) {
-            toast.error(error?.message);
-            dispatch(hasError(error));
+            dispatch(hasError(error?.response?.data?.message || "Failed to delete item from wishlist"));
+            toast.error(error?.message || "An error occurred");
         }
     };
 }

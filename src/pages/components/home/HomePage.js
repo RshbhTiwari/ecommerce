@@ -8,7 +8,7 @@ import HomeBanner from "./HomeBanner";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { fetchAllCategories } from "../../../redux/slices/category";
-import { getproduct } from "../../../redux/slices/product";
+import { getproduct, getProducts } from "../../../redux/slices/product";
 import ProductCard from "../shop/tab/ProductCard";
 
 const HomePage = () => {
@@ -29,7 +29,7 @@ const HomePage = () => {
     }, [dispatch]);
 
     useEffect(() => {
-        dispatch(getproduct());
+        dispatch(getProducts());
     }, [dispatch]);
 
     useEffect(() => {

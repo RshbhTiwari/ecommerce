@@ -7,28 +7,19 @@ const initialState = {
     oneuser: {},
 };
 
-const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") : "";
-
-const headers = {
-    'Authorization': `Bearer ${accessToken}`,
-    'Content-Type': 'application/json'
-};
-
-
 const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
         startLoading(state) {
             state.isLoading = true;
-            state.error = null; // Reset error state on loading start
+            state.error = null; 
         },
         hasError(state, action) {
             state.isLoading = false;
             state.error = action.payload;
         },
-
-        getuserSuccess(state, action) {
+        getUserSuccess(state, action) {
             state.isLoading = false;
             state.oneuser = action.payload;
         },
@@ -38,34 +29,39 @@ const userSlice = createSlice({
 export const {
     startLoading,
     hasError,
-    getuserSuccess,
+    getUserSuccess,
 } = userSlice.actions;
 
 export default userSlice.reducer;
 
+const getHeaders = () => {
+    const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") : "";
+    return {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+    };
+};
 
 export const getOneUser = () => async (dispatch) => {
     try {
         dispatch(startLoading());
-        const response = await axios.get('/getUser', { headers });
-        dispatch(getuserSuccess(response?.data?.user));
+        const response = await axios.get('/getUser', { headers: getHeaders() });
+        dispatch(getUserSuccess(response?.data?.user));
     } catch (error) {
-        console.error("Error fetching product:", error.response?.data?.message);
-        dispatch(hasError(error.response?.data?.message));
+        console.error("Error fetching user:", error.response?.data?.message || error.message);
+        dispatch(hasError(error.response?.data?.message || "Failed to fetch user"));
     }
 };
 
-
-export const putUser = (payload,toast) => async (dispatch) => {
+export const putUser = (payload, toast) => async (dispatch) => {
     try {
         dispatch(startLoading());
-        const response = await axios.put("/userUpdate", payload, { headers: headers });
-        if (response?.data?.status == true) {
+        const response = await axios.put("/userUpdate", payload, { headers: getHeaders() });
+        if (response?.data?.status === true) {
             toast.success(response?.data?.message);
         }
     } catch (error) {
-        console.error("Error fetching product:", error.response?.data?.message);
-        dispatch(hasError(error.response?.data?.message));
+        console.error("Error updating user:", error.response?.data?.message || error.message);
+        dispatch(hasError(error.response?.data?.message || "Failed to update user"));
     }
 };
-

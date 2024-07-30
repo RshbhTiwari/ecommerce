@@ -12,17 +12,13 @@ const initialState = {
 
 const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") : "";
 
-const jsonheader = {
-    "Content-Type": "application/json",
-    "access_token": accessToken,
-};
-
 const headers = {
     'Authorization': `Bearer ${accessToken}`,
     'Content-Type': 'application/json'
 };
 
-const Slice = createSlice({
+// Create the slice
+const addressSlice = createSlice({
     name: "address",
     initialState,
     reducers: {
@@ -60,29 +56,29 @@ export const {
     getOneAddressSuccess,
     postAddressSuccess,
     deleteAddressSuccess
-} = Slice.actions;
+} = addressSlice.actions;
 
-export default Slice.reducer;
+export default addressSlice.reducer;
 
 export const getAddress = (id) => async (dispatch) => {
     try {
         dispatch(startLoading());
-        const response = await axios.get(`/addresses/${id}`);
+        const response = await axios.get(`/addresses/${id}`, { headers });
         dispatch(getAllAddressSuccess(response?.data?.addresses));
     } catch (error) {
         console.error("Unable to retrieve address list. Please try again later", error);
-        dispatch(hasError(error));
+        dispatch(hasError(error.message || "Error retrieving address list"));
     }
 };
 
 export const getOneAddress = (id) => async (dispatch) => {
     try {
         dispatch(startLoading());
-        const response = await axios.get(`/getAddresses/${id}`);
+        const response = await axios.get(`/getAddresses/${id}`, { headers });
         dispatch(getOneAddressSuccess(response?.data?.address));
     } catch (error) {
         console.error("Failed to load address details. Please try again later", error);
-        dispatch(hasError(error));
+        dispatch(hasError(error.message || "Error loading address details"));
     }
 };
 
@@ -90,8 +86,8 @@ export function postAddress(payload, toast) {
     return async (dispatch) => {
         try {
             dispatch(startLoading());
-            const response = await axios.post('/storeAddresses', payload);
-            if (response?.data?.status == true) {
+            const response = await axios.post('/storeAddresses', payload, { headers });
+            if (response?.data?.status === true) {
                 toast.success("Address added successfully!");
             } else {
                 toast.error('Unable to add address. Please try again later');
@@ -99,7 +95,7 @@ export function postAddress(payload, toast) {
         } catch (error) {
             console.error("Unable to add address. Please try again later", error);
             toast.error('Unable to add address. Please try again later');
-            dispatch(hasError(error));
+            dispatch(hasError(error.message || "Error adding address"));
         }
     };
 }
@@ -108,16 +104,16 @@ export function postCheckboxAddress(payload, toast) {
     return async (dispatch) => {
         try {
             dispatch(startLoading());
-            const response = await axios.post('/cart/attach-address', payload);
-            if (response?.data?.status == true) {
-                toast.success(response?.data?.message)
+            const response = await axios.post('/cart/attach-address', payload, { headers });
+            if (response?.data?.status === true) {
+                toast.success(response?.data?.message);
             } else {
-                toast.error("Address Linking Failed")
+                toast.error("Address Linking Failed");
             }
         } catch (error) {
             console.error("Address Linking Failed", error);
-            toast.error("Address Linking Failed")
-            dispatch(hasError(error));
+            toast.error("Address Linking Failed");
+            dispatch(hasError(error.message || "Error linking address"));
         }
     };
 }
@@ -126,19 +122,19 @@ export function putAddress(id, payload, toast, navigate) {
     return async (dispatch) => {
         try {
             dispatch(startLoading());
-            const response = await axios.put(`/updateAddresses/${id}`, payload);
+            const response = await axios.put(`/updateAddresses/${id}`, payload, { headers });
             dispatch(postAddressSuccess(response?.data));
 
-            if (response?.data?.status == true) {
-                toast.success("Address updated successfully!")
-                navigate('/my-account/address-book')
+            if (response?.data?.status === true) {
+                toast.success("Address updated successfully!");
+                navigate('/my-account/address-book');
             } else {
-                toast.error("Please check your input and try again.")
+                toast.error("Please check your input and try again.");
             }
         } catch (error) {
-            dispatch(hasError(error));
-            toast.error("Please check your input and try again.")
-            console.error("Please check your input and try again.", error);
+            dispatch(hasError(error.message || "Error updating address"));
+            toast.error("Please check your input and try again.");
+            console.error("Error updating address", error);
         }
     };
 }
@@ -147,17 +143,17 @@ export function deleteAddress(id, toast) {
     return async (dispatch) => {
         try {
             dispatch(startLoading());
-            const response = await axios.delete(`/deleteAddresses/${id}`);
+            const response = await axios.delete(`/deleteAddresses/${id}`, { headers });
             dispatch(deleteAddressSuccess(response.data.status));
-            if (response?.data?.status == true) {
-                toast.success(response.data?.message)
+            if (response?.data?.status === true) {
+                toast.success(response.data?.message);
             } else {
-                toast.error("Unable to remove address. It might be in use.")
+                toast.error("Unable to remove address. It might be in use.");
             }
         } catch (error) {
-            dispatch(hasError(error));
-            toast.error("Unable to remove address. It might be in use.")
-            console.error("Unable to remove address. It might be in use.", error);
+            dispatch(hasError(error.message || "Error removing address"));
+            toast.error("Unable to remove address. It might be in use.");
+            console.error("Error removing address", error);
         }
     };
 }

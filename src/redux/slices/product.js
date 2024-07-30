@@ -5,7 +5,7 @@ const initialState = {
     isLoading: false,
     error: null,
     products: [],
-    oneproduct: {},
+    oneProduct: {},
 };
 
 const productSlice = createSlice({
@@ -20,16 +20,13 @@ const productSlice = createSlice({
             state.isLoading = false;
             state.error = action.payload;
         },
-
-        getproductsSuccess(state, action) {
+        getProductsSuccess(state, action) {
             state.isLoading = false;
             state.products = action.payload;
         },
-
-        getOneproductsSuccess(state, action) {
+        getOneProductSuccess(state, action) {
             state.isLoading = false;
-            state.oneproduct = action.payload;
-            
+            state.oneProduct = action.payload;
         },
     },
 });
@@ -37,36 +34,30 @@ const productSlice = createSlice({
 export const {
     startLoading,
     hasError,
-    getproductsSuccess,
-    getOneproductsSuccess,
+    getProductsSuccess,
+    getOneProductSuccess,
 } = productSlice.actions;
 
 export default productSlice.reducer;
 
-// Thunk action to fetch all Product
-export const getproduct = () => async (dispatch) => {
+export const getProducts = () => async (dispatch) => {
     try {
         dispatch(startLoading());
         const response = await axios.get("/products");
-        dispatch(getproductsSuccess(response?.data?.products));
-    
+        dispatch(getProductsSuccess(response?.data?.products || []));
     } catch (error) {
-        console.error("Error fetching product:", error?.response?.data?.message);
-        dispatch(hasError(error?.response?.data?.message));
+        console.error("Error fetching products:", error.response?.data?.message || error.message);
+        dispatch(hasError(error.response?.data?.message || "Failed to fetch products"));
     }
 };
 
-// Thunk action to fetch one Product by id
 export const getOneProduct = (id) => async (dispatch) => {
     try {
         dispatch(startLoading());
         const response = await axios.get(`/product/${id}`);
-        dispatch(getOneproductsSuccess(response?.data?.product));
-    
+        dispatch(getOneProductSuccess(response?.data?.product || {}));
     } catch (error) {
-        console.error("Error fetching product:", error.response?.data?.message);
-        dispatch(hasError(error.response?.data?.message));
+        console.error("Error fetching product:", error.response?.data?.message || error.message);
+        dispatch(hasError(error.response?.data?.message || "Failed to fetch product"));
     }
 };
-
-

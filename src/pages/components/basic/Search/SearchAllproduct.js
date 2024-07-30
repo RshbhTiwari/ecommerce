@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getproduct } from "../../../../redux/slices/product";
+import { getproduct, getProducts } from "../../../../redux/slices/product";
 import { useEffect, useState } from "react";
 import { NoProducts } from "../ErrorPages";
 import { addCartItems } from "../../../../redux/slices/addToCart";
@@ -25,7 +25,7 @@ function SearchAllproduct() {
     const { products } = useSelector((state) => state.product);
 
     useEffect(() => {
-        dispatch(getproduct());
+        dispatch(getProducts());
     }, [dispatch]);
 
     useEffect(() => {

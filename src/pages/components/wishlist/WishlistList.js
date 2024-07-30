@@ -3,7 +3,7 @@ import { HeadingTitle } from "../basic/title";
 import { AccountSideNav } from "../myaccount/sidenav";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { getwishlist } from "../../../redux/slices/wishlist";
+import { getWishlist, getwishlist } from "../../../redux/slices/wishlist";
 import WishlistTable from "./WishlistTable";
  
 function WishlistList() {
@@ -16,7 +16,7 @@ function WishlistList() {
     );
 
     useEffect(() => {
-        dispatch(getwishlist());
+        dispatch(getWishlist());
     }, [dispatch]);
 
     useEffect(() => {

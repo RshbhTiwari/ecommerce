@@ -5,18 +5,18 @@ import { HeadingTitle } from '../basic/title';
 import ProductSingleContentPage from './ProductSingleContentPage';
 import CollectionsShopCard from '../shop/CollectionsShopCard';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOneProduct, getproduct } from '../../../redux/slices/product';
+import { getOneProduct, getproduct, getProducts } from '../../../redux/slices/product';
 
 const ShopSingleDetails = ({ id }) => {
     const dispatch = useDispatch();
 
     const [allSingleProductsData, setSingleProductsData] = useState([]);
 
-    const { isLoading:singleProductIsloading, error:singleProductError, oneproduct, products } = useSelector(
+    const { isLoading:singleProductIsloading, error:singleProductError, oneProduct, products } = useSelector(
         (state) => state.product
     );
     useEffect(() => {
-        dispatch(getproduct());
+        dispatch(getProducts());
     }, [dispatch]);
     
     useEffect(() => {
@@ -24,10 +24,10 @@ const ShopSingleDetails = ({ id }) => {
     }, [dispatch, id]);
 
     useEffect(() => {
-        if (oneproduct) {
-            setSingleProductsData(oneproduct);
+        if (oneProduct) {
+            setSingleProductsData(oneProduct);
         }
-    }, [oneproduct]);
+    }, [oneProduct]);
 
     return (
         <>

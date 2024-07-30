@@ -221,7 +221,7 @@ import { MdAdd, MdDeleteForever } from "react-icons/md";
 import { FiMinus } from "react-icons/fi";
 import { useState, useEffect, useCallback } from "react";
 import { useDispatch } from 'react-redux';
-import { deleteCartItem, putCartItme } from "../../../redux/slices/addToCart";
+import { deleteCartItem, putCartItem, putCartItme } from "../../../redux/slices/addToCart";
 import { toast } from 'react-toastify';
 import { RxCross2 } from "react-icons/rx";
 import { MdEdit } from "react-icons/md";
@@ -293,7 +293,7 @@ export default function ShoppingCartTable({ shoppingcart, minicart }) {
             total_prize: totalPrice,
             ...(cart_id && { cart_id }),
         };
-        dispatch(putCartItme(itemId, payload, toast));
+        dispatch(putCartItem(itemId, payload, toast));
     };
 
     // Handle item deletion

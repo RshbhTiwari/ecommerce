@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ProductTab from '../shop/tab/productTab';
 import CollectionsShopCard from '../shop/CollectionsShopCard';
-import { getproduct } from '../../../redux/slices/product';
+import { getproduct, getProducts } from '../../../redux/slices/product';
 
 export default function DetailsCategoriesPages({ id }) {
     const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
@@ -35,7 +35,7 @@ export default function DetailsCategoriesPages({ id }) {
     );
 
     useEffect(() => {
-        dispatch(getproduct());
+        dispatch(getProducts());
     }, [dispatch]);
 
     useEffect(() => {

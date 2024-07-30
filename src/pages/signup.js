@@ -1,13 +1,11 @@
 import { SignupFrom } from "./components/basic/auth";
 import { HeadingTitle, Paragraph } from "./components/basic/title";
 import comLogo from '../assets/vactor/sinup.jpg';
-import { ToastContainer } from 'react-toastify';
 
 function Signup() {
     return (
         <>
             <div className="container mx-auto flex items-center justify-center max-w-7xl px-2 sm:px-6 lg:px-8">
-                <ToastContainer />
                 <div className="grid grid-cols-12 md:gap-4 gap-0 my-10 w-full bg-white rounded-xl shadow-md lg:p-5 p-2">
 
                     <div className='lg:col-span-6  col-span-12 w-full md:gap-4 gap-0 md:p-4 flex items-center justify-center'>

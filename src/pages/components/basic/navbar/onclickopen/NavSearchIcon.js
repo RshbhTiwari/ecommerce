@@ -4,7 +4,7 @@ import { RxCross2 } from "react-icons/rx";
 import { FaRegHeart } from "react-icons/fa";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import { Paragraph } from "../../title";
-import { getproduct } from "../../../../../redux/slices/product";
+import { getproduct, getProducts } from "../../../../../redux/slices/product";
 import { useDispatch, useSelector } from "react-redux";
 import { NoProducts } from '../../ErrorPages';
 import { useNavigate } from "react-router-dom";
@@ -27,7 +27,7 @@ function NavSearchIcon() {
     );
 
     useEffect(() => {
-        dispatch(getproduct());
+        dispatch(getProducts());
     }, [dispatch]);
 
     useEffect(() => {
