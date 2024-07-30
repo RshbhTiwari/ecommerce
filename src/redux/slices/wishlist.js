@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../utils/axios";
+import { getAllCartItems } from "./addToCart";
 
 const initialState = {
     isLoading: false,
@@ -22,7 +23,7 @@ const wishlistSlice = createSlice({
     reducers: {
         startLoading(state) {
             state.isLoading = true;
-            state.error = null; 
+            state.error = null;
         },
         hasError(state, action) {
             state.isLoading = false;
@@ -64,6 +65,7 @@ export function postWishlistUser(payload, toast, navigate) {
             dispatch(startLoading());
             const response = await axios.post("/addWishlist", payload, { headers: getHeaders() });
             toast.success(response?.data?.message || "Item added to wishlist");
+            dispatch(getWishlist());
             navigate('/my-account/wishlist');
         } catch (error) {
             dispatch(hasError(error?.response?.data?.message || "Failed to add item to wishlist"));
@@ -78,6 +80,14 @@ export function postMoveCartItem(payload, toast, navigate) {
             dispatch(startLoading());
             const response = await axios.post("/wishlist/move-to-cart", payload, { headers: getHeaders() });
             toast.success(response?.data?.message || "Item moved to cart");
+            const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+            const token = localStorage?.getItem('accessToken') || null;
+            if (token) {
+                const payload = {
+                    status: true,
+                };
+                dispatch(getAllCartItems(customer_id, payload));
+            }
             navigate('/cart');
         } catch (error) {
             dispatch(hasError(error?.response?.data?.message || "Failed to move item to cart"));

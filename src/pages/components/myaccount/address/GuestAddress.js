@@ -7,7 +7,7 @@ import { postAddress } from '../../../../redux/slices/address';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
-const GuestAddress = ({backCLick, handleClick ,ship, checkship, checkbil}) => {
+const GuestAddress = ({ backCLick, handleClick, ship, checkship, checkbil, paymentopenClick }) => {
 
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
@@ -65,7 +65,7 @@ const GuestAddress = ({backCLick, handleClick ,ship, checkship, checkbil}) => {
 
     const onSubmit = async (data) => {
         const cart_id = localStorage?.getItem('cart_id') || null;
-        const is_shipping = data?.is_shipping 
+        const is_shipping = data?.is_shipping
         setLoading(true);
         try {
             await new Promise((resolve) => setTimeout(resolve, 500));
@@ -80,13 +80,17 @@ const GuestAddress = ({backCLick, handleClick ,ship, checkship, checkbil}) => {
                 city: data?.city,
                 email: data?.email,
                 addresstype: data?.addresstype,
-                 ...(checkship ? { is_shipping: true } : { is_shipping }),
-                ...(checkbil ? { is_billing: true } : { }),
+                ...(checkship ? { is_shipping: true } : { is_shipping }),
+                ...(checkbil ? { is_billing: true } : {}),
                 ...(cart_id && { cart_id }),
             };
             sessionStorage.setItem('addressData', JSON.stringify(data));
-            handleClick()
             dispatch(postAddress(payload, toast));
+            if (is_shipping) {
+                paymentopenClick()
+            } else {
+                handleClick()
+            }
         } catch (error) {
             console.error(error);
         } finally {
@@ -148,7 +152,7 @@ const GuestAddress = ({backCLick, handleClick ,ship, checkship, checkbil}) => {
 
                 </div>
                 <div className='mt-6 flex gap-4'>
-                <Btnone
+                    <Btnone
                         title='Back'
                         bgColor="#072320"
                         width="100%"
@@ -156,7 +160,7 @@ const GuestAddress = ({backCLick, handleClick ,ship, checkship, checkbil}) => {
                     />
 
                     <Btnone
-                        title={loading ? 'Posting...' : 'Go to Next Step'} 
+                        title={loading ? 'Posting...' : 'Go to Next Step'}
                         bgColor="#072320"
                         type="submit"
                         width="100%"

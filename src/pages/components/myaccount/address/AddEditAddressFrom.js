@@ -8,13 +8,11 @@ import { postAddress, putAddress } from '../../../../redux/slices/address';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
-const AddEditAddressFrom = ({ isEdit = false, id, userAdd, handleClick }) => {
-
-
+const AddEditAddressFrom = ({ isEdit = false, id, userAdd }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const getLocalStorageData = () => {
-        const localData = localStorage.getItem('user');
+        const localData = localStorage.getItem('user'); 
         return localData ? JSON.parse(localData) : {};
     };
 
@@ -101,8 +99,8 @@ const AddEditAddressFrom = ({ isEdit = false, id, userAdd, handleClick }) => {
                 ...(customer_id && { customer_id })
             };
             isEdit ? dispatch(putAddress(id, payload, toast, navigate)) : dispatch(postAddress(payload, toast, navigate));
-            reset()
-            handleClick()
+          
+           
         } catch (error) {
             console.error(error);
         } finally {

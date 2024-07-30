@@ -9,7 +9,7 @@ import { getAddress } from '../../../../redux/slices/address';
 import { CheckoutbillingAddress, CheckoutshippingAddress } from '../../myaccount/address/DefultAddress';
 import { Checkoutuseraddress, GuestAddress } from '../../myaccount/address';
 
-const AccordionExample = () => {
+const AccordionExample = () => { 
     const dispatch = useDispatch();
     const [allAddressData, setAllAddressData] = useState([]);
     const [shipAddress, setShipAddress] = useState([]);
@@ -164,7 +164,7 @@ const AccordionExample = () => {
                                     <h2 className="font-dm text-lg capitalize border-b-2 pb-1 border-[#072320] font-medium text-center text-[#072320]">
                                         Have an account? Login
                                     </h2>
-                                    {/* <LoginForm handleClick={() => handleAccordionToggle(setIsBillingOpen)} /> */}
+                                    <LoginForm handleClick={() => handleAccordionToggle(setIsBillingOpen)} />
                                 </div>
                             </div>
                         )}
@@ -226,7 +226,11 @@ const AccordionExample = () => {
                             ) : (
                                 <>
                                     <div className="shadow-md rounded-lg border-[#00A762] border-2 p-4 my-4">
-                                        <GuestAddress backCLick={() => handlebackBillClick()} checkbil={true} ship={true} handleClick={() => handleAccordionToggle(setIsShippingOpen)} />
+                                        <GuestAddress 
+                                        backCLick={() => handlebackBillClick()}
+                                        checkbil={true} ship={true} 
+                                        handleClick={() => handleAccordionToggle(setIsShippingOpen)} 
+                                        paymentopenClick={() => handleAccordionToggle(setIsPaymentOpen)}/>
                                     </div>
                                 </>
                             )}

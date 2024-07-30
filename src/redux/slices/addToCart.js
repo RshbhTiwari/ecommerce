@@ -5,7 +5,6 @@ const initialState = {
     isLoading: false,
     error: null,
     allCartItems: {},
-    cartId: null,
     cartItem: {},
     deleteStatus: false,
 };
@@ -37,13 +36,18 @@ const cartSlice = createSlice({
             state.isLoading = false;
             state.allCartItems = action.payload;
         },
-        getCartIdSuccess(state, action) {
-            state.isLoading = false;
-            state.cartId = action.payload;
-        },
+      
         deleteCartSuccess(state, action) {
             state.isLoading = false;
             state.deleteStatus = action.payload;
+        },
+
+        updateCartItemSuccess(state, action) {
+            state.isLoading = false;
+            const updatedItem = action.payload;
+            if (state.allCartItems[updatedItem.item_id]) {
+                state.allCartItems[updatedItem.item_id] = updatedItem;
+            }
         },
     },
 });
@@ -53,8 +57,8 @@ export const {
     hasError,
     addToCartSuccess,
     getAllCartItemsSuccess,
-    getCartIdSuccess,
     deleteCartSuccess,
+    updateCartItemSuccess,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
@@ -67,7 +71,11 @@ export function getAllCartItems(cart_id, payload) {
                 params: payload,
                 headers
             });
-            dispatch(getAllCartItemsSuccess(response?.data?.cart));
+            if (response?.data?.cart) {
+                dispatch(getAllCartItemsSuccess(response.data.cart));
+            } else {
+                dispatch(getAllCartItemsSuccess([])); // Handle empty cart scenario
+            }
         } catch (error) {
             console.error("Error fetching cart items. Please refresh the page and try again.", error);
             dispatch(hasError(error.message || "Error fetching cart items"));
@@ -81,11 +89,26 @@ export function addCartItems(cartItem, toast, navigate) {
             dispatch(startLoading());
             const response = await axios.post("/addtocart", cartItem, { headers });
             dispatch(addToCartSuccess(response?.data));
-            dispatch(getCartIdSuccess(response?.data?.cart_id));
+            console.log(response?.data?.cart_id)
+            localStorage.setItem("cart_id", response?.data?.cart_id);
             if (response?.data?.status === true) {
+                
+                const cart_id = localStorage?.getItem('cart_id') || null;
+                const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+                const token = localStorage?.getItem('accessToken') || null;
+                if (token) {
+                    const payload = {
+                        status: true,
+                    };
+                    dispatch(getAllCartItems(customer_id, payload));
+                } else {
+                    const payload = {
+                        status: false,
+                    };
+                    dispatch(getAllCartItems(cart_id, payload));
+                }
                 navigate('/cart');
                 toast.success("Continue shopping or view your cart.");
-                localStorage.setItem("cart_id", response?.data?.cart_id);
             } else {
                 toast.error("Ensure the item is available and try again later");
             }
@@ -102,14 +125,29 @@ export function putCartItem(itemId, payload, toast) {
         try {
             dispatch(startLoading());
             const response = await axios.put(`/cart/updateItem/${itemId}`, payload, { headers });
+            console.log("responseput", response)
             if (response?.data?.status === true) {
-                toast.success("View your updated cart or explore more products.");
+                const cart_id = localStorage?.getItem('cart_id') || null;
+                const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+                const token = localStorage?.getItem('accessToken') || null;
+                if (token) {
+                    const payload = {
+                        status: true,
+                    };
+                    dispatch(getAllCartItems(customer_id, payload));
+                } else {
+                    const payload = {
+                        status: false,
+                    };
+                    dispatch(getAllCartItems(cart_id, payload));
+                }
+                toast.success("Cart updated successfully.");
             } else {
-                toast.error("Retry the update or check your internet connection.");
+                toast.error("Failed to update the cart. Please try again.");
             }
         } catch (error) {
-            console.error("Error updating cart item. Retry the update or check your internet connection.", error);
-            toast.error("Retry the update or check your internet connection.");
+            console.error("Error updating cart item:", error);
+            toast.error("Error updating cart item. Please try again.");
             dispatch(hasError(error.message || "Error updating cart item"));
         }
     };
@@ -122,6 +160,20 @@ export function deleteCartItem(itemId, toast) {
             const response = await axios.delete(`/cart/removeItem/${itemId}`, { headers });
             dispatch(deleteCartSuccess(response?.data?.status));
             if (response?.data?.status === true) {
+                const cart_id = localStorage?.getItem('cart_id') || null;
+                const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+                const token = localStorage?.getItem('accessToken') || null;
+                if (token) {
+                    const payload = {
+                        status: true,
+                    };
+                    dispatch(getAllCartItems(customer_id, payload));
+                } else {
+                    const payload = {
+                        status: false,
+                    };
+                    dispatch(getAllCartItems(cart_id, payload));
+                }
                 toast.success("See your updated cart or add more items.");
             } else {
                 toast.error("Verify the item and try deleting it again.");

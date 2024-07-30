@@ -29,13 +29,11 @@ function NavCartIcon({cartData, itemCount}) {
     const handleClickCheckout = () => {
         navigate(`/checkout`);
         setIsCartOpen(false);
-        // window.location.reload();
     };
 
     const handleClickCart = () => {
         navigate(`/cart`);
         setIsCartOpen(false);
-        // window.location.reload();
     };
 
     return (

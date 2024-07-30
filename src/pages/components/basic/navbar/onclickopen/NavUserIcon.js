@@ -3,6 +3,7 @@ import { AiOutlineLogin } from "react-icons/ai";
 import DropLogin from "./DropLogin";
 import { FaRegUserCircle } from "react-icons/fa";
 import Myaccountdrop from "./Myaccountdrop";
+import { useSelector } from "react-redux";
 
 function NavUserIcon() {
 
@@ -12,11 +13,24 @@ function NavUserIcon() {
     const loginRef = useRef(null);
     const dropdownRef = useRef(null);
 
+    const { loginUser, userAccessToken } = useSelector(
+        (state) => state.loginRegister
+    );
+
+
     const userName = JSON.parse(localStorage.getItem('user'))?.name || null;
 
     useEffect(() => {
-        const token = localStorage.getItem('accessToken');
-        setHasAccessToken(!!token);
+        if (userAccessToken) {
+            setHasAccessToken(true);
+        } else {
+            const token = localStorage.getItem('accessToken');
+            setHasAccessToken(token);
+        }
+    }, [userAccessToken]);
+
+
+    useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target) &&
                 loginRef.current && !loginRef.current.contains(event.target)) {
@@ -48,7 +62,7 @@ function NavUserIcon() {
 
                         <FaRegUserCircle className='text-white text-[24px]' />
                         <h6 className='text-white font-dm text-sm ml-2 capitalize'>
-                            {userName}
+                            {userName || loginUser?.name }
                         </h6>
                     </div>
                     {isOpen && (

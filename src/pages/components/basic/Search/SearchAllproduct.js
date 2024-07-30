@@ -68,7 +68,6 @@ function SearchAllproduct() {
             dispatch(postWishlistUser(payload, toast, navigate));
         } else {
             navigate('/login')
-            // window.location.reload();
             toast.error("You need to log in to add to wishlist");
         }
     };

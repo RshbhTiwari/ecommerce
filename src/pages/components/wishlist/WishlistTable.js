@@ -2,17 +2,35 @@ import { Paragraph } from "../basic/title";
 import { MdDeleteForever } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { Btnone } from '../basic/button';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from 'react-toastify';
-import { deleteWishlistCartItem, deletewishlistCartItem, postMoveCartItem, postMoveCartItme } from "../../../redux/slices/wishlist";
-import { useCallback } from "react";
+import { deleteWishlistCartItem, deletewishlistCartItem, getWishlist, postMoveCartItem, postMoveCartItme } from "../../../redux/slices/wishlist";
+import { useCallback, useEffect, useState } from "react";
 
-export default function WishlistTable({ wishlistitems }) {
+export default function WishlistTable() {
+
+
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
+    
+    const [wishlistData, setWishlistData] = useState([]);
+
+    const { wishlist } = useSelector(
+        (state) => state.wishlist
+    );
+
+    useEffect(() => {
+        dispatch(getWishlist());
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (wishlist?.length) {
+            setWishlistData(wishlist);
+        }
+    }, [wishlist]);
 
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'short', day: 'numeric' };
@@ -29,14 +47,15 @@ export default function WishlistTable({ wishlistitems }) {
 
     const handleDelete = useCallback((itemId) => {
         dispatch(deleteWishlistCartItem(itemId, toast));
+        const filterData = wishlistData.filter((item) => item?.id !== itemId);
+        setWishlistData(filterData);
     }, [dispatch]);
-
 
     return (
         <div className="overflow-x-auto">
             <table className="w-full">
                 <tbody>
-                    {wishlistitems?.map((item, index) => (
+                    {wishlistData?.map((item, index) => (
                         <tr className={`flex shadow-md rounded-lg justify-between ${index % 2 === 0 ? '' : 'bg-gray-100 rounded-lg'}`}
                             key={index}>
 

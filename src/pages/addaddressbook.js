@@ -1,11 +1,9 @@
 import { AddAddress } from "./components/myaccount/address";
 
-
 function AddAddressBook() {
-    
     return (
         <>
-        <AddAddress  />
+            <AddAddress />
         </>
     );
 }

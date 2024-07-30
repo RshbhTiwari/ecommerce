@@ -7,7 +7,7 @@ import { postLogoutUser } from "../../../../../redux/slices/loginRegister";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 
-export default function Myaccountdrop({toggle}) {
+export default function Myaccountdrop({ toggle }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 

@@ -10,18 +10,12 @@ import { getOneAddress } from '../../../../redux/slices/address';
 import { useEffect } from 'react';
 
 function AddressEdit() {
-    
     const dispatch = useDispatch();
-
     const { oneAddress } = useSelector((state) => state.address);
     const { id } = useParams();
-
     useEffect(() => {
         dispatch(getOneAddress(id));
       }, [dispatch, id]);
-
-
-      
 
     return (
         <>

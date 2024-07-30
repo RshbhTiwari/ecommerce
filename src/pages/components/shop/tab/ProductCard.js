@@ -45,6 +45,7 @@ const ProductCard = ({ allProducts, productIsLoading, productError, skeletonCoun
 
     const handleAddWishlist = (product_id) => {
         const accessToken = localStorage.getItem('accessToken') || null;
+        
         if (accessToken) {
             const user_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
             const payload = {

@@ -217,7 +217,7 @@ function CheckoutbillingAddress({ allAddressData, deletClick, handleClick, handl
 
 
     const handleUpdateaddress = () => {
-        const cart_id = localStorage?.getItem('cartid') || null;
+        const cart_id = localStorage?.getItem('cart_id') || null;
         const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
         const address_id = JSON?.parse(localStorage?.getItem('billAddress'))?.id || null;
 
@@ -227,8 +227,9 @@ function CheckoutbillingAddress({ allAddressData, deletClick, handleClick, handl
             ...(cart_id && { cart_id }),
             ...(customer_id && { customer_id })
         };
-        dispatch(postCheckboxAddress(payload, toast));
-        handleClick()
+
+        console.log("payload",payload)
+        dispatch(postCheckboxAddress(payload, toast,handleClick));
     };
 
 

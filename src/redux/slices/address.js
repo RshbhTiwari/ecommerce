@@ -82,12 +82,14 @@ export const getOneAddress = (id) => async (dispatch) => {
     }
 };
 
-export function postAddress(payload, toast) {
+export function postAddress(payload, toast, navigate) {
     return async (dispatch) => {
         try {
             dispatch(startLoading());
             const response = await axios.post('/storeAddresses', payload, { headers });
             if (response?.data?.status === true) {
+                if(navigate){navigate('/my-account/address-book');}
+            
                 toast.success("Address added successfully!");
             } else {
                 toast.error('Unable to add address. Please try again later');
@@ -100,13 +102,14 @@ export function postAddress(payload, toast) {
     };
 }
 
-export function postCheckboxAddress(payload, toast) {
+export function postCheckboxAddress(payload, toast, handleClick) {
     return async (dispatch) => {
         try {
             dispatch(startLoading());
             const response = await axios.post('/cart/attach-address', payload, { headers });
             if (response?.data?.status === true) {
                 toast.success(response?.data?.message);
+                handleClick()
             } else {
                 toast.error("Address Linking Failed");
             }
@@ -124,10 +127,9 @@ export function putAddress(id, payload, toast, navigate) {
             dispatch(startLoading());
             const response = await axios.put(`/updateAddresses/${id}`, payload, { headers });
             dispatch(postAddressSuccess(response?.data));
-
             if (response?.data?.status === true) {
+                if(navigate){navigate('/my-account/address-book');}
                 toast.success("Address updated successfully!");
-                navigate('/my-account/address-book');
             } else {
                 toast.error("Please check your input and try again.");
             }

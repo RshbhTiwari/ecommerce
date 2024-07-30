@@ -7,25 +7,6 @@ import { getWishlist, getwishlist } from "../../../redux/slices/wishlist";
 import WishlistTable from "./WishlistTable";
  
 function WishlistList() {
-
-    const dispatch = useDispatch();
-    const [wishlistData, setWishlistData] = useState([]);
-
-    const { wishlist } = useSelector(
-        (state) => state.wishlist
-    );
-
-    useEffect(() => {
-        dispatch(getWishlist());
-    }, [dispatch]);
-
-    useEffect(() => {
-        if (wishlist?.length) {
-            setWishlistData(wishlist);
-        }
-    }, [wishlist]);
-
-
     return (
         <>
             <BreadCrum componentName="my account" link="/my-account" componentSecondName="wishlist" />
@@ -43,7 +24,7 @@ function WishlistList() {
                             <HeadingTitle title="My wishlist" textAlign='left' />
 
                             <div className="">
-                                <WishlistTable wishlistitems={wishlistData} />
+                                <WishlistTable  />
                             </div>
                         </div>
                     </div>

@@ -25,7 +25,7 @@ import { ToastContainer } from 'react-toastify';
 import SearchProduct from "./pages/searchProduct";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllCartItems } from "./redux/slices/addToCart";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ResetPasswordPage from "./pages/resetpasswordpage";
 
 function App() {
@@ -33,13 +33,19 @@ function App() {
   const cart_id = localStorage?.getItem('cart_id') || null;
   const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
   const token = localStorage?.getItem('accessToken') || null;
-
-  const { allCartItems, loading, error } = useSelector(
+  const [localCartItems, setLocalCartItems] = useState([]);
+  const { allCartItems } = useSelector(
     (state) => state.addToCart
   );
 
   const cartData = allCartItems?.items || [];
   const itemCount = cartData.length;
+
+  useEffect(() => {
+    if (allCartItems?.items) {
+      setLocalCartItems(allCartItems?.items);
+    }
+  }, [allCartItems]);
 
   useEffect(() => {
     if (token) {
@@ -57,13 +63,12 @@ function App() {
 
   useEffect(() => {
     console.log('Item count has changed:', itemCount);
-  }, [itemCount, allCartItems]);
-
+  }, [itemCount, localCartItems]);
 
   return (
     <>
       <BrowserRouter>
-        <Navbar cartData={cartData} itemCount={itemCount}/>
+        <Navbar cartData={localCartItems} itemCount={itemCount} />
         <ToastContainer />
         <Routes>
           <Route exact path="/" element={<Home />} />
@@ -73,7 +78,6 @@ function App() {
           <Route path="/blog" element={<Blog />} />
           <Route exact path="/blog/:id" element={<DetailsBlog />} />
           <Route exact path="/categories/:id" element={<DetailsCategories />} />
-          
           <Route path="/search" element={<SearchProduct />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
@@ -84,8 +88,8 @@ function App() {
           <Route path="/my-account/address-book" element={<Addressbook />} />
           <Route path="/my-account/add-address" element={<AddAddressBook />} />
           <Route path="/my-account/edit-address/:id" element={<EditAddressBook />} />
-          <Route path="/cart" element={<Cart cartData={cartData} itemCount={itemCount} allCartItems={allCartItems}/>} />
-          <Route path="/checkout" element={<Checkout cartData={cartData} itemCount={itemCount} allCartItems={allCartItems}/>} />
+          <Route path="/cart" element={<Cart cartData={localCartItems} itemCount={itemCount} allCartItems={allCartItems} />} />
+          <Route path="/checkout" element={<Checkout cartData={localCartItems} itemCount={itemCount} allCartItems={allCartItems} />} />
           <Route path="/my-account/wishlist" element={<Wishlist />} />
           <Route path="/my-account/orders" element={<Orders />} />
           <Route path="/my-account/orders/:id" element={<OrdersDetails />} />

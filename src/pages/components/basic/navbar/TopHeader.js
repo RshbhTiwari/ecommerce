@@ -36,7 +36,7 @@ export default function TopHeader({cartData, itemCount}) {
                             <hr className='text-white rotate-90 border-[1.5px] w-5' />
                             <NavUserIcon />
                             <hr className='text-white rotate-90 border-[1.5px] w-5' />
-                            <NavCartIcon cartData={cartData} itemCount={itemCount}/>
+                            <NavCartIcon cartData={cartData} itemCount={itemCount} />
                         </div>
                     </div>
                 </div>

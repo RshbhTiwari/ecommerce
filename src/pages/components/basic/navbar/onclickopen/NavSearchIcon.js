@@ -87,10 +87,8 @@ function NavSearchIcon() {
             };
             setIsSearchOpen(false);
             dispatch(postWishlistUser(payload, toast, navigate));
-           
         } else {
             navigate('/login')
-            // window.location.reload();
             setIsSearchOpen(false);
             toast.error("You need to log in to add to wishlist");
         }

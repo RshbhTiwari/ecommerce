@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { postLoginUser } from '../../../../redux/slices/loginRegister';
 import { toast } from 'react-toastify';
 
-const LoginForm = ({handleClick}) => {
+const LoginForm = ({ handleClick }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -40,7 +40,7 @@ const LoginForm = ({handleClick}) => {
             dispatch(postLoginUser(payload, toast, reset));
             if (handleClick) {
                 handleClick()
-            }else {
+            } else {
                 navigate('/');
             }
         } catch (error) {
