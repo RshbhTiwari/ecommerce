@@ -108,6 +108,10 @@ export function addCartItems(cartItem, toast, navigate) {
                     dispatch(getAllCartItems(cart_id, payload));
                 }
                 navigate('/cart');
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
                 toast.success("Continue shopping or view your cart.");
             } else {
                 toast.error("Ensure the item is available and try again later");

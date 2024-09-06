@@ -66,11 +66,15 @@ export default function ProductPage() {
 
     const categoriDetailsRow = (id) => {
         navigate(`/categories/${id}`);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     };
 
     return (
         <>
-            <BreadCrum componentName="shop" link="/shop" />
+            <BreadCrum componentName="shop" link="/shop" /> 
 
             <div className="container mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-12 gap-6 py-10">
@@ -123,7 +127,7 @@ export default function ProductPage() {
                     </div>
 
                     <div className='md:col-span-8 lg:col-span-9 col-span-12'>
-                        <div className="max-w-screen-lg mx-auto p-4">
+                        <div className="max-w-screen-lg mx-auto p-4"  >
                             <ProductTab allproducts={allProductsData} productIsLoading={productIsLoading}
                                 productError={productError} />
                         </div>
@@ -133,8 +137,10 @@ export default function ProductPage() {
 
 
                 <div className="pb-10">
+                <div className="" data-aos="zoom-in" data-aos-delay="100">
                     <HeadingTitle title="most purchased products" />
-                    <div className="mt-4">
+                    </div>
+                    <div className="mt-4" data-aos="fade-up" data-aos-delay="100">
                         <CollectionsShopCard allproducts={products} />
                     </div>
                 </div>

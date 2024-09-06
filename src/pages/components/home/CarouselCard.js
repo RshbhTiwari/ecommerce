@@ -62,6 +62,11 @@ const CarouselCard = () => {
 
   const categoriDetailsRow = (id) => {
     navigate(`/categories/${id}`);
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'  // This adds a smooth scroll effect
+  });
+
   };
 
   if (isLoading || featuredLoading) {
@@ -89,24 +94,30 @@ const CarouselCard = () => {
       </div>
     );
   }
-
+  const handleRow = () => {
+    navigate('/shop')
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'  // This adds a smooth scroll effect
+    });
+};
   return (
     <Slider {...settings} className='py-10'>
       {allfeaturedData.map((item, index) => (
         <div key={index} className='px-2 relative h-full'>
           <div className='relative h-full cursor-pointer' onClick={() => categoriDetailsRow(item.id)}>
-            <div className='overflow-hidden rounded-lg h-full'>
+            <div className='overflow-hidden rounded-lg h-full image-container'>
               {item?.feature_image ? (
                 <img
                   src={BASE_IMAGE_URL + item?.feature_image}
                   alt="image"
-                  className="shadow rounded-lg overflow-hidden object-cover hover:scale-110 transition-all duration-500 cursor-pointer h-full"
+                  className="zoom-image shadow rounded-lg overflow-hidden object-cover cursor-pointer h-full"
                 />
               ) : (
                 <img
                   src={defultimage}
                   alt="image"
-                  className="shadow rounded-lg overflow-hidden object-cover hover:scale-110 transition-all duration-500 cursor-pointer h-full"
+                  className="zoom-image shadow rounded-lg overflow-hidden object-cover cursor-pointer h-full"
                 />
               )}
             </div>
@@ -118,7 +129,7 @@ const CarouselCard = () => {
           </div>
 
           <div className='absolute card_btn_box'>
-            <Btnone title="Shop Now" bgColor="#072320" borderColor="#00A762" handleClick={() => navigate('/shop')} />
+            <Btnone title="Shop Now" bgColor="#072320" borderColor="#00A762" handleClick={() => handleRow()} />
           </div>
         </div>
       ))}

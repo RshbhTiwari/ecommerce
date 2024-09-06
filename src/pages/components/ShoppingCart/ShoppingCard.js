@@ -6,7 +6,7 @@ import ShoppingCartTable from './ShoppingCartTable';
 import CartEmpty from '../basic/ErrorPages/cartempty';
 import { MdOutlineArrowBackIos } from "react-icons/md";
 
-export default function ShoppingCard({ cartData, itemCount, allCartItems }) {
+export default function ShoppingCard({ cartData, itemCount, allCartItems, cartIsLoading, cartErorr }) {
     const navigate = useNavigate();
     return (
         <>
@@ -15,13 +15,11 @@ export default function ShoppingCard({ cartData, itemCount, allCartItems }) {
             <div className="container mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
                 <div className='py-10'>
 
-
-
                     <div className="grid grid-cols-12 md:gap-8 gap-6 sm:p-8 p-0 shadow-md rounded-lg">
                         <div className='lg:col-span-8 col-span-12'>
 
                             <div className="flex items-center justify-between border-b-2 pb-2 border-[#072320]">
-                            <h2 className={`font-dm text-2xl capitalize font-medium text-left text-[#072320]`} >Shopping Cart</h2>
+                                <h2 className={`font-dm text-2xl capitalize font-medium text-left text-[#072320]`} >Shopping Cart</h2>
                                 <div className='font-dm  text-[#072320] flex items-center justify-start cursor-pointer'
                                     onClick={() => navigate('/shop')} >
                                     <MdOutlineArrowBackIos className='font-xl text-[#072320]' />
@@ -37,13 +35,13 @@ export default function ShoppingCard({ cartData, itemCount, allCartItems }) {
                                         <Paragraph title={`You have ${itemCount} items in your cart`} textAlign='left' />
                                     </div>
                                     <div className="overflow-x-auto mt-6">
-                                        <ShoppingCartTable shoppingcart={cartData} itemCount={itemCount} />
+                                        <ShoppingCartTable shoppingcart={cartData} itemCount={itemCount} cartIsLoading={cartIsLoading} cartErorr={cartErorr} />
                                     </div>
                                 </>
-
                             ) : (
                                 <CartEmpty height="200px" />
                             )}
+                            
                         </div>
 
                         <div className='lg:col-span-4 col-span-12'>

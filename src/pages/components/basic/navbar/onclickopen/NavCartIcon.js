@@ -7,7 +7,7 @@ import ShoppingCartTable from "../../../ShoppingCart/ShoppingCartTable";
 import CartEmpty from "../../ErrorPages/cartempty";
 import { useNavigate } from "react-router-dom";
 
-function NavCartIcon({cartData, itemCount}) {
+function NavCartIcon({ cartData, itemCount }) {
     const navigate = useNavigate();
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
@@ -18,11 +18,9 @@ function NavCartIcon({cartData, itemCount}) {
             setTimeout(() => {
                 setIsCartOpen(false);
                 setIsClosing(false);
-                // document.body.style.overflow = 'unset';
-            }, 300);
+            }, 300); // Duration should match animation time
         } else {
             setIsCartOpen(true);
-            // document.body.style.overflow = 'hidden';
         }
     };
 
@@ -38,13 +36,12 @@ function NavCartIcon({cartData, itemCount}) {
 
     return (
         <>
-            <div className='flex items-center  cursor-pointer' onClick={toggleCart}>
-                <div className='flex items-center relative' >
+            <div className='flex items-center cursor-pointer' onClick={toggleCart}>
+                <div className='flex items-center relative'>
                     <HiOutlineShoppingBag className='text-white text-[24px]' />
-            
                     <div className='rounded-full right-[-7px] top-[-7px] h-[20px] w-[20px] 
-                                        flex items-center justify-center text-[13px] text-white bg-[#072320] absolute'>
-                       {itemCount}
+                                    flex items-center justify-center text-[13px] text-white bg-[#072320] absolute'>
+                        {itemCount}
                     </div>
                 </div>
                 <h6 className='text-white font-dm text-sm ml-2 capitalize'>cart</h6>
@@ -58,16 +55,17 @@ function NavCartIcon({cartData, itemCount}) {
                         onClick={toggleCart}
                     />
 
-                    {/* Sidebar */}
+                    {/* Sidebar with Animation on open fadeRight close fadeLeft */}
                     <div
-                        className={`fixed top-0 right-0 z-50 h-full md:w-[420px] w-full bg-white shadow-lg transition-all duration-300 ease-in-out
-                             ${isClosing ? 'translate-x-full' : 'translate-x-0'}`}
+                        className={`fixed top-0 right-0 z-50 h-full md:w-[420px] w-full bg-white shadow-lg 
+                                     ${isClosing ? 'translate-x-full fadeOutLeft' : 'fadeInRight'}`}
                     >
-                        <div className='p-4'>
 
+
+                        <div className='p-4'>
                             <div className="flex items-center justify-between border-b-2 pb-2 border-[#072320]">
-                                <h2 className={`font-dm text-2xl capitalize font-medium text-left text-[#072320]`} >cart</h2>
-                                <div className="flex items-center justify-center h-10 w-10 rounded-md bg-[#072320] cursor-pointer " onClick={toggleCart}>
+                                <h2 className='font-dm text-2xl capitalize font-medium text-left text-[#072320]'>cart</h2>
+                                <div className="flex items-center justify-center h-10 w-10 rounded-md bg-[#072320] cursor-pointer" onClick={toggleCart}>
                                     <RxCross2 className='text-2xl cursor-pointer text-white' />
                                 </div>
                             </div>
@@ -78,10 +76,9 @@ function NavCartIcon({cartData, itemCount}) {
                                         <Paragraph title={`You have ${itemCount} items in your cart`} textAlign='left' />
                                     </div>
                                     <div className="overflow-x-auto mt-6">
-                                        <ShoppingCartTable shoppingcart={cartData}  itemCount={itemCount} minicart="true" />
+                                        <ShoppingCartTable shoppingcart={cartData} itemCount={itemCount} minicart="true" />
                                     </div>
                                 </>
-
                             ) : (
                                 <CartEmpty height="150px" />
                             )}
@@ -93,7 +90,7 @@ function NavCartIcon({cartData, itemCount}) {
                                 </div>
 
                                 <div className='w-full mt-4'>
-                                    <Btnoutline title="edit cart" width="100%"  handleClick={handleClickCart}/>
+                                    <Btnoutline title="edit cart" width="100%" handleClick={handleClickCart} />
                                 </div>
                             </div>
                         </div>
@@ -105,3 +102,11 @@ function NavCartIcon({cartData, itemCount}) {
 }
 
 export default NavCartIcon;
+
+
+// <div
+//                         className={`fixed top-0 right-0  z-50 h-full md:w-[420px] w-full bg-white shadow-lg transition-all duration-300 
+//                         ease-in-out
+//                              ${isClosing ? 'translate-x-full' : 'translate-x-0'}`}
+//                     >
+                    

@@ -62,12 +62,15 @@ function NavUserIcon() {
 
                         <FaRegUserCircle className='text-white text-[24px]' />
                         <h6 className='text-white font-dm text-sm ml-2 capitalize'>
-                            {userName || loginUser?.name }
+                            {userName || loginUser?.name}
                         </h6>
                     </div>
                     {isOpen && (
-                        <div ref={dropdownRef} className='absolute rounded-lg shadow-lg lg:mt-4 mt-2 z-10 bg-white w-72 top-full left-1/2 transform -translate-x-1/2'>
-                            <Myaccountdrop toggle={toggleMenu} />
+                        <div ref={dropdownRef} className='absolute lg:mt-4 mt-2 z-10 w-72 top-full left-1/2 
+                        transform -translate-x-1/2'>
+                            <div className="bg-white rounded-lg shadow-lg" data-aos="fade-up">
+                                <Myaccountdrop toggle={toggleMenu} />
+                            </div>
                         </div>
                     )}
                 </>
@@ -78,8 +81,14 @@ function NavUserIcon() {
                         <h6 className='text-white font-dm text-sm ml-2 capitalize'>login</h6>
                     </div>
                     {isOpen && (
-                        <div ref={dropdownRef} className="logindrop absolute z-10 px-4 py-6 right-0 mt-4 w-[350px] rounded-md shadow-lg bg-white">
-                            <DropLogin toggle={toggleMenu} />
+                        <div ref={dropdownRef} className="logindrop absolute z-10 right-0 
+                        lg:mt-4 mt-2
+                       
+                        w-[300px] lg:w-[350px]
+                        ">
+                            <div className="bg-white rounded-lg shadow-lg px-4 py-6" data-aos="fade-up">
+                                <DropLogin toggle={toggleMenu} />
+                            </div>
                         </div>
                     )}
                 </>

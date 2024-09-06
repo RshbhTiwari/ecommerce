@@ -1,15 +1,26 @@
 import BreadCrum from "../basic/BreadCrum";
-import usebg from '../../../assets/myaccount/usebg1.png';
 import { useNavigate } from 'react-router-dom';
 import { HeadingTitle, Paragraph } from "../basic/title";
-import UpdateAccountFrom from "./UpdateAccountFrom";
 import { Btnone } from "../basic/button";
 import productcard from "../../../data/productcard";
 import { AccountSideNav } from "./sidenav";
+import { useDispatch } from "react-redux";
 
 
-function Useramyccount() {
+function Useramyccount({customer_id}) {
+
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    // const { isLoading: categoryIsLoading, error: categoryError, categories } = useSelector(
+    //     (state) => state.category
+    // );
+
+    // useEffect(() => {
+    //     dispatch(getMyccount(customer_id));
+    // }, [dispatch, customer_id]);
+
+
     return (
         <>
             <BreadCrum componentName="my account" link="/my-account" />

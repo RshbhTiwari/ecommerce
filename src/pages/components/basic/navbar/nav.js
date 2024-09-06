@@ -111,8 +111,14 @@ export default function Nav() {
 
                                                     {/* Dropdown Panel for "Home" */}
                                                     {item.name === 'Shop' && showDropdown && (
-                                                        <div className='absolute rounded-b-lg bg-[#072320] w-[400px] z-10 py-5 px-7 top-full left-1/2 transform transition-all duration-300 
-                                                      -translate-x-1/2'>
+                                                        <div data-aos="fade-up" data-aos-delay="100"
+                                                            className='absolute rounded-b-lg bg-[#072320] w-[400px] z-10 py-5 px-7 
+                                                            top-full  -translate-x-1/1
+                                                     '>
+
+                                                            {/* <div data-aos="fade-up" 
+                                                         className='absolute rounded-b-lg bg-[#072320] w-[400px] z-10 py-5 px-7 top-full left-1/2 transform transition-all duration-300 
+                                                      -translate-x-1/2'> */}
 
                                                             <div className="grid grid-cols-12 gap-6 center_box">
 
@@ -158,13 +164,13 @@ export default function Nav() {
                                                                                 {allCategoriesData.map((item, index) => (
                                                                                     <div className='px-1'>
                                                                                         <div className='p-4 bg-[#00A762] rounded-lg' key={index} >
-                                                                                            <div className='rounded-lg flex items-center justify-center '>
+                                                                                            <div className='rounded-lg flex items-center justify-center image-container'>
                                                                                                 {item?.thumbnail_image ? (
                                                                                                     <a href={`/categories/${item?.id}`}>
                                                                                                         <img
                                                                                                             src={BASE_IMAGE_URL + item?.thumbnail_image}
                                                                                                             alt="image"
-                                                                                                            className="cursor-pointer w-full h-full rounded-lg"
+                                                                                                            className="zoom-image cursor-pointer w-full h-full rounded-lg"
                                                                                                         />
                                                                                                     </a>
                                                                                                 ) : (
@@ -172,7 +178,7 @@ export default function Nav() {
                                                                                                         <img
                                                                                                             src={defultimage}
                                                                                                             alt="image"
-                                                                                                            className="cursor-pointer w-full h-full rounded-lg"
+                                                                                                            className="zoom-image cursor-pointer w-full h-full rounded-lg"
                                                                                                         />
                                                                                                     </a>
                                                                                                 )}

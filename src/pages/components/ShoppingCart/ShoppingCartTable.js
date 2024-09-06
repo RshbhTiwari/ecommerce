@@ -6,10 +6,19 @@ import { deleteCartItem, putCartItem } from "../../../redux/slices/addToCart";
 import { toast } from 'react-toastify';
 import { RxCross2 } from "react-icons/rx";
 
-export default function ShoppingCartTable({ shoppingcart, minicart }) {
+export default function ShoppingCartTable({ shoppingcart, minicart, cartIsLoading, cartErorr }) {
+
     const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
     const dispatch = useDispatch();
     const [cartItems, setCartItems] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+        return () => clearTimeout(timer);
+    }, []);
 
     useEffect(() => {
         setCartItems(shoppingcart);
@@ -92,8 +101,9 @@ export default function ShoppingCartTable({ shoppingcart, minicart }) {
         <>
             {minicart ? (
                 <div className="mt-4 max-h-[450px] overflow-y-auto">
-
-                    {cartItems.map((item, index) => (
+                    {loading || cartIsLoading ? (
+                        <SkeletonLoader cartItems={cartItems} />
+                    ) : (cartItems.map((item, index) => (
                         <div
                             className={`flex shadow-md rounded-lg justify-between relative my-4  ${index % 2 === 0 ? '' : 'bg-gray-100'}`}
                             key={index}>
@@ -131,84 +141,150 @@ export default function ShoppingCartTable({ shoppingcart, minicart }) {
                                         )}
                                     </h2>
                                 </div>
-
-
                             </div>
                         </div>
-                    ))}
+                    ))
+                    )}
                 </div>
             ) : (
                 <>
-                    <div className="overflow-x-auto">
-                        <table className="min-w-full bg-white border border-gray-200 shadow-md rounded-lg">
-                            <thead className="bg-gray-100">
-                                <tr>
-                                    <th className="py-2 px-4 font-dm text-[#00A762] capitalize h-full md:block hidden">Image</th>
-                                    <th className="py-2 px-4 font-dm text-[#00A762] capitalize">Name</th>
-                                    <th className="py-2 px-4 font-dm text-[#00A762] capitalize">Prize of the Month</th>
-                                    <th className="py-2 px-4 font-dm text-[#00A762] capitalize">Quantity</th>
-                                    <th className="py-2 px-4 font-dm text-[#00A762] capitalize">Total Price</th>
-                                    <th className="py-2 px-4 font-dm text-[#00A762] capitalize" colSpan={2}>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {cartItems.map((item, index) => (
-                                    <tr key={item.id} className={index % 2 === 0 ? '' : 'bg-gray-100'}>
-                                        <td className="py-2 px-4 md:block hidden">
-                                            <img
-                                                src={BASE_IMAGE_URL + item?.additional_images[0]}
-                                                alt="product_img"
-                                                className="h-24 w-32 object-cover rounded-md"
-                                            />
-                                        </td>
-                                        <td className="py-2 px-4 text-[#00A762] text-left font-dm text-lg capitalize font-medium">
-                                            {item?.name}
-                                        </td>
-                                        <td className="py-2 px-4 text-[#072320] text-left font-dm text-md capitalize font-medium">
-                                            ₹{item?.discount ? item.discount : item.price}
-                                        </td>
-                                        <td className="py-2 px-4">
-                                            <div className="flex items-center justify-center gap-1">
-                                                <button
-                                                    className="btn_plus hover:bg-gray-200 hover:rounded-l-lg"
-                                                    type="button"
-                                                    onClick={() => handleIncrement(item?.id)}
-                                                >
-                                                    <MdAdd className="text-[#00A762]" />
-                                                </button>
-                                                <input
-                                                    className="w-12 text-center bg-transparent border border-gray-300 rounded"
-                                                    value={item?.quantity}
-                                                    readOnly
-                                                />
-                                                <button
-                                                    className="btn_minus hover:bg-gray-200 hover:rounded-r-lg"
-                                                    type="button"
-                                                    onClick={() => handleDecrement(item?.id)}
-                                                >
-                                                    <FiMinus style={{ color: '#00A762' }} />
-                                                </button>
-                                            </div>
-                                        </td>
-                                        <td className="py-2 px-4 text-base font-dm">
-                                            ₹{item?.totalPrice}
-                                        </td>
-
-                                        <td className="py-2" onClick={() => handleUpdate(item?.id, item?.quantity, item?.totalPrice)}>
-                                            <h1 className="text-[#00A762] font-dm cursor-pointer">Update</h1>
-                                        </td>
-
-                                        <td className="py-2" onClick={() => handleDelete(item?.id)}>
-                                            <MdDeleteForever className="text-[#00A762] text-2xl" />
-                                        </td>
+                    {loading || cartIsLoading ? (
+                        <SkeletonTable cartItems={cartItems} />
+                    ) : (
+                        <div className="overflow-x-auto">
+                            <table className="min-w-full bg-white border border-gray-200 shadow-md rounded-lg">
+                                <thead className="bg-gray-100">
+                                    <tr>
+                                        <th className="py-2 px-4 font-dm text-[#00A762] capitalize md:block hidden">Image</th>
+                                        <th className="py-2 px-4 font-dm text-[#00A762] capitalize">Name</th>
+                                        <th className="py-2 px-4 font-dm text-[#00A762] capitalize">Prize of the Month</th>
+                                        <th className="py-2 px-4 font-dm text-[#00A762] capitalize">Quantity</th>
+                                        <th className="py-2 px-4 font-dm text-[#00A762] capitalize">Total Price</th>
+                                        <th className="py-2 px-4 font-dm text-[#00A762] capitalize" colSpan={2}>Actions</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody>
+                                    {cartItems.map((item, index) => (
+                                        <tr key={item.id} className={index % 2 === 0 ? '' : 'bg-gray-100'}>
+                                            <td className="py-2 px-4 md:block hidden">
+                                                <img
+                                                    src={BASE_IMAGE_URL + item?.additional_images[0]}
+                                                    alt="product_img"
+                                                    className="h-24 w-32 object-cover rounded-md"
+                                                />
+                                            </td>
+                                            <td className="py-2 px-4 text-[#00A762] text-left font-dm text-lg capitalize font-medium">
+                                                {item?.name}
+                                            </td>
+                                            <td className="py-2 px-4 text-[#072320] text-left font-dm text-md capitalize font-medium">
+                                                ₹{item?.discount ? item.discount : item.price}
+                                            </td>
+                                            <td className="py-2 px-4">
+                                                <div className="flex items-center justify-center gap-1">
+                                                    <button
+                                                        className="btn_plus hover:bg-gray-200 hover:rounded-l-lg"
+                                                        type="button"
+                                                        onClick={() => handleIncrement(item?.id)}
+                                                    >
+                                                        <MdAdd className="text-[#00A762]" />
+                                                    </button>
+                                                    <input
+                                                        className="w-12 text-center bg-transparent border border-gray-300 rounded"
+                                                        value={item?.quantity}
+                                                        readOnly
+                                                    />
+                                                    <button
+                                                        className="btn_minus hover:bg-gray-200 hover:rounded-r-lg"
+                                                        type="button"
+                                                        onClick={() => handleDecrement(item?.id)}
+                                                    >
+                                                        <FiMinus style={{ color: '#00A762' }} />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                            <td className="py-2 px-4 text-base font-dm">
+                                                ₹{item?.totalPrice}
+                                            </td>
+
+                                            <td className="py-2" onClick={() => handleUpdate(item?.id, item?.quantity, item?.totalPrice)}>
+                                                <h1 className="text-[#00A762] font-dm cursor-pointer">Update</h1>
+                                            </td>
+
+                                            <td className="py-2" onClick={() => handleDelete(item?.id)}>
+                                                <MdDeleteForever className="text-[#00A762] text-2xl" />
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
                 </>
             )}
         </>
 
     );
 }
+
+const SkeletonRow = () => (
+    <tr className="animate-pulse">
+        <td className="py-2 px-2">
+            <div className="bg-gray-200 h-24 w-32 rounded-md"></div>
+        </td>
+        <td className="py-2 px-2">
+            <div className="bg-gray-200 h-6 w-32 rounded-md"></div>
+        </td>
+        <td className="py-2 px-2">
+            <div className="bg-gray-200 h-6 w-24 rounded-md"></div>
+        </td>
+        <td className="py-2 px-2">
+            <div className="bg-gray-200 h-6 w-24 rounded-md"></div>
+        </td>
+        <td className="py-2 px-2">
+            <div className="bg-gray-200 h-6 w-24 rounded-md"></div>
+        </td>
+        <td className="py-2 px-2 ">
+            <div className="bg-gray-200 h-6 w-6 rounded-md float-left"></div>
+            <div className="bg-gray-200 h-6 w-6 rounded-md float-right"></div>
+        </td>
+    </tr>
+);
+
+const SkeletonTable = ({ cartItems }) => (
+    <div className="overflow-x-auto">
+        <table className="min-w-full bg-white border border-gray-200 shadow-md rounded-lg">
+            <thead className="bg-gray-100">
+                <tr>
+                    <th className="py-2 px-4 font-dm text-[#00A762] capitalize h-full md:block hidden">Image</th>
+                    <th className="py-2 px-4 font-dm text-[#00A762] capitalize">Name</th>
+                    <th className="py-2 px-4 font-dm text-[#00A762] capitalize">Prize of the Month</th>
+                    <th className="py-2 px-4 font-dm text-[#00A762] capitalize">Quantity</th>
+                    <th className="py-2 px-4 font-dm text-[#00A762] capitalize">Total Price</th>
+                    <th className="py-2 px-4 font-dm text-[#00A762] capitalize" colSpan={2}>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {cartItems.map((_, index) => (
+                    <SkeletonRow key={index} />
+                ))}
+            </tbody>
+        </table>
+    </div>
+);
+
+const SkeletonLoader = ({ cartItems }) => {
+    return (
+        <div className="space-y-4">
+            {cartItems.map((_, index) => (
+                <div key={index} className="flex items-center gap-4 p-4 border border-gray-200 rounded-lg shadow-md animate-pulse">
+                    <div className="w-24 h-24 bg-gray-300 rounded-md"></div>
+                    <div className="flex-1 space-y-4">
+                        <div className="h-4 bg-gray-300 rounded"></div>
+                        <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+                        <div className="h-4 bg-gray-300 rounded w-1/2"></div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+};

@@ -27,6 +27,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllCartItems } from "./redux/slices/addToCart";
 import { useEffect, useState } from "react";
 import ResetPasswordPage from "./pages/resetpasswordpage";
+import AOS from 'aos';
+import 'aos/dist/aos.css'; 
+
+AOS.init(); 
+
+AOS.init({
+  duration: 1000,
+  easing: 'ease-in-out', 
+  once: true, 
+});
 
 function App() {
   const dispatch = useDispatch();
@@ -34,7 +44,7 @@ function App() {
   const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
   const token = localStorage?.getItem('accessToken') || null;
   const [localCartItems, setLocalCartItems] = useState([]);
-  const { allCartItems } = useSelector(
+  const { allCartItems, isLoading: cartIsLoading, error: cartErorr } = useSelector(
     (state) => state.addToCart
   );
 
@@ -88,7 +98,8 @@ function App() {
           <Route path="/my-account/address-book" element={<Addressbook />} />
           <Route path="/my-account/add-address" element={<AddAddressBook />} />
           <Route path="/my-account/edit-address/:id" element={<EditAddressBook />} />
-          <Route path="/cart" element={<Cart cartData={localCartItems} itemCount={itemCount} allCartItems={allCartItems} />} />
+          <Route path="/cart" element={<Cart cartData={localCartItems} itemCount={itemCount} allCartItems={allCartItems}
+            cartIsLoading={cartIsLoading} cartErorr={cartErorr} />} />
           <Route path="/checkout" element={<Checkout cartData={localCartItems} itemCount={itemCount} allCartItems={allCartItems} />} />
           <Route path="/my-account/wishlist" element={<Wishlist />} />
           <Route path="/my-account/orders" element={<Orders />} />

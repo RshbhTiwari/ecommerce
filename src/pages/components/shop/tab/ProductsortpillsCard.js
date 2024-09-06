@@ -46,6 +46,10 @@ const ProductsortpillsCard = ({ skeletonCount, allProducts, productIsLoading, pr
             dispatch(postWishlistUser(payload, toast, navigate));
         } else {
             navigate('/login');
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
             toast.error("You need to log in to add to wishlist");
         }
     };
@@ -85,7 +89,7 @@ const ProductsortpillsCard = ({ skeletonCount, allProducts, productIsLoading, pr
                             <img
                                 src={BASE_IMAGE_URL + item.additional_images[0]}
                                 alt='product_img'
-                                className="w-full h-full object-cover rounded-md"
+                                className="w-full zoom-image h-full object-cover rounded-md"
                             />
                         ) : (
                             <div className="w-full h-full bg-gray-200 rounded-md" />

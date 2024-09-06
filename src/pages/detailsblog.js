@@ -1,10 +1,11 @@
+import { useParams } from "react-router-dom";
 import { SingleBlogDetails } from "./components/blog";
 
 function DetailsBlog() {
-    
+    const { id } = useParams();
     return (
         <>
-           <SingleBlogDetails />
+           <SingleBlogDetails id={id} />
         </>
     );
 }

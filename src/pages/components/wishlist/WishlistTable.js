@@ -9,18 +9,24 @@ import { useCallback, useEffect, useState } from "react";
 
 export default function WishlistTable() {
 
-
-
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
-    
-    const [wishlistData, setWishlistData] = useState([]);
 
-    const { wishlist } = useSelector(
+    const [wishlistData, setWishlistData] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const { wishlist, isLoading, error } = useSelector(
         (state) => state.wishlist
     );
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+        return () => clearTimeout(timer);
+    }, []);
 
     useEffect(() => {
         dispatch(getWishlist());
@@ -47,12 +53,28 @@ export default function WishlistTable() {
 
     const handleDelete = useCallback((itemId) => {
         dispatch(deleteWishlistCartItem(itemId, toast));
-        const filterData = wishlistData.filter((item) => item?.id !== itemId);
-        setWishlistData(filterData);
+        // const filterData = wishlist.filter((item) => item?.id !== itemId);
+        // console.log("filterData",filterData)
+        // setWishlistData(filterData);
     }, [dispatch]);
 
     return (
         <div className="overflow-x-auto">
+              {loading || isLoading ? (
+                <div className="animate-pulse">
+                    <div className="flex flex-col space-y-4">
+                        {wishlistData.map((_, index) => (
+                            <div key={index} className="flex items-center space-x-4 p-4 rounded-lg">
+                                <div className="w-24 h-24 bg-gray-300 rounded-md"></div>
+                                <div className="flex-1 space-y-4">
+                                    <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+                                    <div className="h-4 bg-gray-300 rounded w-1/2"></div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            ) : (
             <table className="w-full">
                 <tbody>
                     {wishlistData?.map((item, index) => (
@@ -99,6 +121,7 @@ export default function WishlistTable() {
                     ))}
                 </tbody>
             </table>
+              )}
         </div>
     );
 }

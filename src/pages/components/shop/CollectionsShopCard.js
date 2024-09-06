@@ -84,6 +84,10 @@ const CollectionsShopCard = ({ allproducts }) => {
         } else {
             navigate('/login')
             toast.error("You need to log in to add to wishlist");
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         }
     };
 
@@ -95,18 +99,19 @@ const CollectionsShopCard = ({ allproducts }) => {
                 >
                     <div className='group
                           flex flex-col justify-center relative h-full items-center rounded-br-lg rounded-tl-lg
-                            border-2 border-[#072320]'>
+                            border-2  border-[#072320]'
+                        >
 
-                        <div className='flex justify-center items-center cursor-pointer bg-[#00A762] rounded-br-lg rounded-tl-lg mx-2 p-4 my-2 relative' onClick={() => {
-                            handleDetailsRow(item?.id);
-                        }}>
-                            <div className='relative overflow-hidden h-[200px] rounded-br-lg rounded-tl-lg'>
+                        <div className='flex justify-center items-center cursor-pointer bg-[#00A762]
+                         rounded-br-lg rounded-tl-lg m-4 p-4 relative w-full' onClick={() => {
+                                handleDetailsRow(item?.id);
+                            }} >
+
+                            <div className='relative overflow-hidden h-[200px] w-full rounded-br-lg rounded-tl-lg image-container'>
                                 <img
-
                                     src={BASE_IMAGE_URL + item?.additional_images[0]}
-
                                     alt="Product"
-                                    className="block w-full h-full transition-all duration-300 ease-in-out h-auto group-hover:opacity-0"
+                                    className="block w-full h-full transition-all duration-300 ease-in-out h-auto group-hover:opacity-0 zoom-image"
                                 />
 
                                 <img
@@ -115,6 +120,7 @@ const CollectionsShopCard = ({ allproducts }) => {
                                     className="block w-full h-full opacity-0 absolute top-0 left-0 transition-all duration-300 ease-in-out group-hover:opacity-100"
                                 />
                             </div>
+
                             <div className="show_box flex justify-evenly items-center absolute h-10 w-10 bg-[#072320c7] mx-auto px-2 py-1 rounded-full" onClick={() => {
                                 handleAddWishlist(item?.id);
                             }}>

@@ -22,13 +22,17 @@ export default function ContactPage() {
                     <div className="grid grid-cols-12 glass_effect rounded-lg">
 
                         <div className=' lg:col-span-5 col-span-12 
-                             flex flex-col justify-center bg_contact_image rounded-tl-lg rounded-bl-lg'
-
-                            style={{
-                                backgroundImage: `url(${imgSrc})`
-                            }}
+                              overflow-hidden'
                         >
+                            <div
+                                className='bg_contact_image rounded-tl-lg rounded-bl-lg
+                              overflow-hidden hover:scale-110 transition-all w-full h-full duration-500'
+                                style={{
+                                    backgroundImage: `url(${imgSrc})`
+                                }}
+                            >
 
+                            </div>
                         </div>
 
                         <div className='lg:col-span-7 col-span-12 
@@ -48,16 +52,19 @@ export default function ContactPage() {
 
 
                                 <div className='flex flex-col sm:items-start items-center'>
-                                    <div className='mt-3 flex items-center '>
-                                        <RiMapPinLine className='text-2xl text-white' />
-                                        <div className='ml-2'>
-                                            <Paragraph title="No: 58 A, East Madison Street,? Baltimore, MD, USA 4508"
-                                                textAlign="left" color='white' />
+                                    <a href="https://www.google.com/maps/place/Star+Reify+Tech+Solutions/@30.9249662,76.7965496,17z/data=!3m1!4b1!4m6!3m5!1s0x390ff51e2332ed9b:0xf4e1d8a90c1e2afa!8m2!3d30.9249616!4d76.7991245!16s%2Fg%2F11qp071wvb?entry=ttu&g_ep=EgoyMDI0MDgyNy4wIKXMDSoASAFQAw%3D%3D"
+                                        target="_blank" class="anchor_icontext">
+                                        <div className='mt-3 flex items-center '>
+                                            <RiMapPinLine className='text-2xl text-white' />
+                                            <div className='ml-2'>
+                                                <Paragraph title="No: 58 A, East Madison Street,? Baltimore, MD, USA 4508"
+                                                    textAlign="left" color='white' />
+                                            </div>
                                         </div>
-                                    </div>
+                                    </a>
 
+                                    <a href="tel:+911795-292032" class="anchor_icontext">
 
-                                    <a href="tel:5555555555">
                                         <div className='mt-3 flex items-center'>
                                             <IoCallOutline className='text-2xl text-white' />
                                             <div className='ml-2'>
@@ -67,7 +74,7 @@ export default function ContactPage() {
                                     </a>
 
 
-                                    <a href="mailto:someone@example.com">
+                                    <a href="mailto:info@starreify.com" class="anchor_icontext">
                                         <div className='mt-3 flex items-center'>
                                             <IoIosMail className='text-2xl text-white ' />
                                             <div className='ml-2'>

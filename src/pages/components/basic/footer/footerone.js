@@ -2,8 +2,48 @@ import { FaFacebookF, FaInstagram, FaWhatsapp } from "react-icons/fa";
 import { RiSkypeFill } from "react-icons/ri";
 import { FaSquareTwitter } from "react-icons/fa6";
 import './footer.css';
-import comLogo  from '../../../../assets/header/tastydaily-0556409248.webp';
+import comLogo from '../../../../assets/header/tastydaily-0556409248.webp';
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { fetchAllCategories } from "../../../../redux/slices/category";
+
 export default function Footerone() {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [loading, setLoading] = useState(true);
+    const [allCategoriesData, setAllCategoriesData] = useState([]);
+
+    const { isLoading: categoryIsLoading, error: categoryError, categories } = useSelector(
+        (state) => state.category
+    );
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+        return () => clearTimeout(timer);
+    }, []);
+
+    useEffect(() => {
+        dispatch(fetchAllCategories());
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (categories?.length) {
+            setAllCategoriesData(categories);
+        }
+    }, [categories]);
+
+    const categoriDetailsRow = (id) => {
+        navigate(`/categories/${id}`);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+
+
 
     return (
         <>
@@ -29,19 +69,17 @@ export default function Footerone() {
 
                         <div className='lg:col-span-4 col-span-12  flex-col flex items-center justify-center'>
 
-
-                            <div className='flex items-center h-[40px] mb-2'>
-                                <img
-                                    className="h-full w-auto"
-                                    src={comLogo}
-                                    alt="logo"
-                                />
-                            </div>
+                            <Link to="/">
+                                <div className='flex items-center h-[40px] mb-2'>
+                                    <img
+                                        className="h-full w-auto"
+                                        src={comLogo}
+                                        alt="logo"
+                                    />
+                                </div>
+                            </Link>
 
                             <p className="text-white text-center font-dm  text-base font-light">Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eius od tempor incididunt ut labore et dolore magna.</p>
-
-
-
                         </div>
 
                         <div className='lg:col-span-4 col-span-12 flex flex-col justify-end items-end'>
@@ -101,11 +139,25 @@ export default function Footerone() {
                             <h6 className="text-[#072320] text-lg  font-dm  mb-3 capitalize font-medium">Shop</h6>
 
                             <div className='md:col-span-3 col-span-12  flex flex-col    md:justify-start md:items-start justify-center items-center'>
-                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">Products</p>
-                                <p className="text-white font-dm text-sm  mb-1 capitalize font-light">Cart</p>
-                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">Wishlist</p>
-                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">My Account</p>
-                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">Contacts</p>
+                                <Link to="/shop">
+                                    <p className="text-white font-dm text-sm mb-1 capitalize font-light">Products</p>
+                                </Link>
+
+                                <Link to="/cart">
+                                    <p className="text-white font-dm text-sm  mb-1 capitalize font-light">Cart</p>
+                                </Link>
+
+                                <Link to="/my-account/wishlist">
+                                    <p className="text-white font-dm text-sm mb-1 capitalize font-light">Wishlist</p>
+                                </Link>
+
+                                <Link to="/my-account">
+                                    <p className="text-white font-dm text-sm mb-1 capitalize font-light">My Account</p>
+                                </Link>
+
+                                <Link to="/contact">
+                                    <p className="text-white font-dm text-sm mb-1 capitalize font-light">Contacts</p>
+                                </Link>
                             </div>
                         </div>
 
@@ -113,12 +165,34 @@ export default function Footerone() {
                             <h6 className="text-[#072320] text-lg  font-dm mb-3 capitalize font-medium">Categories</h6>
 
                             <div className='md:col-span-3 col-span-12  flex flex-col md:justify-start md:items-start justify-center items-center'>
-                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">Products</p>
-                                <p className="text-white font-dm text-sm  mb-1 capitalize font-light">Vegetables</p>
-                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">Fruits</p>
-                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">Bakery</p>
-                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">Sweets</p>
+
+                                {categoryIsLoading || loading ? (
+                                    <> {allCategoriesData.map((_, index) => (
+                                        <div key={index} className='animate-pulse 
+                                        transform scale-100 hover:scale-110 transition-transform duration-300'>
+                                            <div className='w-[150px] h-4 mb-2 bg-gray-300 rounded'></div>
+                                        </div>
+                                    ))}
+                                    </>
+                                ) : categoryError ? (
+                                    <p className="font-dm ">Error loading categories</p>
+                                ) : allCategoriesData.length > 0 ? (
+                                    <>
+                                        {allCategoriesData.map((row, index) => (
+                                            <p className="text-white font-dm cursor-pointer text-sm mb-1 capitalize font-light"
+                                                key={index}
+                                                onClick={() => {
+                                                    categoriDetailsRow(row?.id);
+                                                }}
+                                            >{row?.name}</p>
+                                        ))}
+                                    </>
+
+                                ) : null}
+
                             </div>
+
+
                         </div>
 
                     </div>

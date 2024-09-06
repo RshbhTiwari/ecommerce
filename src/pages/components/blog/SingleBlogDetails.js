@@ -6,6 +6,11 @@ import categoriescarddata from "../../../data/categoriescarddata";
 import one from '../../../assets/blog/details/1.jpg';
 import SingleBlog from "./SingleBlog";
 import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import { AllCategories } from "../basic/MultiUses";
+import { fetchAllCategories } from "../../../redux/slices/category";
+import { useEffect, useState } from "react";
+import { getOnebLog } from "../../../redux/slices/blog";
 
 const BlogsingleData = {
     id: 1,
@@ -17,10 +22,57 @@ const BlogsingleData = {
 }
 
 
-export default function SingleBlogDetails() {
+export default function SingleBlogDetails({id}) {
 
-    let { id } = useParams();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const [allBlogData, setAllBlogData] = useState([]);
+    const [allCategoriesData, setAllCategoriesData] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const { isLoading: categoryIsLoading, error: categoryError, categories } = useSelector(
+        (state) => state.category
+    );
+
+    const { isLoading: blogIsLoading, error: BlogError, oneblog } = useSelector(
+        (state) => state.blog
+    );
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+        return () => clearTimeout(timer);
+    }, []);
+
+    useEffect(() => {
+        dispatch(fetchAllCategories());
+    }, [dispatch]);
+
+    useEffect(() => {
+        dispatch(getOnebLog(id));
+    }, [dispatch, id]);
+
+    useEffect(() => {
+        if (oneblog?.length) {
+            setAllBlogData(oneblog);
+        }
+    }, [oneblog]);
+
+    useEffect(() => {
+        if (categories?.length) {
+            setAllCategoriesData(categories);
+        }
+    }, [categories]);
+
+    const categoriDetailsRow = (id) => {
+        navigate(`/categories/${id}`);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
 
     const handleDetailsRow = (id) => {
         navigate(`/blog/${id}`);
@@ -43,17 +95,30 @@ export default function SingleBlogDetails() {
 
                         <div className='pb-10'>
                             <HeadingTitle title="Categories" textAlign='left' />
-                            <table className='w-full my-2'>
-                                <tbody>
-                                    {categoriescarddata.slice(0, 3).map((row, index) => (
-                                        <tr className='border-b' key={index} >
-                                            <td className='font-dm py-2 text-[#00A762]'>{row.title}</td>
-                                            <td className='font-dm py-2 text-end text-[#00A762]'>{row.item}</td>
-                                        </tr>
-                                    ))
-                                    }
-                                </tbody>
-                            </table>
+                            {categoryIsLoading || loading ? (
+                                <> {allCategoriesData.map((_, index) => (
+                                    <div key={index} className='animate-pulse mt-2 flex justify-between py-2' >
+                                        <div className='w-[150px] py-2 bg-gray-300  rounded'></div>
+                                        <div className='w-10 bg-gray-300 rounded'></div>
+                                    </div>
+                                ))}
+                                </>
+                            ) : categoryError ? (
+                                <p className="font-dm ">Error loading categories</p>
+                            ) : allCategoriesData.length > 0 ? (
+
+                                <table className='w-full my-2'>
+                                    <tbody>
+                                        {allCategoriesData.map((row, index) => (
+                                            <AllCategories
+                                                key={index}
+                                                row={row}
+                                                onDetailsRow={() => categoriDetailsRow(row.id)}
+                                            />
+                                        ))}
+                                    </tbody>
+                                </table>
+                            ) : null}
                         </div>
 
                         <div className='pb-10'>

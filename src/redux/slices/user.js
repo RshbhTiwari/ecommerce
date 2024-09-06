@@ -47,6 +47,8 @@ export const getOneUser = () => async (dispatch) => {
         dispatch(startLoading());
         const response = await axios.get('/getUser', { headers: getHeaders() });
         dispatch(getUserSuccess(response?.data?.user));
+
+        console.log()
     } catch (error) {
         console.error("Error fetching user:", error.response?.data?.message || error.message);
         dispatch(hasError(error.response?.data?.message || "Failed to fetch user"));

@@ -7,6 +7,8 @@ import address from './slices/address';
 import user from './slices/user';
 import wishlist from './slices/wishlist';
 import initiaterazorpay from './slices/initiaterazorpay';
+import contact from './slices/contactfrom';
+import blog from './slices/blog';
 
 const store= configureStore({
     reducer:{
@@ -18,6 +20,8 @@ const store= configureStore({
         user:user,
         wishlist:wishlist,
         initiaterazorpay:initiaterazorpay,
+        contact:contact,
+        blog:blog,
     },
 })
 

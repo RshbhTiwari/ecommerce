@@ -224,14 +224,14 @@ export default function DetailsCategoriesPages({ id }) {
                                                      border-[2px] border-[#072320]'>
 
                                                             <div className='flex justify-center items-center bg-[#00A762] rounded-lg p-3'>
-                                                                <div className='overflow-hidden rounded-lg'>
+                                                                <div className='overflow-hidden rounded-lg '>
                                                                     <img
                                                                         src={BASE_IMAGE_URL + row?.thumbnail_image}
                                                                         alt="image"
-                                                                        className="overflow-hidden rounded-lg
-                                                     hover:scale-110 transition-all duration-500 cursor-pointer"
+                                                                        className="overflow-hidden rounded-lg 
+                                                     zoom-image cursor-pointer"
                                                                     />
-                                                                </div>
+                                                                </div> 
                                                             </div>
 
                                                             <div className='pt-2'>

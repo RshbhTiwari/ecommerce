@@ -54,12 +54,19 @@ const HomePage = () => {
             <div className="container mx-auto max-w-7xl  px-2 sm:px-6 lg:px-8">
                 {allCategoriesData.length > 0 ? (
                     <>
-                        <CarouselCard />
+                        <div data-aos="fade-up" data-aos-delay="200"><CarouselCard /></div>
                         <div className="pb-10">
-                            <HeadingTitle title="Shop By Categories" />
-                            <div className="mt-4">
-                                <CategoriesCard />
+
+                            <div className="" data-aos="zoom-in" data-aos-delay="200">
+                                <HeadingTitle title="Shop By Categories" />
                             </div>
+
+                            <div data-aos="fade-up" data-aos-delay="200">
+                                <div className="mt-4">
+                                    <CategoriesCard />
+                                </div>
+                            </div>
+
                         </div>
                     </>
                 ) : null}
@@ -73,22 +80,23 @@ const HomePage = () => {
 
                 {allProductsData?.length > 0 ? (
                     <div className="pb-10">
-                        <HeadingTitle title="Bestsellers in September" />
-                        
-                        <div className="mt-4">
+                                   <div className="" data-aos="zoom-in" data-aos-delay="200">
+                            <HeadingTitle title="Bestsellers in September" />
+                        </div>
+                        <div className="mt-4" data-aos="fade-up" data-aos-delay="200">
                             <ProductCard skeletonCount={4}
-                            allProducts={productsToDisplay} 
-                            productIsLoading={productIsLoading}
-                             productError={productError} /> 
+                                allProducts={productsToDisplay}
+                                productIsLoading={productIsLoading}
+                                productError={productError} />
                         </div>
                     </div>
                 ) : null}
-                
+
                 <div className="pb-10">
                     <ImageContent />
                 </div>
 
-                <div className="pb-10">
+                <div className="pb-10"  data-aos="fade-up" data-aos-delay="200">
                     <OfferContent />
                 </div>
             </div>

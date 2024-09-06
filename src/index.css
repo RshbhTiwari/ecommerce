@@ -103,7 +103,7 @@ code {
   transform: translateY(200);
 } */
 
-.imgslide .slick-list .slick-track{
+.imgslide .slick-list .slick-track {
   display: inline-block !important;
 }
 
@@ -126,7 +126,86 @@ code {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
+
+/* CSS for sidebar animations */
+@keyframes fadeInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOutLeft {
+  from {
+    transform: translateX(100%);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(0%);
+    opacity: 0;
+  }
+}
+
+.fadeInRight {
+  animation: fadeInRight 0.3s forwards;
+}
+
+.fadeOutLeft {
+  /* animation: fadeOutLeft 0.3s forwards; */
+}
+
+
+.zoom-image {
+    display: block;
+    opacity: 0; 
+    transform: scale(0.8); 
+    animation: zoomIn 2s ease-out forwards; 
+    transition: transform 0.5s ease, opacity 0.5s ease; 
+}
+
+/* Animation keyframes for zoom-in effect */
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Hover effect */
+.zoom-image:hover {
+    transform: scale(1.1); /* Scale up to 110% on hover */
+    opacity: 1; /* Ensure opacity is 1 on hover */
+}
+
+.ig_scale {
+  display: inline-block;
+  overflow: hidden;
+}
+
+.ig_scale img {
+  transition: transform 0.3s ease;
+}
+
+/* Hover effect */
+.ig_scale:hover img {
+  transform: scale(0.9);
+}
+
+
 

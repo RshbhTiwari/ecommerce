@@ -33,14 +33,16 @@ const ProductTab = ({ allproducts, productIsLoading, productError }) => {
                 </div>
             ) : null}
 
-            <div className="mt-4 h-full" >
+            <div className="mt-4 h-full"  >
                 {activeTab === 'tab_a' && (
+                    <div data-aos="fade-up" data-aos-delay="100">
                     <PaginationshopCard products={allproducts} productIsLoading={productIsLoading}
-                        productError={productError} />
+                        productError={productError} /></div>
                 )}
                 {activeTab === 'tab_b' && (
+                    <div data-aos="fade-up" data-aos-delay="100">
                     <PaginationshoplistCard products={allproducts} productIsLoading={productIsLoading}
-                        productError={productError} />
+                        productError={productError} /></div>
                 )}
             </div>
         </>

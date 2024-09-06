@@ -67,6 +67,10 @@ export function postWishlistUser(payload, toast, navigate) {
             toast.success(response?.data?.message || "Item added to wishlist");
             dispatch(getWishlist());
             navigate('/my-account/wishlist');
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         } catch (error) {
             dispatch(hasError(error?.response?.data?.message || "Failed to add item to wishlist"));
             toast.error(error?.message || "An error occurred");
@@ -102,7 +106,10 @@ export function deleteWishlistCartItem(itemId, toast) {
             dispatch(startLoading());
             const response = await axios.delete(`/wishlist/${itemId}`, { headers: getHeaders() });
             dispatch(deleteCartSuccess(response?.data?.status || false));
-            toast.success(response?.data?.message || "Item removed from wishlist");
+            if (response?.data?.status === true) {
+                dispatch(getWishlist());
+            }
+            toast.success(response?.data?.message || "Item removed from wishlist"); 
         } catch (error) {
             dispatch(hasError(error?.response?.data?.message || "Failed to delete item from wishlist"));
             toast.error(error?.message || "An error occurred");

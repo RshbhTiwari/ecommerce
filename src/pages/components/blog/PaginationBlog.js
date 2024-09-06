@@ -30,8 +30,7 @@ const PaginationBlog = () => {
 
     return (
         <>
-
-            <Blogcard allblog={currentblogs} />
+              <Blogcard allblog={currentblogs} />
 
             {/* Pagination controls */}
             <div className="flex justify-center  mt-8 w-full">

@@ -73,6 +73,10 @@ const CategoriesCard = () => {
 
     const categoriDetailsRow = (id) => {
         navigate(`/categories/${id}`);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'  // This adds a smooth scroll effect
+        });
     };
 
     if (isDelayedLoading || isLoading) {
@@ -112,14 +116,14 @@ const CategoriesCard = () => {
                                     <img
                                         src={BASE_IMAGE_URL + item?.thumbnail_image}
                                         alt="image"
-                                        className=""
+                                        className="zoom-image"
                                         onClick={() => categoriDetailsRow(item.id)}
                                     />
                                 ) : (
                                     <img
                                         src={defultimage}
                                         alt="image"
-                                        className=""
+                                        className="zoom-image"
                                         onClick={() => categoriDetailsRow(item.id)}
                                     />
                                 )}

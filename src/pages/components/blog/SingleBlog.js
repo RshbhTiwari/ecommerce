@@ -26,13 +26,15 @@ export default function SingleBlog({ onedata }) {
 
 
 
-                    <Paragraph title={day} textAlign='left' color='white'/>
+                    <Paragraph title={day} textAlign='left' color='white' />
                 </div>
 
             </div>
 
             <div className="my-4">
-                <HeadingBanner title={onedata.title} color='#072320' />
+                <h1 className={`font-dm text-4xl mb-2 capitalize p-0 font-medium md:text-left text-center text-[#072320]`}>
+                    {onedata.title}
+                </h1>
                 <Paragraph title={onedata.description} textAlign='left' />
             </div>
 

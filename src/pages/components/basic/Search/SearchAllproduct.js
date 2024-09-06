@@ -69,6 +69,10 @@ function SearchAllproduct() {
         } else {
             navigate('/login')
             toast.error("You need to log in to add to wishlist");
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         }
     };
 

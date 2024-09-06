@@ -29,19 +29,16 @@ export const { startLoading, hasError } = initiaterazorpaySlice.actions;
 
 export default initiaterazorpaySlice.reducer;
 
-export const initiateRazorpayPayment = (paymentOption, upiSubOption, cart_id, toast, navigate) => async (dispatch) => {
+export const initiateRazorpayPayment = (paymentOption, upiSubOption, cart_id, customer_id, toast, navigate) => async (dispatch) => {
     try {
         dispatch(startLoading());
-        const response = await axios.post("/order/create", { paymentOption, upiSubOption, cart_id });
-        
-       
-
+        const response = await axios.post("/order/create", { paymentOption, upiSubOption, customer_id, cart_id });
 
         const paymentData = response?.data?.data;
         if (paymentData) {
-            console.log("paymentOption",paymentOption, upiSubOption)
+            console.log("paymentOption", paymentOption, upiSubOption)
             const options = {
-                key: 'rzp_test_9L3JL3GPuXD0YO', 
+                key: 'rzp_test_9L3JL3GPuXD0YO',
                 amount: paymentData.amount,
                 currency: paymentData.currency,
                 name: 'Your Company Name',
@@ -67,7 +64,7 @@ export const initiateRazorpayPayment = (paymentOption, upiSubOption, cart_id, to
                         });
                 },
                 prefill: {
-                    name: userName, 
+                    name: userName,
                     email: userEmail,
                     contact: userContact,
                 },
@@ -83,7 +80,7 @@ export const initiateRazorpayPayment = (paymentOption, upiSubOption, cart_id, to
                 })
             };
 
-            console.log("options",options);
+            console.log("options", options);
 
             const paymentObject = new window.Razorpay(options);
             paymentObject.open();

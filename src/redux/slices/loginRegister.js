@@ -71,6 +71,10 @@ export function postRegisterUser(formData, reset, toast, navigate) {
                 reset();
                 toast.success("Log in to get started or verify your email for full access.");
                 navigate('/login');
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
             } else {
                 toast.error("Ensure your information is correct and try registering again");
             }
@@ -102,7 +106,7 @@ export function postLoginUser(payload, toast, reset) {
 
                 // Reset form and show success message
                 reset();
-                toast.success("You’re logged in. Check out new updates or start using your account.");
+                toast.success("You're Logged In! Explore New Updates or Start Using Your Account.");
 
                 const cart_id = localStorage?.getItem('cart_id') || null;
                 const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
@@ -204,7 +208,7 @@ export function postLogoutUser(toast, navigate) {
 
                 // Navigate to login page
                 navigate('/login');
-
+                window.location.reload();
                 // Show success toast message
                 toast.success("You’ve successfully logged out");
 
