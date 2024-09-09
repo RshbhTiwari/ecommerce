@@ -67,8 +67,11 @@ function NavSearchIcon() {
     };
 
     const handleAddToCart = (product_id) => {
-        const cart_id = localStorage?.getItem('cart_id') || null;
+        const cartDataid = localStorage?.getItem('cart_id') || null;
         const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+
+        const cart_id = cartDataid !== null ? Number(cartDataid) : null;
+        
         const cartItem = {
             item_id: product_id,
             ...(cart_id && { cart_id }),
@@ -115,9 +118,9 @@ function NavSearchIcon() {
                         <div className="fixed top-0 left-0 z-40 w-full h-full bg-black opacity-50" onClick={toggleSearch} />
                         <div
                             className="fixed left-1/2 search_zindex md:w-[700px] w-11/12 lg:mt-[180px] md:mt-[120px]
-                                 mt-[150px] transform -translate-x-1/2  z-50   ">
+                                 mt-[150px] transform -translate-x-1/2 z-50 ">
 
-                            <div className='bg-white p-8 rounded-lg' >
+                            <div className='bg-white p-8 rounded-lg' data-aos="zoom-in" >
                                 <div className="flex items-center justify-between border-b-2 pb-2 border-[#072320]">
                                     <h2 className="font-dm text-2xl capitalize font-medium text-left text-[#072320]">What Are You Looking For?</h2>
                                     <div className="flex items-center justify-center h-8 w-8 rounded-md bg-[#072320] cursor-pointer" onClick={toggleSearch}>

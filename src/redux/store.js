@@ -1,4 +1,4 @@
-import{configureStore} from'@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit'
 import category from './slices/category';
 import product from './slices/product';
 import loginRegister from './slices/loginRegister';
@@ -9,19 +9,21 @@ import wishlist from './slices/wishlist';
 import initiaterazorpay from './slices/initiaterazorpay';
 import contact from './slices/contactfrom';
 import blog from './slices/blog';
+import orders from './slices/orders';
 
-const store= configureStore({
-    reducer:{
-        category:category,
-        product:product,
+const store = configureStore({
+    reducer: {
+        category: category,
+        product: product,
         loginRegister: loginRegister,
-        addToCart:addToCart,
-        address:address,
-        user:user,
-        wishlist:wishlist,
-        initiaterazorpay:initiaterazorpay,
-        contact:contact,
-        blog:blog,
+        addToCart: addToCart,
+        address: address,
+        user: user,
+        wishlist: wishlist,
+        initiaterazorpay: initiaterazorpay,
+        contact: contact,
+        blog: blog,
+        orders: orders,
     },
 })
 

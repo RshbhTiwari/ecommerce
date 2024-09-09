@@ -47,8 +47,10 @@ function SearchAllproduct() {
     };
 
     const handleAddToCart = (product_id) => {
-        const cart_id = localStorage?.getItem('cart_id') || null;
+        const cartDataid = localStorage?.getItem('cart_id') || null;
         const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+
+        const cart_id = cartDataid !== null ? Number(cartDataid) : null;
         const cartItem = {
             item_id: product_id,
             ...(cart_id && { cart_id }),
