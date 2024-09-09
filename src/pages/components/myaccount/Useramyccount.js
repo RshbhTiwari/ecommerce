@@ -1,25 +1,55 @@
 import BreadCrum from "../basic/BreadCrum";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from "react-router-dom";
 import { HeadingTitle, Paragraph } from "../basic/title";
 import { Btnone } from "../basic/button";
-import productcard from "../../../data/productcard";
 import { AccountSideNav } from "./sidenav";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getMyccount } from "../../../redux/slices/user";
 
+const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
 
-function Useramyccount({customer_id}) {
+function Useramyccount({ customer_id }) {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    // const { isLoading: categoryIsLoading, error: categoryError, categories } = useSelector(
-    //     (state) => state.category
-    // );
+    const { isLoading: userIsLoading, error: userError, myccountdata } = useSelector(
+        (state) => state.user
+    );
 
-    // useEffect(() => {
-    //     dispatch(getMyccount(customer_id));
-    // }, [dispatch, customer_id]);
+    useEffect(() => {
+        dispatch(getMyccount(customer_id));
+    }, [dispatch, customer_id]);
 
+    console.log("myccountdata", myccountdata)
+
+
+    // if (userIsLoading) {
+    //     return <div>Loading...</div>;
+    // }
+
+    if (userError) {
+        return <div>Error: {userError.message}</div>;
+    }
+
+    const handleEditRow = (id) => {
+        navigate(`/my-account/edit-address/${id}`);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+
+    const handleorderdetailsRow = (id) => {
+        navigate(`/my-account/orders/${id}`);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+
+    console.log("myccountdata?.orders?", myccountdata?.orders)
 
     return (
         <>
@@ -30,133 +60,163 @@ function Useramyccount({customer_id}) {
                 <div className="grid grid-cols-12 md:gap-4 gap-0 my-10 ">
 
                     <div className='lg:col-span-4 col-span-12 w-full md:gap-4 gap-0'>
-                    <AccountSideNav />
+                        <AccountSideNav />
                     </div>
 
                     <div className='lg:col-span-8 col-span-12 w-full md:gap-4 gap-0'>
                         <HeadingTitle title="my account" textAlign='left' />
-                        <div className="border-[2px] mt-8 w-full border-[#00A762] py-8 px-8  rounded-md shadow-md mx-auto">
-                            <HeadingTitle title="Account Summary" textAlign='left' />
 
-                            <div className="grid grid-cols-12 md:gap-4 gap-0 mt-4">
+                        {myccountdata?.user ? (
+                            <div className="border-[2px] mt-8 w-full border-[#00A762] py-8 px-8  rounded-md shadow-md mx-auto" data-aos="fade-up"
+                                data-aos-duration="1000">
+                                <HeadingTitle title="Account Summary" textAlign='left' />
 
-                                <div className='md:col-span-6 lg:col-span-4 col-span-12 w-full md:gap-4 gap-0'>
+                                <div className="grid grid-cols-12 md:gap-4 gap-0 mt-4">
 
-                                    <h3 className='block  text-[#072320] 
-                                     font-dm text-lg capitalize font-medium'>customer Name :
-                                        <br />rishabh tiwari</h3>
+                                    <div className='md:col-span-6 lg:col-span-4 col-span-12 w-full md:gap-4 gap-0'>
+
+                                        <h3 className='block  text-[#072320] 
+                         font-dm text-lg capitalize font-medium'>customer Name :
+                                            <br />{myccountdata?.user?.name}</h3>
+                                    </div>
+
+                                    <div className='md:col-span-6 lg:col-span-4 col-span-12 w-full md:gap-4 gap-0'>
+
+                                        <h3 className='block  text-[#072320] 
+                         font-dm text-lg capitalize font-medium'>Email : <br />{myccountdata?.user?.email}</h3>
+                                    </div>
+
+                                    <div className='md:col-span-6 lg:col-span-4 col-span-12 w-full md:gap-4 gap-0'>
+
+                                        <h3 className='block  text-[#072320] 
+                        font-dm text-lg capitalize font-medium'>password : <br />***********</h3>
+                                    </div>
+
+                                    <div className='col-span-12 w-full md:gap-4 gap-0'>
+                                        <Btnone title="edit" bgColor="#00A762" handleClick={() => navigate('/my-account/update-profile')} />
+                                    </div>
+
+
                                 </div>
-
-                                <div className='md:col-span-6 lg:col-span-4 col-span-12 w-full md:gap-4 gap-0'>
-
-                                    <h3 className='block  text-[#072320] 
-                                     font-dm text-lg capitalize font-medium'>Email : <br />rishabh@gmail.com</h3>
-                                </div>
-
-                                <div className='md:col-span-6 lg:col-span-4 col-span-12 w-full md:gap-4 gap-0'>
-
-                                    <h3 className='block  text-[#072320] 
-                                    font-dm text-lg capitalize font-medium'>password : <br />***********</h3>
-                                </div>
-
-                                <div className='col-span-12 w-full md:gap-4 gap-0'>
-                                    <Btnone title="edit" bgColor="#00A762" handleClick={() => navigate('/my-account/update-profile')} />
-                                </div>
-
 
                             </div>
+                        ) : (
+                            null
+                        )}
 
-                        </div>
+                        {myccountdata?.addresses ? (
+                            <div className="border-[2px] mt-8 w-full border-[#00A762] py-8 px-8  rounded-md shadow-md mx-auto" data-aos="fade-up"
+                                data-aos-duration="1000">
+                                <HeadingTitle title="address information" textAlign='left' />
 
-                        <div className="border-[2px] mt-8 w-full border-[#00A762] py-8 px-8  rounded-md shadow-md mx-auto">
-                            <HeadingTitle title="address information" textAlign='left' />
-
-                            <div className="grid grid-cols-12 gap-4 mt-4">
-
-
-                                <div className='md:col-span-6 col-span-12 w-full gap-4 '>
-                                    <h3 className='block  text-[#072320] sm:text-left text-center
+                                <div className="grid grid-cols-12 gap-4 mt-4">
+                                    {myccountdata?.addresses?.is_billing === true ? (
+                                        <div className='md:col-span-6 col-span-12 w-full gap-4 '>
+                                            <h3 className='block  text-[#072320] sm:text-left text-center
                                      font-dm text-lg capitalize font-medium'>default billing address</h3>
 
-                                    <div className="mt-4">
-                                        <Paragraph textAlign='left'
-                                            title='Office No. 266, 2nd Floor, Block - B, Motia Plaza, Baddi, Distt. Solan (H.P.) India - 173205' />
+                                            <div className="mt-4">
+                                                <Paragraph textAlign='left'
+                                                    title={myccountdata?.addresses?.addressname} />
 
-                                        <Paragraph textAlign='left'
-                                            title='7974842788' />
+                                                <Paragraph textAlign='left'
+                                                    title={myccountdata?.addresses?.contact} />
 
-                                    </div>
+                                            </div>
 
-                                    <div className="mt-4 sm:text-left text-center">
-                                        <Btnone title="edit" bgColor="#00A762" handleClick={() => navigate('/my-account/update-profile')} />
-                                    </div>
-                                </div>
+                                            <div className="mt-4 sm:text-left text-center">
+                                                <Btnone title="edit" bgColor="#00A762" handleClick={() => handleEditRow(myccountdata?.addresses?.id)} />
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        null
+                                    )}
 
-                                <div className='md:col-span-6 col-span-12 w-full md:gap-4 gap-0'>
-                                    <h3 className='block  text-[#072320] 
+                                    {myccountdata?.addresses?.is_shipping === true ? (
+                                        <div className='md:col-span-6 col-span-12 w-full md:gap-4 gap-0'>
+                                            <h3 className='block  text-[#072320] 
                                      font-dm text-lg capitalize font-medium sm:text-left text-center'>default shipping address</h3>
 
-                                    <div className="mt-4">
-                                        <Paragraph textAlign='left'
-                                            title='Office No. 266, 2nd Floor, Block - B, Motia Plaza, Baddi, Distt. Solan (H.P.) India - 173205' />
+                                            <div className="mt-4">
+                                                <Paragraph textAlign='left'
+                                                    title={myccountdata?.addresses?.addressname} />
 
-                                        <Paragraph textAlign='left'
-                                            title='7974842788' />
+                                                <Paragraph textAlign='left'
+                                                    title={myccountdata?.addresses?.contact} />
 
-                                    </div>
+                                            </div>
 
-                                    <div className="mt-4 sm:text-left text-center">
-                                        <Btnone title="edit" bgColor="#00A762" handleClick={() => navigate('/my-account/update-profile')} />
-                                    </div>
+                                            <div className="mt-4 sm:text-left text-center">
+                                                <Btnone title="edit" bgColor="#00A762" handleClick={() => handleEditRow(myccountdata?.addresses?.id)} />
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        null
+                                    )}
                                 </div>
 
-
-
-
-
                             </div>
+                        ) : (
+                            null
+                        )}
 
-                        </div>
+                        {myccountdata?.orders && myccountdata?.orders?.length > 0 ? (
+                            <div className="border-[2px] mt-8 w-full border-[#00A762] py-8 px-8  rounded-md shadow-md mx-auto" data-aos="fade-up"
+                                data-aos-duration="1000">
+                                <HeadingTitle title="orders" textAlign='left' />
 
-                        <div className="border-[2px] mt-8 w-full border-[#00A762] py-8 px-8  rounded-md shadow-md mx-auto">
-                            <HeadingTitle title="orders" textAlign='left' />
+                                <div className="grid grid-cols-12 md:gap-4 gap-0 mt-4 w-full">
 
-                            <div className="grid grid-cols-12 md:gap-4 gap-0 mt-4 w-full">
-                               
-                                    {productcard.slice(0, 4).map((item, index) => (
+                                    {myccountdata?.orders?.map((item, index) => (
                                         <div className="md:col-span-6 col-span-12 w-full md:gap-4 gap-0
                                         flex shadow-md rounded-lg justify-between relative my-4" key={index}>
 
-
                                             <div className="flex items-center py-4 px-4 gap-4">
-                                                <div className='rounded-md w-24 h-24 bg-[#00a762b0] sm:block hidden'>
+
+
+                                                <div className='rounded-md w-24 h-24 bg-[#00a762b0] sm:block hidden overflow-hidden cursor-pointer'
+                                                    onClick={() => handleorderdetailsRow(item?.id)}>
                                                     <img
-                                                        src={item.image}
+                                                        src={BASE_IMAGE_URL + item?.items[0]?.product_image}
                                                         alt='product_img'
-                                                        className='h-full w-full'
+                                                        className='h-full w-full rounded-md m-1 hover:scale-110 transition-all duration-500'
                                                     />
                                                 </div>
 
+
                                                 <div className="flex justify-center flex-col">
-                                                    <h2 className="text-[#00A762] text-left font-dm text-lg capitalize font-medium">
-                                                        {item.title}
+
+
+                                                    <h2 className="text-[#00A762] cursor-pointer text-left font-dm text-lg capitalize font-medium"
+                                                        onClick={() => handleorderdetailsRow(item?.id)}>
+                                                        {item?.items[0]?.product_name}
                                                     </h2>
 
-                                                    <Paragraph title='Delivered on 21 March 2024' textAlign='onyleft' />
+                                                    <Paragraph
+                                                        title={`Delivered on 
+                                                            ${new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'long', year: 'numeric' }).format(new Date(item?.created_at))}`}
+                                                        textAlign='onyleft'
+                                                    />
+
                                                 </div>
 
 
                                             </div>
+
                                         </div>
                                     ))}
-                            </div>
+                                </div>
 
-                        </div>
+                            </div>
+                        ) : (
+                            null
+                        )}
+
                     </div>
                 </div>
             </div>
-            
-          
+
+
 
         </>
 
@@ -164,216 +224,3 @@ function Useramyccount({customer_id}) {
 }
 
 export default Useramyccount;
-
-{/* <div className="relative flex items-center px-4 py-8  w-full  border-[2px] border-[#00A762] rounded-lg bg_img_user"
-style={{
-    backgroundImage: `url(${usebg})`,
-}}>
-
- <div className="rounded-full w-40 p-4 h-40 border-[2px] border-[#00A762]">
-<img
- src={userimg}
- alt="User"
-className="w-full h-full rounded-full"
- />
-</div> 
-
-
-<h2 className="ml-8 font-dm text-3xl capitalize font-medium text-left text-[#072320]">my account</h2>
-
-</div> */}
-
-
-// import BreadCrum from "../basic/BreadCrum";
-// import usebg from '../../../assets/myaccount/usebg1.png';
-// import { useNavigate } from 'react-router-dom';
-// import { HeadingTitle, Paragraph } from "../basic/title";
-// import UpdateAccountFrom from "./UpdateAccountFrom";
-// import { Btnone } from "../basic/button";
-// import productcard from "../../../data/productcard";
-// import { AccountSideNav } from "./sidenav";
-// import { useDispatch, useSelector } from "react-redux";
-// import { getOneUser } from "../../../redux/slices/user";
-// import { useEffect } from "react";
-// import { getAddress } from "../../../redux/slices/address";
-
-
-// function Useramyccount() {
-//     const navigate = useNavigate();
-
-//     const dispatch = useDispatch();
-
-
-//     const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
-//     const { allAddress } = useSelector(state => state.address);
-//     const { oneuser } = useSelector(
-//         (state) => state.user
-//     );
-
-//     useEffect(() => {
-//         dispatch(getAddress(customer_id));
-//     }, [dispatch, customer_id]);
-
-//     useEffect(() => {
-//         if (allAddress?.length) {
-//             setAllAddressData(allAddress);
-//         }
-//     }, [allAddress]);
-
-//     useEffect(() => {
-//         dispatch(getOneUser());
-//     }, [dispatch]);
-    
-//     const handleEditRow = (id) => {
-//         navigate(`/my-account/edit-address/${id}`);
-//     };
-
-//     return (
-//         <>
-//             <BreadCrum componentName="my account" link="/my-account" />
-
-//             <div className="container mx-auto flex flex-col items-center justify-center max-w-7xl px-2 sm:px-6 lg:px-8">
-
-//                 <div className="grid grid-cols-12 md:gap-4 gap-0 my-10 ">
-
-//                     <div className='lg:col-span-4 col-span-12 w-full md:gap-4 gap-0'>
-//                     <AccountSideNav />
-//                     </div>
-
-//                     <div className='lg:col-span-8 col-span-12 w-full md:gap-4 gap-0'>
-//                         <HeadingTitle title="my account" textAlign='left' />
-
-
-//                         <div className="border-[2px] mt-8 w-full border-[#00A762] py-8 px-8  rounded-md shadow-md mx-auto">
-//                             <HeadingTitle title="Account Summary" textAlign='left' />
-
-//                             <div className="grid grid-cols-12 md:gap-4 gap-0 mt-4">
-
-//                                 <div className='md:col-span-6 lg:col-span-4 col-span-12 w-full md:gap-4 gap-0'>
-
-//                                     <h3 className='block  text-[#072320] 
-//                                      font-dm text-lg capitalize font-medium'>customer Name :
-//                                         <br />{oneuser?.name}</h3>
-//                                 </div>
-
-//                                 <div className='md:col-span-6 lg:col-span-4 col-span-12 w-full md:gap-4 gap-0'>
-
-//                                     <h3 className='block  text-[#072320] 
-//                                      font-dm text-lg capitalize font-medium'>Email : <br />{oneuser?.email}</h3>
-//                                 </div>
-
-//                                 <div className='md:col-span-6 lg:col-span-4 col-span-12 w-full md:gap-4 gap-0'>
-
-//                                     <h3 className='block  text-[#072320] 
-//                                     font-dm text-lg capitalize font-medium'>password : <br />***********</h3>
-//                                 </div>
-
-//                                 <div className='col-span-12 w-full md:gap-4 gap-0'>
-//                                     <Btnone title="edit" bgColor="#00A762" handleClick={() => navigate('/my-account/update-profile')} />
-//                                 </div>
-
-
-//                             </div>
-
-//                         </div>
-
- 
-//                         <div className="border-[2px] mt-8 w-full border-[#00A762] py-8 px-8  rounded-md shadow-md mx-auto">
-//                             <HeadingTitle title="address information" textAlign='left' />
-
-//                             <div className="grid grid-cols-12 gap-4 mt-4">
-
-
-//                                 <div className='md:col-span-6 col-span-12 w-full gap-4 '>
-//                                     <h3 className='block  text-[#072320] sm:text-left text-center
-//                                      font-dm text-lg capitalize font-medium'>default billing address</h3>
-
-//                                     <div className="mt-4">
-//                                         <Paragraph textAlign='left'
-//                                             title='Office No. 266, 2nd Floor, Block - B, Motia Plaza, Baddi, Distt. Solan (H.P.) India - 173205' />
-
-//                                         <Paragraph textAlign='left'
-//                                             title='7974842788' />
-
-//                                     </div>
-
-//                                     <div className="mt-4 sm:text-left text-center">
-//                                         <Btnone title="edit" bgColor="#00A762"
-//                                          handleClick={() => handleEditRow(item?.id)} />
-//                                     </div>
-//                                 </div>
-
-//                                 <div className='md:col-span-6 col-span-12 w-full md:gap-4 gap-0'>
-//                                     <h3 className='block  text-[#072320] 
-//                                      font-dm text-lg capitalize font-medium sm:text-left text-center'>default shipping address</h3>
-
-//                                     <div className="mt-4">
-//                                         <Paragraph textAlign='left'
-//                                             title='Office No. 266, 2nd Floor, Block - B, Motia Plaza, Baddi, Distt. Solan (H.P.) India - 173205' />
-
-//                                         <Paragraph textAlign='left'
-//                                             title='7974842788' />
-//                                     </div>
-
-//                                     <div className="mt-4 sm:text-left text-center">
-//                                         <Btnone title="edit" bgColor="#00A762" 
-//                                          handleClick={() => handleEditRow(item?.id)}  />
-//                                     </div>
-
-//                                 </div>
-
-
-
-
-
-//                             </div>
-
-//                         </div>
-
-//                         <div className="border-[2px] mt-8 w-full border-[#00A762] py-8 px-8  rounded-md shadow-md mx-auto">
-//                             <HeadingTitle title="orders" textAlign='left' />
-
-//                             <div className="grid grid-cols-12 md:gap-4 gap-0 mt-4 w-full">
-                               
-//                                     {productcard.slice(0, 4).map((item, index) => (
-//                                         <div className="md:col-span-6 col-span-12 w-full md:gap-4 gap-0
-//                                         flex shadow-md rounded-lg justify-between relative my-4" key={index}>
-
-
-//                                             <div className="flex items-center py-4 px-4 gap-4">
-//                                                 <div className='rounded-md w-24 h-24 bg-[#00a762b0] sm:block hidden'>
-//                                                     <img
-//                                                         src={item.image}
-//                                                         alt='product_img'
-//                                                         className='h-full w-full'
-//                                                     />
-//                                                 </div>
-
-//                                                 <div className="flex justify-center flex-col">
-//                                                     <h2 className="text-[#00A762] text-left font-dm text-lg capitalize font-medium">
-//                                                         {item.title}
-//                                                     </h2>
-
-//                                                     <Paragraph title='Delivered on 21 March 2024' textAlign='onyleft' />
-//                                                 </div>
-
-
-//                                             </div>
-//                                         </div>
-//                                     ))}
-//                             </div>
-
-//                         </div>
-//                     </div>
-//                 </div>
-//             </div>
-            
-          
-
-//         </>
-
-//     );
-// }
-
-// export default Useramyccount;
-

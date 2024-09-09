@@ -42,7 +42,7 @@ function UserAddbook() {
                     </div>
 
                     <div className='lg:col-span-8 col-span-12 w-full md:gap-4 gap-0'>
-                        <div className="flex sm:flex-row flex-col space-y-4 sm:items-center  items-start justify-between border-b-2 pb-2 w-full  border-[#072320]">
+                        <div className="flex sm:flex-row flex-col space-y-4 sm:items-center  items-start justify-between border-b-2 pb-2 w-full  border-[#072320]" >
                             <h2 className={`font-dm text-2xl capitalize  font-medium  text-left  text-[#072320]`} onClick={() =>
                                 navigate('/my-account')
                             }>my account</h2>

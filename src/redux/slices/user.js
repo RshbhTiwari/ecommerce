@@ -5,6 +5,7 @@ const initialState = {
     isLoading: false,
     error: null,
     oneuser: {},
+    myccountdata:{}
 };
 
 const userSlice = createSlice({
@@ -23,6 +24,10 @@ const userSlice = createSlice({
             state.isLoading = false;
             state.oneuser = action.payload;
         },
+        getMyccountSuccess(state, action) {
+            state.isLoading = false;
+            state.myccountdata = action.payload;
+        },
     },
 });
 
@@ -30,6 +35,7 @@ export const {
     startLoading,
     hasError,
     getUserSuccess,
+    getMyccountSuccess
 } = userSlice.actions;
 
 export default userSlice.reducer;
@@ -42,13 +48,22 @@ const getHeaders = () => {
     };
 };
 
-export const getOneUser = () => async (dispatch) => {
+export const getOneUser = () => async (dispatch) => { 
     try {
-        dispatch(startLoading());
+        dispatch(startLoading()); 
         const response = await axios.get('/getUser', { headers: getHeaders() });
         dispatch(getUserSuccess(response?.data?.user));
+    } catch (error) {
+        console.error("Error fetching user:", error.response?.data?.message || error.message);
+        dispatch(hasError(error.response?.data?.message || "Failed to fetch user"));
+    }
+};
 
-        console.log()
+export const getMyccount = (customer_id) => async (dispatch) => { 
+    try {
+        dispatch(startLoading()); 
+        const response = await axios.get(`/my-account/${customer_id}`, { headers: getHeaders() });
+        dispatch(getMyccountSuccess(response?.data?.data));
     } catch (error) {
         console.error("Error fetching user:", error.response?.data?.message || error.message);
         dispatch(hasError(error.response?.data?.message || "Failed to fetch user"));

@@ -83,6 +83,20 @@ export const initiateRazorpayPayment = (paymentOption, upiSubOption, cart_id, cu
             console.log("options", options);
 
             const paymentObject = new window.Razorpay(options);
+            paymentObject.on('payment.failed', function (response) {
+                axios.post('/order/payment-failed', {
+                    razorpay_order_id: response.error.metadata.order_id,
+                    razorpay_payment_id: response.error.metadata.payment_id,
+                    error_description: response.error.description,
+                })
+                .then(() => {
+                    toast.error('Payment Failed');
+                })
+                .catch((error) => {
+                    toast.error('Error in handling payment failure');
+                    console.error('Error:', error);
+                });
+            });
             paymentObject.open();
         }
     } catch (error) {

@@ -14,7 +14,7 @@ const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
 
 const settings = {
     dots: false,
-    infinite: true,
+    infinite: false,
     centerPadding: "100px",
     speed: 500,
     slidesToShow: 5,

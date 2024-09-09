@@ -76,6 +76,14 @@ function SearchAllproduct() {
         }
     };
 
+    const handleDetailsRow = (id) => {
+        navigate(`/shop/${id}`);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'  // This adds a smooth scroll effect
+        });
+    };
+
     return (
         <>
             <div className="text-center flex w-full justify-center items-center my-10 gap-4">
@@ -90,7 +98,7 @@ function SearchAllproduct() {
             </div>
 
             {/* Display filtered products in a grid */}
-            <div className="grid grid-cols-12 gap-4">
+            <div className="grid grid-cols-12 gap-4" data-aos="fade-up" data-aos-delay="300">
                 {filteredProducts.length > 0 ? (
                     filteredProducts.map((item, index) => (
                         <div
@@ -98,7 +106,9 @@ function SearchAllproduct() {
                             key={index}
                         >
                             <div className='flex justify-center items-center bg-[#00A762] cursor-pointer p-4 rounded-lg mt-3 mb-2 mx-6 relative'>
-                                <div className='overflow-hidden rounded-lg h-[200px] relative'>
+                                <div className='overflow-hidden rounded-lg h-[200px] relative' onClick={() => {
+                                handleDetailsRow(item?.id);
+                            }}>
                                     <img
                                         src={BASE_IMAGE_URL + item?.additional_images[0]}
                                         alt="image"
@@ -113,7 +123,9 @@ function SearchAllproduct() {
                             </div>
 
                             <div className='flex flex-col justify-center items-center px-4'>
-                                <h2 className="text-[#00A762] text-center cursor-pointer font-dm text-lg capitalize font-medium">
+                                <h2 className="text-[#00A762] text-center cursor-pointer font-dm text-lg capitalize font-medium" onClick={() => {
+                                handleDetailsRow(item?.id);
+                            }}>
                                     {item?.name}
                                 </h2>
                                 <div className='pb-2'>

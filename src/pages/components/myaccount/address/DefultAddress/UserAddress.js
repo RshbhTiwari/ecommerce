@@ -28,12 +28,17 @@ function UserAddress({ allAddressData, deletClick }) {
 
     const handleEditRow = (id) => {
         navigate(`/my-account/edit-address/${id}`);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     };
 
 
 
     return (
-        <div className="grid grid-cols-12 gap-2 my-2">
+        <div className="grid grid-cols-12 gap-2 my-2" data-aos="fade-up"
+        data-aos-duration="1000">
             {allAddressData?.map((item, index) => (
                 <div className='lg:col-span-6 col-span-12 shadow-md rounded-lg p-4 border-[#00A762] border-2' key={index}>
                     {item?.defaultaddress === true ? (

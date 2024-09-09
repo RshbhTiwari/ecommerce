@@ -29,7 +29,7 @@ function classNames(...classes) {
 }
 
 const settings = {
-    infinite: true,
+    infinite: false,
     speed: 500,
     autoplay: true,
     autoplaySpeed: 2000,
@@ -229,7 +229,7 @@ export default function Nav() {
                                     <DisclosureButton
                                         key={item.name}
                                         as="a"
-                                        href={item.href}
+                                        href={item?.link}
                                         className={classNames(
                                             item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                                             'block rounded-md px-3 py-2 font-dm text-base font-medium'

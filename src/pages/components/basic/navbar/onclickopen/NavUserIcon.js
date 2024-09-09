@@ -3,10 +3,11 @@ import { AiOutlineLogin } from "react-icons/ai";
 import DropLogin from "./DropLogin";
 import { FaRegUserCircle } from "react-icons/fa";
 import Myaccountdrop from "./Myaccountdrop";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getOneUser } from "../../../../../redux/slices/user";
 
 function NavUserIcon() {
-
+    const dispatch = useDispatch();
     const [isOpen, setIsOpen] = useState(false);
     const [hasAccessToken, setHasAccessToken] = useState(false);
 
@@ -17,6 +18,14 @@ function NavUserIcon() {
         (state) => state.loginRegister
     );
 
+
+    const { oneuser } = useSelector(
+        (state) => state.user
+    );
+
+    useEffect(() => {
+        dispatch(getOneUser());
+    }, [dispatch,userAccessToken]);
 
     const userName = JSON.parse(localStorage.getItem('user'))?.name || null;
 
@@ -54,6 +63,7 @@ function NavUserIcon() {
     const toggleMenu = () => {
         setIsOpen(prevState => !prevState);
     };
+
     return (
         <div className="relative">
             {hasAccessToken ? (
@@ -61,8 +71,8 @@ function NavUserIcon() {
                     <div className='flex items-center cursor-pointer' onClick={toggleMenu} ref={loginRef}>
 
                         <FaRegUserCircle className='text-white text-[24px]' />
-                        <h6 className='text-white font-dm text-sm ml-2 capitalize'>
-                            {userName || loginUser?.name}
+                        <h6 className='text-white font-dm text-sm ml-2 capitalize' >
+                            { oneuser?.name }
                         </h6>
                     </div>
                     {isOpen && (

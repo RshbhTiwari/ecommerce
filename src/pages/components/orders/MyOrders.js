@@ -19,7 +19,8 @@ function MyOrders() {
                     </div>
 
                     <div className='lg:col-span-8 col-span-12 w-full md:gap-4 gap-0'>
-                        <div className="border-[2px]  w-full border-[#00A762] py-8 px-8  rounded-md shadow-md mx-auto">
+                        <div className="border-[2px]  w-full border-[#00A762] py-8 px-8  rounded-md shadow-md mx-auto" data-aos="fade-up"
+                            data-aos-duration="1000">
                             <HeadingTitle title="My Orders" textAlign='left' />
 
                             <div className="">

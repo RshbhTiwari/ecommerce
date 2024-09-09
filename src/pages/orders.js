@@ -2,10 +2,10 @@ import { MyOrders } from "./components/orders";
 
 
 function Orders() {
-    
+
     return (
         <>
-        <MyOrders />
+            <MyOrders />
         </>
     );
 }

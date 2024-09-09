@@ -14,7 +14,6 @@ export default function WishlistTable() {
 
     const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
 
-    const [wishlistData, setWishlistData] = useState([]);
     const [loading, setLoading] = useState(true);
 
     const { wishlist, isLoading, error } = useSelector(
@@ -32,12 +31,6 @@ export default function WishlistTable() {
         dispatch(getWishlist());
     }, [dispatch]);
 
-    useEffect(() => {
-        if (wishlist?.length) {
-            setWishlistData(wishlist);
-        }
-    }, [wishlist]);
-
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'short', day: 'numeric' };
         const dateObj = new Date(dateString);
@@ -53,17 +46,23 @@ export default function WishlistTable() {
 
     const handleDelete = useCallback((itemId) => {
         dispatch(deleteWishlistCartItem(itemId, toast));
-        // const filterData = wishlist.filter((item) => item?.id !== itemId);
-        // console.log("filterData",filterData)
-        // setWishlistData(filterData);
     }, [dispatch]);
+
+
+    const handleDetailsRow = (id) => {
+        navigate(`/shop/${id}`);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
 
     return (
         <div className="overflow-x-auto">
               {loading || isLoading ? (
                 <div className="animate-pulse">
                     <div className="flex flex-col space-y-4">
-                        {wishlistData.map((_, index) => (
+                        {wishlist.map((_, index) => (
                             <div key={index} className="flex items-center space-x-4 p-4 rounded-lg">
                                 <div className="w-24 h-24 bg-gray-300 rounded-md"></div>
                                 <div className="flex-1 space-y-4">
@@ -74,10 +73,10 @@ export default function WishlistTable() {
                         ))}
                     </div>
                 </div>
-            ) : (
+            ) : ( 
             <table className="w-full">
                 <tbody>
-                    {wishlistData?.map((item, index) => (
+                    {wishlist?.map((item, index) => (
                         <tr className={`flex shadow-md rounded-lg justify-between ${index % 2 === 0 ? '' : 'bg-gray-100 rounded-lg'}`}
                             key={index}>
 
@@ -86,7 +85,7 @@ export default function WishlistTable() {
                             </td>
 
                             <td className="flex items-center w-2/4 py-4 pr-4 gap-4">
-                                <div className='rounded-md p-2 w-24 h-24 bg-[#00a762b0] sm:block hidden'>
+                                <div className='rounded-md p-2 w-24 h-24 bg-[#00a762b0] sm:block hidden cursor-pointer' onClick={() => handleDetailsRow(item?.product_id)}>
                                     <img
                                         src={BASE_IMAGE_URL + item?.product?.additional_images[0]}
                                         alt='product_img'
@@ -95,7 +94,7 @@ export default function WishlistTable() {
                                 </div>
 
                                 <div className="flex justify-center flex-col">
-                                    <h2 className="text-[#00A762] text-left font-dm text-lg capitalize font-medium">
+                                    <h2 className="text-[#00A762] text-left font-dm text-lg capitalize font-medium cursor-pointer" onClick={() => handleDetailsRow(item?.product_id)}>
                                         {item?.product?.name}
                                     </h2>
                                     <Paragraph title={`Added on: ${formatDate(item?.created_at)}`} textAlign='left' />

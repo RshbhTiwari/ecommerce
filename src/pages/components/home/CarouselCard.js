@@ -11,7 +11,7 @@ import defultimage from '../../../assets/home/img.png';
 const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
 
 const settings = {
-  infinite: true,
+  infinite: false,
   speed: 500,
   autoplay: true,
   autoplaySpeed: 2000,

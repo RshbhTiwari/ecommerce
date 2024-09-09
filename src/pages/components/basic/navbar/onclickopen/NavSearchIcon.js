@@ -117,7 +117,7 @@ function NavSearchIcon() {
                             className="fixed left-1/2 search_zindex md:w-[700px] w-11/12 lg:mt-[180px] md:mt-[120px]
                                  mt-[150px] transform -translate-x-1/2  z-50   ">
 
-                            <div className='bg-white p-8 rounded-lg' data-aos="zoom-in">
+                            <div className='bg-white p-8 rounded-lg' >
                                 <div className="flex items-center justify-between border-b-2 pb-2 border-[#072320]">
                                     <h2 className="font-dm text-2xl capitalize font-medium text-left text-[#072320]">What Are You Looking For?</h2>
                                     <div className="flex items-center justify-center h-8 w-8 rounded-md bg-[#072320] cursor-pointer" onClick={toggleSearch}>
