@@ -458,7 +458,7 @@ const DefaultAddress = () => {
             <input
                 type="checkbox"
                 {...register('defaultaddress')}
-                className='rounded '
+                className='rounded cursor-pointer'
             />
             <label className='ml-2 block text-[#072320] font-dm text-lg capitalize font-medium'>
                 Make This My Default Address

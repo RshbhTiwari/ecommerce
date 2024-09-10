@@ -28,14 +28,14 @@ import { getAllCartItems } from "./redux/slices/addToCart";
 import { useEffect, useState } from "react";
 import ResetPasswordPage from "./pages/resetpasswordpage";
 import AOS from 'aos';
-import 'aos/dist/aos.css'; 
+import 'aos/dist/aos.css';
 
-AOS.init(); 
+AOS.init();
 
 AOS.init({
   duration: 1000,
-  easing: 'ease-in-out', 
-  once: true, 
+  easing: 'ease-in-out',
+  once: true,
 });
 
 function App() {

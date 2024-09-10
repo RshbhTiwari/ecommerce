@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { postCheckboxAddress } from '../../../../../redux/slices/address';
+import { useDispatch, useSelector } from 'react-redux';
+import { getOneAddress, postCheckboxAddress } from '../../../../../redux/slices/address';
 import { toast } from 'react-toastify';
 import { FormProvider } from 'react-hook-form';
 import { FaRegEdit } from 'react-icons/fa';
@@ -18,7 +18,10 @@ function CheckoutbillingAddress({ allAddressData, handleClick, handlebackClick }
     const handleEditRow = (id) => {
         setCurrentAddressId(id);
         setIsModalOpen(true);
+        dispatch(getOneAddress(id));
     };
+
+    const { oneAddress } = useSelector((state) => state.address);
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
@@ -95,7 +98,7 @@ function CheckoutbillingAddress({ allAddressData, handleClick, handlebackClick }
                                 </h2>
 
                                 <div
-                                    className="flex items-center justify-center font-dm font-medium text-[#072320] capitalize "
+                                    className="flex items-center cursor-pointer justify-center font-dm font-medium text-[#072320] capitalize "
                                     onClick={() => handleEditRow(item?.id)}
                                 >
                                     <FaRegEdit className='text-[#072320] mr-2 text-xl' /> edit
@@ -137,6 +140,7 @@ function CheckoutbillingAddress({ allAddressData, handleClick, handlebackClick }
                 onClose={handleCloseModal}
                 id={currentAddressId}
                 ship={true}
+                oneAddress={oneAddress}
             />
         </>
 
@@ -148,7 +152,7 @@ function FormContent({ id, isChecked, onCheckboxChange }) {
         <form className="w-fit">
             <label className="font-dm text-xs flex justify-center items-center font-medium">
                 <input
-                    className="mr-1"
+                    className="mr-1 cursor-pointer"
                     type="checkbox"
                     checked={isChecked}
                     onChange={() => onCheckboxChange(id)}

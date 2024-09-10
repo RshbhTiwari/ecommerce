@@ -2,18 +2,8 @@
 import React, { useEffect } from 'react';
 import { RxCross2 } from "react-icons/rx";
 import ModelEditaddress from './ModelEditaddress';
-import { getOneAddress } from '../../../../redux/slices/address';
-import { useDispatch, useSelector } from 'react-redux';
 
-const AddressModalbilling = ({ isOpen, onClose, id, ship }) => { 
-
-    const dispatch = useDispatch();
-    const { oneAddress } = useSelector((state) => state.address);
-
-    useEffect(() => {
-        dispatch(getOneAddress(id));
-    }, [dispatch, id]);
-
+const AddressModalbilling = ({ isOpen, onClose, id, ship, oneAddress}) => { 
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
@@ -43,7 +33,6 @@ const AddressModalbilling = ({ isOpen, onClose, id, ship }) => {
                         isEdit
                         ship={ship}
                         onClose={onClose}
-                        //  checkship={}
                         checkbil={true}
                         id={id}
                         userAdd={oneAddress}

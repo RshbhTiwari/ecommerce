@@ -4,4 +4,4 @@ export { default as EditAddress } from './AddressEdit';
 
 export { default as AddEditAddressFrom } from './AddEditAddressFrom';
 export { default as GuestAddress } from './GuestAddress';
-export { default as Checkoutuseraddress } from './Checkoutuseraddress';
+export { default as CheckoutShipingaddress } from './CheckoutShipingaddress';

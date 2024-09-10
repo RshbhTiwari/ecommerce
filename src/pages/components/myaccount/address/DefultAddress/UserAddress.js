@@ -13,8 +13,6 @@ function UserAddress({ allAddressData, deletClick }) {
     const dispatch = useDispatch();
     const [loadingId, setLoadingId] = useState(null);
 
-
-
     const handleCheckboxChange = async (id) => {
         try {
             const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
@@ -115,7 +113,7 @@ function FormContent({ id, isChecked, onCheckboxChange }) {
         <form className="w-fit">
             <label className="font-dm text-xs flex justify-center items-center font-medium">
                 <input
-                    className="mr-1"
+                    className="mr-1 cursor-pointer"
                     type="checkbox"
                     checked={isChecked}
                     onChange={() => onCheckboxChange(id)}

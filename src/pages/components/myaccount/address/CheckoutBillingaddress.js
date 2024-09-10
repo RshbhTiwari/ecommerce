@@ -1,23 +1,23 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { useForm, FormProvider, useFormContext } from 'react-hook-form';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Btnone } from '../../basic/button';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { postAddress, putAddress } from '../../../../redux/slices/address';
+import { postAddressCheckout } from '../../../../redux/slices/address';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
-const AddEditAddressFrom = ({ isEdit = false, id, userAdd }) => {
+const CheckoutBillingaddress = ({ backCLick, ship, handleClick, checkship, checkbil,paymentClick }) => {
+
     const dispatch = useDispatch();
-    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+
     const getLocalStorageData = () => {
-        const localData = localStorage.getItem('user'); 
+        const localData = localStorage.getItem('user');
         return localData ? JSON.parse(localData) : {};
     };
 
     const localStorageData = getLocalStorageData();
-    const [loading, setLoading] = useState(false);
 
     const schema = Yup.object().shape({
         name: Yup.string().required('First Name is required'),
@@ -38,19 +38,20 @@ const AddEditAddressFrom = ({ isEdit = false, id, userAdd }) => {
 
     const defaultValues = useMemo(
         () => ({
-            name: userAdd?.name || localStorageData?.name || "",
-            contact: userAdd?.contact || localStorageData?.contact || "",
-            landmarkname: userAdd?.landmarkname || "",
-            addressname: userAdd?.addressname || "",
-            pincode: userAdd?.pincode || "",
-            locality: userAdd?.locality || '',
-            state: userAdd?.state || "",
-            city: userAdd?.city || '',
-            email: userAdd?.email || localStorageData?.email || "",
-            addresstype: userAdd?.addresstype || '',
-            defaultaddress: userAdd?.defaultaddress || false,  
+            name: localStorageData?.name || "",
+            contact: localStorageData?.contact || "",
+            landmarkname: "",
+            addressname: "",
+            pincode: "",
+            locality: "",
+            state: "",
+            city: "",
+            email: localStorageData?.email || "",
+            addresstype: "",
+            defaultaddress: "",
+            is_shipping: "",
         }),
-        [userAdd]
+        [localStorageData]
     );
 
     const methods = useForm({
@@ -65,23 +66,12 @@ const AddEditAddressFrom = ({ isEdit = false, id, userAdd }) => {
         formState: { errors },
     } = methods;
 
-
-    useEffect(() => {
-        if (isEdit && userAdd) {
-            reset(defaultValues);
-        }
-        if (!isEdit) {
-            reset(defaultValues);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isEdit, userAdd]);
-
     const onSubmit = async (data) => {
         const cart_id = localStorage?.getItem('cart_id') || null;
         const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
-
+        const is_shipping = data?.is_shipping
+        setLoading(true);
         try {
-            setLoading(true);  
             await new Promise((resolve) => setTimeout(resolve, 500));
             const payload = {
                 name: data?.name,
@@ -94,24 +84,25 @@ const AddEditAddressFrom = ({ isEdit = false, id, userAdd }) => {
                 city: data?.city,
                 email: data?.email,
                 addresstype: data?.addresstype,
+
                 defaultaddress: data?.defaultaddress,
 
-                is_billing: true,
-                is_shipping: true,
+                ...(checkship ? { is_shipping: true } : { is_shipping }),
+                ...(checkbil ? { is_billing: true } : {}),
 
                 ...(cart_id && { cart_id }),
                 ...(customer_id && { customer_id })
             };
-            isEdit ? dispatch(putAddress(id, payload, toast, navigate)) : dispatch(postAddress(payload, toast, navigate));
+            dispatch(postAddressCheckout(payload, toast, handleClick, paymentClick));
         } catch (error) {
             console.error(error);
         } finally {
-            setLoading(false); 
+            setLoading(false);
         }
     };
 
-
     return (
+
         <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="grid grid-cols-12 md:gap-6 gap-0">
@@ -146,6 +137,8 @@ const AddEditAddressFrom = ({ isEdit = false, id, userAdd }) => {
                     <div className='col-span-12 lg:col-span-6'>
                         <StateInput />
                     </div>
+
+
                     <div className='col-span-12 lg:col-span-6'>
                         <CityInput />
                     </div>
@@ -160,23 +153,33 @@ const AddEditAddressFrom = ({ isEdit = false, id, userAdd }) => {
                                 <DefaultAddress />
                             </div>
 
-                            {/* <div className='col-span-12 md:col-span-6'>
-                                <ShipAddress />
-                            </div> */}
+                            {ship && (
+                                <div className='col-span-12 md:col-span-6'>
+                                    <ShipAddress />
+                                </div>
+                            )}
+
                         </div>
                     </div>
                 </div>
-                <div className='mt-6'>
+                <div className='mt-6 flex gap-4'>
                     <Btnone
-                        title={isEdit ? (loading ? 'Editing...' : 'Edit Address') : (loading ? 'Posting...' : 'Post Address')}
+                        title='Back'
+                        bgColor="#072320"
+                        width="100%"
+                        handleClick={backCLick}
+                    />
+                    <Btnone
+                        title={loading ? 'Posting...' : 'Go to Next Step'}  // Change button text based on loading state
                         bgColor="#00A762"
                         type="submit"
                         width="100%"
-                        loading={loading}
+                        loading={loading}  // Disable the button while loading
                     />
                 </div>
             </form>
         </FormProvider>
+
     );
 };
 
@@ -361,7 +364,7 @@ const StateInput = () => {
             />
             {errors.state && (
                 <p className="text-red-500 mt-1">{errors.state.message}</p>
-            )} 
+            )}
         </div>
     );
 };
@@ -434,24 +437,25 @@ const AddressTypeInput = () => {
 };
 
 
-// const ShipAddress = () => {
-//     const { register, formState: { errors } } = useFormContext();
+const ShipAddress = () => {
+    const { register, formState: { errors } } = useFormContext();
 
-//     return (
-//         <div className='mt-3 flex'>
-//             <input
-//                 type="checkbox"
-//                 {...register('is_shipping')}
-//                 className='rounded '
-//             />
-//             <label className='ml-2 block text-[#072320] font-dm text-lg capitalize font-medium'>
-//                 {/* ship to this address */}
-//                 Your Go-To Shipping Solution
-//             </label>
+    return (
+        <div className='mt-3 flex'>
+            <input
+                type="checkbox"
+                {...register('is_shipping')}
+                className='rounded '
+            />
+            <label className='ml-2 block text-[#072320] font-dm text-lg capitalize font-medium'>
+                {/* ship to this address */}
+                Your Go-To Shipping Solution
+            </label>
 
-//         </div>
-//     );
-// };
+        </div>
+    );
+};
+
 
 const DefaultAddress = () => {
     const { register, formState: { errors } } = useFormContext();
@@ -471,5 +475,4 @@ const DefaultAddress = () => {
     );
 };
 
-
-export default AddEditAddressFrom;
+export default CheckoutBillingaddress;

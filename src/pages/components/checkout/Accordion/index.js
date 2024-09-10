@@ -7,7 +7,8 @@ import { IoMdAdd } from 'react-icons/io';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAddress } from '../../../../redux/slices/address';
 import { CheckoutbillingAddress, CheckoutshippingAddress } from '../../myaccount/address/DefultAddress';
-import { Checkoutuseraddress, GuestAddress } from '../../myaccount/address';
+import {  CheckoutShipingaddress, GuestAddress } from '../../myaccount/address';
+import CheckoutBillingaddress from '../../myaccount/address/CheckoutBillingaddress';
 
 const AccordionExample = () => {
     const dispatch = useDispatch();
@@ -90,11 +91,13 @@ const AccordionExample = () => {
     const handlebackShipClick = () => {
         setIsBillingOpen(true);
         setIsShippingOpen(false);
+        setIsNewBillingOpen(false);
     };
 
     const handlebackPayClick = () => {
         setIsPaymentOpen(false);
         setIsShippingOpen(true);
+        setIsNewShippingOpen(false);
     };
 
 
@@ -205,13 +208,13 @@ const AccordionExample = () => {
                                 <>
                                     {isNewBillingOpen || billAddress.length === 0 ? (
                                         <div className="shadow-md rounded-lg border-[#00A762] border-2 p-4 my-4">
-                                            <Checkoutuseraddress
+                                            <CheckoutBillingaddress
                                                 backCLick={() => handlebackBillClick()}
                                                 checkbil={true}
                                                 ship={true}
                                                 handleClick={handleBillingClick}
                                                 paymentClick={handlePaymentClick}
-                                                 />
+                                            />
                                         </div>
                                     ) : null}
 
@@ -277,10 +280,11 @@ const AccordionExample = () => {
                                 <>
                                     {isNewShippingOpen || shipAddress.length === 0 ? (
                                         <div className="shadow-md rounded-lg border-[#00A762] border-2 p-4 my-4">
-                                            <Checkoutuseraddress
+                                            <CheckoutShipingaddress
                                                 backCLick={() => handlebackShipClick()}
                                                 checkship={true}
-                                                handleClick={handleShippingClick} />
+                                                handleClick={handleShippingClick} 
+                                                />
                                         </div>
                                     ) : null}
 

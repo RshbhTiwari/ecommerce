@@ -40,7 +40,7 @@ function FormContent({ isChecked, onCheckboxChange }) {
     return (
         <form className='w-fit'>
             <label className='font-dm text-xs flex justify-center items-center font-medium'>
-                <input className='mr-1' type="checkbox" checked={isChecked} onChange={onCheckboxChange} />
+                <input className='mr-1 cursor-pointer' type="checkbox" checked={isChecked} onChange={onCheckboxChange} />
                 Set as default
             </label>
         </form>
