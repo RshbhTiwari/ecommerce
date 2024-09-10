@@ -1,13 +1,13 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { useForm, FormProvider, useFormContext } from 'react-hook-form';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Btnone } from '../../basic/button';
-import { postAddress } from '../../../../redux/slices/address';
+import { postAddressCheckout } from '../../../../redux/slices/address';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
-const Checkoutuseraddress = ({ backCLick, ship, handleClick , checkship , checkbil }) => {
+const Checkoutuseraddress = ({ backCLick, ship, handleClick, checkship, checkbil,paymentClick }) => {
 
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
@@ -34,6 +34,7 @@ const Checkoutuseraddress = ({ backCLick, ship, handleClick , checkship , checkb
         state: Yup.string().required('State is required'),
         city: Yup.string().required('City is required'),
         email: Yup.string().email('Invalid email').required('Email is required'),
+        addresstype: Yup.string().required('Address Type is required'),
     });
 
     const defaultValues = useMemo(
@@ -69,7 +70,7 @@ const Checkoutuseraddress = ({ backCLick, ship, handleClick , checkship , checkb
     const onSubmit = async (data) => {
         const cart_id = localStorage?.getItem('cart_id') || null;
         const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
-        const is_shipping = data?.is_shipping 
+        const is_shipping = data?.is_shipping
         setLoading(true);
         try {
             await new Promise((resolve) => setTimeout(resolve, 500));
@@ -84,18 +85,16 @@ const Checkoutuseraddress = ({ backCLick, ship, handleClick , checkship , checkb
                 city: data?.city,
                 email: data?.email,
                 addresstype: data?.addresstype,
-                
+
                 defaultaddress: data?.defaultaddress,
 
                 ...(checkship ? { is_shipping: true } : { is_shipping }),
-                ...(checkbil ? { is_billing: true } : { }),
+                ...(checkbil ? { is_billing: true } : {}),
 
                 ...(cart_id && { cart_id }),
                 ...(customer_id && { customer_id })
             };
-
-            dispatch(postAddress(payload, toast));
-            handleClick()
+            dispatch(postAddressCheckout(payload, toast, handleClick, paymentClick));
         } catch (error) {
             console.error(error);
         } finally {
@@ -165,7 +164,7 @@ const Checkoutuseraddress = ({ backCLick, ship, handleClick , checkship , checkb
                     </div>
                 </div>
                 <div className='mt-6 flex gap-4'>
-                <Btnone
+                    <Btnone
                         title='Back'
                         bgColor="#072320"
                         width="100%"
@@ -431,6 +430,9 @@ const AddressTypeInput = () => {
                     Other
                 </label>
             </div>
+            {errors.addresstype && (
+                <p className="text-red-500 mt-1">{errors.addresstype.message}</p>
+            )}
         </div>
     );
 };

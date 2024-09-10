@@ -4,15 +4,15 @@ import { useForm, FormProvider, useFormContext } from 'react-hook-form';
 import { useEffect, useMemo, useState } from 'react';
 import { Btnone } from '../../basic/button';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { postAddress, putAddress } from '../../../../redux/slices/address';
+import { postAddress, putAddress, putModelAddress } from '../../../../redux/slices/address';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
-const AddEditAddressFrom = ({ isEdit = false, id, userAdd }) => {
+const ModelEditaddress = ({ isEdit = false, ship, onClose, checkship, checkbil, id, userAdd }) => {
+   
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const getLocalStorageData = () => {
-        const localData = localStorage.getItem('user'); 
+        const localData = localStorage.getItem('user');
         return localData ? JSON.parse(localData) : {};
     };
 
@@ -48,7 +48,8 @@ const AddEditAddressFrom = ({ isEdit = false, id, userAdd }) => {
             city: userAdd?.city || '',
             email: userAdd?.email || localStorageData?.email || "",
             addresstype: userAdd?.addresstype || '',
-            defaultaddress: userAdd?.defaultaddress || false,  
+            defaultaddress: userAdd?.defaultaddress || false,
+            is_shipping: userAdd?.is_shipping || false,
         }),
         [userAdd]
     );
@@ -79,9 +80,10 @@ const AddEditAddressFrom = ({ isEdit = false, id, userAdd }) => {
     const onSubmit = async (data) => {
         const cart_id = localStorage?.getItem('cart_id') || null;
         const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+        const is_shipping = data?.is_shipping
 
         try {
-            setLoading(true);  
+            setLoading(true);
             await new Promise((resolve) => setTimeout(resolve, 500));
             const payload = {
                 name: data?.name,
@@ -96,17 +98,17 @@ const AddEditAddressFrom = ({ isEdit = false, id, userAdd }) => {
                 addresstype: data?.addresstype,
                 defaultaddress: data?.defaultaddress,
 
-                is_billing: true,
-                is_shipping: true,
+                ...(checkship ? { is_shipping: true } : { is_shipping }),
+                ...(checkbil ? { is_billing: true } : {}),
 
                 ...(cart_id && { cart_id }),
                 ...(customer_id && { customer_id })
             };
-            isEdit ? dispatch(putAddress(id, payload, toast, navigate)) : dispatch(postAddress(payload, toast, navigate));
+            dispatch(putModelAddress(id, payload, toast, onClose))
         } catch (error) {
             console.error(error);
         } finally {
-            setLoading(false); 
+            setLoading(false);
         }
     };
 
@@ -159,16 +161,17 @@ const AddEditAddressFrom = ({ isEdit = false, id, userAdd }) => {
                             <div className='col-span-12 md:col-span-6'>
                                 <DefaultAddress />
                             </div>
-
-                            {/* <div className='col-span-12 md:col-span-6'>
-                                <ShipAddress />
-                            </div> */}
+                            {ship && (
+                                <div className='col-span-12 md:col-span-6'>
+                                    <ShipAddress />
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
                 <div className='mt-6'>
                     <Btnone
-                        title={isEdit ? (loading ? 'Editing...' : 'Edit Address') : (loading ? 'Posting...' : 'Post Address')}
+                        title={(loading ? 'Editing...' : 'Edit Address')}
                         bgColor="#00A762"
                         type="submit"
                         width="100%"
@@ -320,9 +323,6 @@ const PincodeInput = () => {
     );
 };
 
-
-
-
 const LocalityInput = () => {
     const { register, formState: { errors } } = useFormContext();
 
@@ -361,12 +361,10 @@ const StateInput = () => {
             />
             {errors.state && (
                 <p className="text-red-500 mt-1">{errors.state.message}</p>
-            )} 
+            )}
         </div>
     );
 };
-
-
 
 const CityInput = () => {
     const { register, formState: { errors } } = useFormContext();
@@ -433,25 +431,24 @@ const AddressTypeInput = () => {
     );
 };
 
+const ShipAddress = () => {
+    const { register, formState: { errors } } = useFormContext();
 
-// const ShipAddress = () => {
-//     const { register, formState: { errors } } = useFormContext();
+    return (
+        <div className='mt-3 flex'>
+            <input
+                type="checkbox"
+                {...register('is_shipping')}
+                className='rounded '
+            />
+            <label className='ml-2 block text-[#072320] font-dm text-lg capitalize font-medium'>
+                {/* ship to this address */}
+                Your Go-To Shipping Solution
+            </label>
 
-//     return (
-//         <div className='mt-3 flex'>
-//             <input
-//                 type="checkbox"
-//                 {...register('is_shipping')}
-//                 className='rounded '
-//             />
-//             <label className='ml-2 block text-[#072320] font-dm text-lg capitalize font-medium'>
-//                 {/* ship to this address */}
-//                 Your Go-To Shipping Solution
-//             </label>
-
-//         </div>
-//     );
-// };
+        </div>
+    );
+};
 
 const DefaultAddress = () => {
     const { register, formState: { errors } } = useFormContext();
@@ -472,4 +469,4 @@ const DefaultAddress = () => {
 };
 
 
-export default AddEditAddressFrom;
+export default ModelEditaddress;

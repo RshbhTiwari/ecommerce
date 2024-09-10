@@ -41,7 +41,7 @@ function FormContent({ isChecked, onCheckboxChange }) {
         <form className='w-fit'>
             <label className='font-dm text-xs flex justify-center items-center font-medium'>
                 <input className='mr-1' type="checkbox" checked={isChecked} onChange={onCheckboxChange} />
-                Select this address
+                Set as default
             </label>
         </form>
     );

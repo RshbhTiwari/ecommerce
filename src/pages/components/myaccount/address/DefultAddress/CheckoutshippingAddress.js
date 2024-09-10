@@ -1,35 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { deleteAddress, postCheckboxAddress } from '../../../../../redux/slices/address';
+import { postCheckboxAddress } from '../../../../../redux/slices/address';
 import { toast } from 'react-toastify';
 import { FormProvider } from 'react-hook-form';
-import { MdDeleteOutline } from 'react-icons/md';
 import { FaRegEdit } from 'react-icons/fa';
 import { Paragraph } from '../../../basic/title';
 import { Btnone } from '../../../basic/button';
+import { ModelAddresShiping } from '../../../checkout/Model';
 
-function CheckoutshippingAddress({ allAddressData, deletClick, handleClick, handlebackClick }) {
+function CheckoutshippingAddress({ allAddressData, handleClick, handlebackClick }) {
 
-    const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [loadingId, setLoadingId] = useState(null);
     const [selectedAddressId, setSelectedAddressId] = useState(null);
 
-    const handleDeleteRow = async (id) => {
-        setLoadingId(id);
-        try {
-            await dispatch(deleteAddress(id, toast));
-        } catch (error) {
-            toast.error('Failed to delete address.');
-        } finally {
-            setLoadingId(null);
-            deletClick(id);
-        }
-    };
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [currentAddressId, setCurrentAddressId] = useState(null);
 
     const handleEditRow = (id) => {
-        navigate(`/my-account/edit-address/${id}`);
+        setCurrentAddressId(id);
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
     };
 
     const handleCheckboxChange = (id) => {
@@ -106,20 +99,6 @@ function CheckoutshippingAddress({ allAddressData, deletClick, handleClick, hand
                             </div>
                         </div>
 
-                        {/* <div className="flex items-center justify-between w-full gap-3 mt-4">
-                            <button
-                                className={`flex items-center justify-center rounded-lg shadow-md font-dm px-3 py-1 capitalize w-full border-2 border-[#072320]
-                                    ${loadingId === item?.id ? 'bg-gray-400 text-gray-600 cursor-not-allowed' : 'bg-white text-[#072320]'}`}
-                                onClick={() => !loadingId && handleDeleteRow(item?.id)}
-                                disabled={loadingId === item?.id}
-                            >
-                                {loadingId === item?.id ? 'Deleting...' : <MdDeleteOutline className='text-[#072320] mr-2 text-xl' />}
-                                {loadingId === item?.id ? '' : 'delete'}
-                            </button>
-
-                            
-                        </div> */}
-
                     </div>
                 ))}
             </div>
@@ -144,6 +123,13 @@ function CheckoutshippingAddress({ allAddressData, deletClick, handleClick, hand
                 )}
 
             </div>
+
+            <ModelAddresShiping
+                isOpen={isModalOpen}
+                onClose={handleCloseModal}
+                id={currentAddressId}
+                ship={false}
+            />
         </>
 
     );

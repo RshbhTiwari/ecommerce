@@ -138,7 +138,7 @@ function FormContent({ id, isChecked, onCheckboxChange }) {
                     checked={isChecked}
                     onChange={() => onCheckboxChange(id)}
                 />
-                Select this address
+                Set as default
             </label>
         </form>
     );

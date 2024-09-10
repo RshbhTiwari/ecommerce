@@ -42,8 +42,8 @@ const ContactForm = () => {
                 email: data?.email,
                 message: data?.message,
             };
-            dispatch(postContact(payload, toast, navigate, reset));
-            // reset()
+            dispatch(postContact(payload, toast, reset));
+       
         } catch (error) {
             console.error(error);
         } finally {

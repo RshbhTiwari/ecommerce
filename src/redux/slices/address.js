@@ -88,8 +88,7 @@ export function postAddress(payload, toast, navigate) {
             dispatch(startLoading());
             const response = await axios.post('/storeAddresses', payload, { headers });
             if (response?.data?.status === true) {
-                if(navigate){navigate('/my-account/address-book');}
-            
+                navigate('/my-account/address-book')
                 toast.success("Address added successfully!");
             } else {
                 toast.error('Unable to add address. Please try again later');
@@ -98,6 +97,52 @@ export function postAddress(payload, toast, navigate) {
             console.error("Unable to add address. Please try again later", error);
             toast.error('Unable to add address. Please try again later');
             dispatch(hasError(error.message || "Error adding address"));
+        }
+    };
+}
+
+
+export function postAddressCheckout(payload, toast, handleClick, paymentClick) {
+    return async (dispatch) => {
+        try {
+            dispatch(startLoading());
+            console.log("payload223", payload)
+            const response = await axios.post('/storeAddresses', payload, { headers });
+            if (response?.data?.status === true) {
+
+                if (payload?.is_shipping === true) {
+                    paymentClick()
+                } else {
+                    handleClick()
+                }
+                toast.success("Address added successfully!");
+            } else {
+                toast.error('Unable to add address. Please try again later');
+            }
+        } catch (error) {
+            console.error("Unable to add address. Please try again later", error);
+            toast.error('Unable to add address. Please try again later');
+            dispatch(hasError(error.message || "Error adding address"));
+        }
+    };
+}
+
+export function postDefaultaddress(checkboxItem, toast) {
+    return async (dispatch) => {
+        try {
+            dispatch(startLoading());
+            const response = await axios.post('/setDefaultAddress', checkboxItem, { headers });
+            if (response?.data?.status === true) {
+                const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+                dispatch(getAddress(customer_id));
+                toast.success(response?.data?.message);
+            } else {
+                toast.error("Address Linking Failed");
+            }
+        } catch (error) {
+            console.error("Address Linking Failed", error);
+            toast.error("Address Linking Failed");
+            dispatch(hasError(error.message || "Error linking address"));
         }
     };
 }
@@ -121,17 +166,36 @@ export function postCheckboxAddress(payload, toast, handleClick) {
     };
 }
 
-export function putAddress(id, payload, toast, navigate) {
+export function putAddress(id, payload, toast, navigate, onClose) {
     return async (dispatch) => {
         try {
             dispatch(startLoading());
             const response = await axios.put(`/updateAddresses/${id}`, payload, { headers });
             dispatch(postAddressSuccess(response?.data));
             if (response?.data?.status === true) {
-                if(navigate){navigate('/my-account/address-book');}
+                if (navigate) { navigate('/my-account/address-book'); }
+                onClose()
                 toast.success("Address updated successfully!");
-            } else {
-                toast.error("Please check your input and try again.");
+            }
+        } catch (error) {
+            dispatch(hasError(error.message || "Error updating address"));
+            toast.error("Please check your input and try again.");
+            console.error("Error updating address", error);
+        }
+    };
+}
+
+export function putModelAddress(id, payload, toast, onClose) {
+    return async (dispatch) => {
+        try {
+            dispatch(startLoading());
+            const response = await axios.put(`/updateAddresses/${id}`, payload, { headers });
+            dispatch(postAddressSuccess(response?.data));
+            if (response?.data?.status === true) {
+                onClose()
+                const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+                dispatch(getAddress(customer_id));
+                toast.success("Address updated successfully!");
             }
         } catch (error) {
             dispatch(hasError(error.message || "Error updating address"));
