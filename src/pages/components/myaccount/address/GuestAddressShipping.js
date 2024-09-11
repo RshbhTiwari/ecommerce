@@ -17,16 +17,14 @@ const GuestAddressShipping = ({ backCLick, handleClick }) => {
         return sessionData ? JSON.parse(sessionData) : {};
     };
 
-    const sessionStorageData = getSessionStorageData();
-
     const getBillingStorageData = () => {
         const sessionData = sessionStorage.getItem('BillingAddressData');
         return sessionData ? JSON.parse(sessionData) : {};
     };
 
+    const sessionStorageData = getSessionStorageData();
     const billingStorageData = getBillingStorageData();
 
-    console.log("billingStorageData",billingStorageData)
 
     const schema = Yup.object().shape({
         name: Yup.string().required('First Name is required'),
@@ -45,26 +43,42 @@ const GuestAddressShipping = ({ backCLick, handleClick }) => {
         addresstype: Yup.string().required('Address Type is required'),
     });
 
-    const defaultValues = useMemo(
-        () => ({
-            name: sessionStorageData?.name || "",
-            contact: sessionStorageData?.contact || "",
-            landmarkname: sessionStorageData?.landmarkname || "",
-            addressname: sessionStorageData?.addressname || "",
-            pincode: sessionStorageData?.pincode || "",
-            locality: sessionStorageData?.locality || "",
-            state: sessionStorageData?.state || "",
-            city: sessionStorageData?.city || "",
-            email: sessionStorageData?.email || "",
-            addresstype: sessionStorageData?.addresstype || "",
-        }),
-        [sessionStorageData]
-    );
+    const defaultValues = useMemo(() => {
+        if (billingStorageData.is_shipping) {
+            return {
+                name: billingStorageData?.name || "",
+                contact: billingStorageData?.contact || "",
+                landmarkname: billingStorageData?.landmarkname || "",
+                addressname: billingStorageData?.addressname || "",
+                pincode: billingStorageData?.pincode || "",
+                locality: billingStorageData?.locality || "",
+                state: billingStorageData?.state || "",
+                city: billingStorageData?.city || "",
+                email: billingStorageData?.email || "",
+                addresstype: billingStorageData?.addresstype || "",
+            };
+        } else {
+            return {
+                name: sessionStorageData?.name || "",
+                contact: sessionStorageData?.contact || "",
+                landmarkname: sessionStorageData?.landmarkname || "",
+                addressname: sessionStorageData?.addressname || "",
+                pincode: sessionStorageData?.pincode || "",
+                locality: sessionStorageData?.locality || "",
+                state: sessionStorageData?.state || "",
+                city: sessionStorageData?.city || "",
+                email: sessionStorageData?.email || "",
+                addresstype: sessionStorageData?.addresstype || "",
+            };
+        }
+    }, [billingStorageData, sessionStorageData]); 
+
 
     const methods = useForm({
         resolver: yupResolver(schema),
         defaultValues,
     });
+   
 
     const {
         reset,

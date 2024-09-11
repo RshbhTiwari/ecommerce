@@ -83,7 +83,7 @@ function CheckoutbillingAddress({ allAddressData, handleClick, handlebackClick }
 
                         </div>
 
-                        <div className="mt-4">
+                        <div className="mt-2">
                             <Paragraph textAlign='onyleft' title={item?.name} />
                             <Paragraph textAlign='onyleft' title={item?.email} />
                             <p className={`font-dm text-md capitalize font-medium text-left text-[#072320]`}>

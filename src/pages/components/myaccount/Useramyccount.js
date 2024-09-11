@@ -76,20 +76,25 @@ function Useramyccount({ customer_id }) {
                                     <div className='md:col-span-6 lg:col-span-4 col-span-12 w-full md:gap-4 gap-0'>
 
                                         <h3 className='block  text-[#072320] 
-                         font-dm text-lg capitalize font-medium'>customer Name :
+                         font-dm text-lg capitalize font-medium'><span className="text-[#00A762]">customer Name : </span>
                                             <br />{myccountdata?.user?.name}</h3>
                                     </div>
 
                                     <div className='md:col-span-6 lg:col-span-4 col-span-12 w-full md:gap-4 gap-0'>
 
                                         <h3 className='block  text-[#072320] 
-                         font-dm text-lg capitalize font-medium'>Email : <br />{myccountdata?.user?.email}</h3>
+                         font-dm text-lg capitalize font-medium'>
+                                            <span className="text-[#00A762]">Email : </span> <br />{myccountdata?.user?.email}</h3>
                                     </div>
+
+
 
                                     <div className='md:col-span-6 lg:col-span-4 col-span-12 w-full md:gap-4 gap-0'>
 
                                         <h3 className='block  text-[#072320] 
-                        font-dm text-lg capitalize font-medium'>password : <br />***********</h3>
+                        font-dm text-lg capitalize font-medium'><span className="text-[#00A762]">Password   : </span> <br />
+                                         *********
+                                        </h3>
                                     </div>
 
                                     <div className='col-span-12 w-full md:gap-4 gap-0'>
@@ -104,61 +109,81 @@ function Useramyccount({ customer_id }) {
                             null
                         )}
 
-                        {myccountdata?.addresses ? (
-                            <div className="border-[2px] mt-8 w-full border-[#00A762] py-8 px-8  rounded-md shadow-md mx-auto" data-aos="fade-up"
-                                data-aos-duration="1000">
-                                <HeadingTitle title="address information" textAlign='left' />
 
-                                <div className="grid grid-cols-12 gap-4 mt-4">
-                                    {myccountdata?.addresses?.is_billing === true ? (
-                                        <div className='md:col-span-6 col-span-12 w-full gap-4 '>
-                                            <h3 className='block  text-[#072320] sm:text-left text-center
+                        <div className="border-[2px] mt-8 w-full border-[#00A762] py-8 px-8  rounded-md shadow-md mx-auto" data-aos="fade-up"
+                            data-aos-duration="1000">
+                            <HeadingTitle title="address information" textAlign='left' />
+
+                            <div className="grid grid-cols-12 gap-4 mt-4">
+                                {myccountdata?.billing_address ? (
+                                    <div className='md:col-span-6 col-span-12 w-full gap-4 '>
+                                        <h3 className='block  text-[#072320] sm:text-left text-center
                                      font-dm text-lg capitalize font-medium'>default billing address</h3>
 
-                                            <div className="mt-4">
-                                                <Paragraph textAlign='left'
-                                                    title={myccountdata?.addresses?.addressname} />
+                                        <div className="flex flex-col w-full mt-4">
+                                            <p className={`font-dm text-md capitalize font-medium text-left text-[#072320]`}>
+                                                <span className="text-[#00A762]">Addressname : </span>{myccountdata?.billing_address?.addressname}
+                                            </p>
+                                            <p className={`font-dm text-md capitalize font-medium text-left text-[#072320]`}>
+                                                <span className="text-[#00A762]">Landmarkname : </span>{myccountdata?.billing_address?.landmarkname}
+                                            </p>
+                                            <p className={`font-dm text-md capitalize font-medium text-left text-[#072320]`}>
+                                                <span className="text-[#00A762]">City : </span>{myccountdata?.billing_address?.city}
+                                            </p>
+                                            <p className={`font-dm text-md capitalize font-medium text-left text-[#072320]`}>
+                                                <span className="text-[#00A762]">Pincode : </span>{myccountdata?.billing_address?.pincode}
+                                            </p>
 
-                                                <Paragraph textAlign='left'
-                                                    title={myccountdata?.addresses?.contact} />
-
-                                            </div>
-
-                                            <div className="mt-4 sm:text-left text-center">
-                                                <Btnone title="edit" bgColor="#00A762" handleClick={() => handleEditRow(myccountdata?.addresses?.id)} />
-                                            </div>
+                                            <p className={`font-dm text-md capitalize font-medium text-left text-[#072320]`}>
+                                                <span className="text-[#00A762]">Address Type : </span>{myccountdata?.billing_address?.addresstype}
+                                            </p>
                                         </div>
-                                    ) : (
-                                        null
-                                    )}
 
-                                    {myccountdata?.addresses?.is_shipping === true ? (
-                                        <div className='md:col-span-6 col-span-12 w-full md:gap-4 gap-0'>
-                                            <h3 className='block  text-[#072320] 
+
+                                        <div className="mt-4 sm:text-left text-center">
+                                            <Btnone title="edit" bgColor="#00A762" handleClick={() => handleEditRow(myccountdata?.billing_address?.id)} />
+                                        </div>
+                                    </div>
+                                ) : (
+                                    null
+                                )}
+
+                                {myccountdata?.shipping_address ? (
+                                    <div className='md:col-span-6 col-span-12 w-full md:gap-4 gap-0'>
+                                        <h3 className='block  text-[#072320] 
                                      font-dm text-lg capitalize font-medium sm:text-left text-center'>default shipping address</h3>
 
-                                            <div className="mt-4">
-                                                <Paragraph textAlign='left'
-                                                    title={myccountdata?.addresses?.addressname} />
 
-                                                <Paragraph textAlign='left'
-                                                    title={myccountdata?.addresses?.contact} />
 
-                                            </div>
+                                        <div className="flex flex-col w-full mt-4">
+                                            <p className={`font-dm text-md capitalize font-medium text-left text-[#072320]`}>
+                                                <span className="text-[#00A762]">Addressname : </span>{myccountdata?.shipping_address?.addressname}
+                                            </p>
+                                            <p className={`font-dm text-md capitalize font-medium text-left text-[#072320]`}>
+                                                <span className="text-[#00A762]">Landmarkname : </span>{myccountdata?.shipping_address?.landmarkname}
+                                            </p>
+                                            <p className={`font-dm text-md capitalize font-medium text-left text-[#072320]`}>
+                                                <span className="text-[#00A762]">City : </span>{myccountdata?.shipping_address?.city}
+                                            </p>
+                                            <p className={`font-dm text-md capitalize font-medium text-left text-[#072320]`}>
+                                                <span className="text-[#00A762]">Pincode : </span>{myccountdata?.shipping_address?.pincode}
+                                            </p>
 
-                                            <div className="mt-4 sm:text-left text-center">
-                                                <Btnone title="edit" bgColor="#00A762" handleClick={() => handleEditRow(myccountdata?.addresses?.id)} />
-                                            </div>
+                                            <p className={`font-dm text-md capitalize font-medium text-left text-[#072320]`}>
+                                                <span className="text-[#00A762]">Address Type : </span>{myccountdata?.shipping_address?.addresstype}
+                                            </p>
                                         </div>
-                                    ) : (
-                                        null
-                                    )}
-                                </div>
 
+                                        <div className="mt-4 sm:text-left text-center">
+                                            <Btnone title="edit" bgColor="#00A762" handleClick={() => handleEditRow(myccountdata?.shipping_address?.id)} />
+                                        </div>
+                                    </div>
+                                ) : (
+                                    null
+                                )}
                             </div>
-                        ) : (
-                            null
-                        )}
+
+                        </div>
 
                         {myccountdata?.orders && myccountdata?.orders?.length > 0 ? (
                             <div className="border-[2px] mt-8 w-full border-[#00A762] py-8 px-8  rounded-md shadow-md mx-auto" data-aos="fade-up"

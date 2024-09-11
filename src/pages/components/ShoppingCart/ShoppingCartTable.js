@@ -5,13 +5,30 @@ import { useDispatch } from 'react-redux';
 import { deleteCartItem, putCartItem } from "../../../redux/slices/addToCart";
 import { toast } from 'react-toastify';
 import { RxCross2 } from "react-icons/rx";
+import { Modeldelete, Modelminidelete } from "../basic/model";
 
 export default function ShoppingCartTable({ shoppingcart, minicart, cartIsLoading, cartErorr }) {
 
     const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
+
     const dispatch = useDispatch();
+
     const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [cartitemId, setCartItemId] = useState(null);
+
+    const openModal = (id) => {
+
+        setCartItemId(id);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setCartItemId(null);
+    };
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -85,16 +102,23 @@ export default function ShoppingCartTable({ shoppingcart, minicart, cartIsLoadin
         dispatch(putCartItem(itemId, payload, toast));
     };
 
-    const handleDelete = useCallback(async (itemId) => {
+    const handleDelete = useCallback(async () => {
         try {
-            dispatch(deleteCartItem(itemId, toast));
-            const filterData = cartItems.filter((item) => item?.id !== itemId);
+            console.log("cartitemId", cartitemId)
+            dispatch(deleteCartItem(cartitemId, toast));
+            const filterData = cartItems.filter((item) => item?.id !== cartitemId);
             setCartItems(filterData);
         } catch (error) {
             console.error("Error handling delete operation:", error);
             toast.error("There was an issue deleting the item.");
+        } finally {
+            closeModal();
         }
-    }, [dispatch]);
+
+    }, [dispatch, cartitemId, closeModal]);
+
+
+
 
     return (
 
@@ -108,7 +132,7 @@ export default function ShoppingCartTable({ shoppingcart, minicart, cartIsLoadin
                             className={`flex shadow-md rounded-lg justify-between relative my-4  ${index % 2 === 0 ? '' : 'bg-gray-100'}`}
                             key={index}>
 
-                            <div className="flex items-center justify-center cursor-pointer h-8 w-8 rounded-md absolute right-[10px] top-[20px] p-2 bg-[#00000054]" onClick={() => handleDelete(item?.id)}>
+                            <div className="flex items-center justify-center cursor-pointer h-8 w-8 rounded-md absolute right-[10px] top-[20px] p-2 bg-[#00000054]" onClick={() => openModal(item?.id)}>
                                 <RxCross2 className='text-2xl text-[#072320]' />
                             </div>
 
@@ -206,11 +230,14 @@ export default function ShoppingCartTable({ shoppingcart, minicart, cartIsLoadin
                                                 ₹{item?.totalPrice}
                                             </td>
 
-                                            <td className="py-2" onClick={() => handleUpdate(item?.id, item?.quantity, item?.totalPrice)}>
-                                                <h1 className="text-[#00A762] font-dm cursor-pointer">Update</h1>
+                                            <td className="py-2 cursor-pointer" onClick={() => handleUpdate(item?.id, item?.quantity, item?.totalPrice)}>
+                                                <h1 className="text-[#00A762] font-dm">Update</h1>
                                             </td>
 
-                                            <td className="py-2" onClick={() => handleDelete(item?.id)}>
+                                            <td className="py-2 cursor-pointer"
+                                                onClick={() => openModal(item?.id)}
+
+                                            >
                                                 <MdDeleteForever className="text-[#00A762] text-2xl" />
                                             </td>
                                         </tr>
@@ -220,6 +247,20 @@ export default function ShoppingCartTable({ shoppingcart, minicart, cartIsLoadin
                         </div>
                     )}
                 </>
+            )}
+
+            {minicart ? (
+                <Modelminidelete
+                    isOpen={isModalOpen}
+                    onClose={closeModal}
+                    onConfirm={handleDelete}
+                />
+            ) : (
+                <Modeldelete
+                    isOpen={isModalOpen}
+                    onClose={closeModal}
+                    onConfirm={handleDelete}
+                />
             )}
         </>
 
