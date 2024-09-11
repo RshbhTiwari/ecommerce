@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import { useForm, FormProvider, useFormContext } from 'react-hook-form';
 import { useEffect, useMemo, useState } from 'react';
 import { Btnone } from '../../basic/button';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { postAddress, putAddress } from '../../../../redux/slices/address';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -12,12 +12,14 @@ const AddEditAddressFrom = ({ isEdit = false, id, userAdd }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const getLocalStorageData = () => {
-        const localData = localStorage.getItem('user'); 
+        const localData = localStorage.getItem('user');
         return localData ? JSON.parse(localData) : {};
     };
 
     const localStorageData = getLocalStorageData();
     const [loading, setLoading] = useState(false);
+    const [isShippingChecked, setIsShippingChecked] = useState(false);
+    const [isBillingingChecked, setIsBillingChecked] = useState(false);
 
     const schema = Yup.object().shape({
         name: Yup.string().required('First Name is required'),
@@ -48,7 +50,11 @@ const AddEditAddressFrom = ({ isEdit = false, id, userAdd }) => {
             city: userAdd?.city || '',
             email: userAdd?.email || localStorageData?.email || "",
             addresstype: userAdd?.addresstype || '',
-            defaultaddress: userAdd?.defaultaddress || false,  
+
+            is_billing: userAdd?.is_billing || false,
+            is_shipping: userAdd?.is_shipping || false,
+            default_shipping_address: userAdd?.default_shipping_address || false,
+            default_billing_address: userAdd?.default_billing_address || false,
         }),
         [userAdd]
     );
@@ -65,23 +71,44 @@ const AddEditAddressFrom = ({ isEdit = false, id, userAdd }) => {
         formState: { errors },
     } = methods;
 
-
     useEffect(() => {
         if (isEdit && userAdd) {
-            reset(defaultValues);
+            reset({
+                name: userAdd?.name,
+                contact: userAdd?.contact,
+                landmarkname: userAdd?.landmarkname,
+                addressname: userAdd?.addressname,
+                pincode: userAdd?.pincode,
+                locality: userAdd?.locality,
+                state: userAdd?.state,
+                city: userAdd?.city,
+                email: userAdd?.email,
+                addresstype: userAdd?.addresstype,
+                is_shipping: userAdd?.is_shipping,
+                default_shipping_address: userAdd?.default_shipping_address,
+                is_billing: userAdd?.is_billing,
+                default_billing_address: userAdd?.default_billing_address,
+            });
+            setIsShippingChecked(userAdd?.is_shipping);
+            setIsBillingChecked(userAdd?.is_billing);
+            if (!isEdit) {
+                reset(defaultValues);
+            }
+            // eslint-disable-next-line react-hooks/exhaustive-deps
         }
-        if (!isEdit) {
-            reset(defaultValues);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isEdit, userAdd]);
+    }, [isEdit, userAdd, reset]);
+
+    useEffect(() => {
+        setValue('is_shipping', isShippingChecked);
+        setValue('is_billing', isBillingingChecked);
+    }, [isShippingChecked, setValue, isBillingingChecked]);
 
     const onSubmit = async (data) => {
         const cart_id = localStorage?.getItem('cart_id') || null;
         const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
 
         try {
-            setLoading(true);  
+            setLoading(true);
             await new Promise((resolve) => setTimeout(resolve, 500));
             const payload = {
                 name: data?.name,
@@ -94,10 +121,12 @@ const AddEditAddressFrom = ({ isEdit = false, id, userAdd }) => {
                 city: data?.city,
                 email: data?.email,
                 addresstype: data?.addresstype,
-                defaultaddress: data?.defaultaddress,
 
-                is_billing: true,
-                is_shipping: true,
+                default_shipping_address: data?.default_shipping_address,
+                default_billing_address: data?.default_billing_address,
+
+                is_billing: data?.is_billing,
+                is_shipping: data?.is_shipping,
 
                 ...(cart_id && { cart_id }),
                 ...(customer_id && { customer_id })
@@ -106,7 +135,7 @@ const AddEditAddressFrom = ({ isEdit = false, id, userAdd }) => {
         } catch (error) {
             console.error(error);
         } finally {
-            setLoading(false); 
+            setLoading(false);
         }
     };
 
@@ -157,14 +186,33 @@ const AddEditAddressFrom = ({ isEdit = false, id, userAdd }) => {
                         <div className="grid grid-cols-12 md:gap-6 gap-0">
 
                             <div className='col-span-12 md:col-span-6'>
-                                <DefaultAddress />
+                                <ShipAddress setIsShippingChecked={setIsShippingChecked} />
                             </div>
 
-                            {/* <div className='col-span-12 md:col-span-6'>
-                                <ShipAddress />
-                            </div> */}
+                            {isShippingChecked && (
+                                <div className='col-span-12 md:col-span-6'>
+                                    <DefaultShippingAddress />
+                                </div>
+                            )}
+
                         </div>
                     </div>
+
+                    <div className='col-span-12'>
+                        <div className="grid grid-cols-12 md:gap-6 gap-0">
+
+                            <div className='col-span-12 md:col-span-6'>
+                                <BillingAddress setIsBillingChecked={setIsBillingChecked} />
+                            </div>
+                            {isBillingingChecked && (
+                                <div className='col-span-12 md:col-span-6'>
+                                    <DefaultBillingAddress />
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+
                 </div>
                 <div className='mt-6'>
                     <Btnone
@@ -361,7 +409,7 @@ const StateInput = () => {
             />
             {errors.state && (
                 <p className="text-red-500 mt-1">{errors.state.message}</p>
-            )} 
+            )}
         </div>
     );
 };
@@ -397,7 +445,7 @@ const AddressTypeInput = () => {
         <div className='mt-3'>
             <label className='block text-[#072320] font-dm text-lg capitalize font-medium'>Address Type</label>
             <div className='flex mt-2 gap-4'>
-                <label className='flex items-center text-base font-dm '>
+                <label className='flex items-center text-base font-dm cursor-pointer'>
                     <input
                         type="radio"
                         {...register('addresstype')}
@@ -406,7 +454,7 @@ const AddressTypeInput = () => {
                     />
                     Home
                 </label>
-                <label className='flex items-center text-base font-dm '>
+                <label className='flex items-center text-base font-dm cursor-pointer'>
                     <input
                         type="radio"
                         {...register('addresstype')}
@@ -416,7 +464,7 @@ const AddressTypeInput = () => {
                     Work
                 </label>
 
-                <label className='flex items-center text-base font-dm '>
+                <label className='flex items-center text-base font-dm cursor-pointer'>
                     <input
                         type="radio"
                         {...register('addresstype')}
@@ -434,42 +482,81 @@ const AddressTypeInput = () => {
 };
 
 
-// const ShipAddress = () => {
-//     const { register, formState: { errors } } = useFormContext();
-
-//     return (
-//         <div className='mt-3 flex'>
-//             <input
-//                 type="checkbox"
-//                 {...register('is_shipping')}
-//                 className='rounded '
-//             />
-//             <label className='ml-2 block text-[#072320] font-dm text-lg capitalize font-medium'>
-//                 {/* ship to this address */}
-//                 Your Go-To Shipping Solution
-//             </label>
-
-//         </div>
-//     );
-// };
-
-const DefaultAddress = () => {
+const ShipAddress = ({ setIsShippingChecked }) => {
     const { register, formState: { errors } } = useFormContext();
 
     return (
         <div className='mt-3 flex'>
-            <input
-                type="checkbox"
-                {...register('defaultaddress')}
-                className='rounded cursor-pointer'
-            />
-            <label className='ml-2 block text-[#072320] font-dm text-lg capitalize font-medium'>
-                Make This My Default Address
+            <label className=' block text-[#072320] font-dm text-lg capitalize font-medium cursor-pointer'>
+                <input
+                    type="checkbox"
+                    {...register('is_shipping')}
+                    className='rounded mr-2'
+                    onChange={(e) => setIsShippingChecked(e.target.checked)}
+                />
+                Shipping Address
             </label>
 
         </div>
     );
 };
 
+const DefaultShippingAddress = () => {
+    const { register, formState: { errors } } = useFormContext();
+
+    return (
+        <div className='mt-3 flex'>
+            <label className=' block text-[#072320] font-dm text-lg capitalize font-medium cursor-pointer'>
+                <input
+                    type="checkbox"
+                    {...register('default_shipping_address')}
+                    className='rounded mr-2'
+                />
+                Make This Default Shipping Address
+            </label>
+
+        </div>
+    );
+};
+
+const BillingAddress = ({ setIsBillingChecked }) => {
+    const { register, formState: { errors } } = useFormContext();
+
+    return (
+        <div className='mt-3 flex'>
+            <label className='block text-[#072320] font-dm text-lg capitalize font-medium cursor-pointer'>
+                <input
+                    type="checkbox"
+                    {...register('is_billing')}
+                    className='rounded mr-2'
+                    onChange={(e) => setIsBillingChecked(e.target.checked)}
+                />
+                Billing Address
+            </label>
+
+        </div>
+    );
+};
+
+const DefaultBillingAddress = () => {
+    const { register, formState: { errors } } = useFormContext();
+
+    return (
+        <div className='mt-3 flex'>
+            <label className=' block text-[#072320] font-dm text-lg capitalize font-medium cursor-pointer'>
+                <input
+                    type="checkbox"
+                    {...register('default_billing_address')}
+                    className='rounded mr-2'
+                />
+                Make This Default Billing Address
+            </label>
+
+        </div>
+    );
+};
 
 export default AddEditAddressFrom;
+
+
+

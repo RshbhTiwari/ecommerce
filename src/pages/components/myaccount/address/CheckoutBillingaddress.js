@@ -3,11 +3,11 @@ import * as Yup from 'yup';
 import { useForm, FormProvider, useFormContext } from 'react-hook-form';
 import { useMemo, useState } from 'react';
 import { Btnone } from '../../basic/button';
-import { postAddressCheckout } from '../../../../redux/slices/address';
+import { postAddressBillingCheckout } from '../../../../redux/slices/address';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
-const CheckoutBillingaddress = ({ backCLick, ship, handleClick, checkship, checkbil,paymentClick }) => {
+const CheckoutBillingaddress = ({ backCLick, checkbil, handleClick, paymentClick }) => {
 
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
@@ -48,7 +48,7 @@ const CheckoutBillingaddress = ({ backCLick, ship, handleClick, checkship, check
             city: "",
             email: localStorageData?.email || "",
             addresstype: "",
-            defaultaddress: "",
+            default_billing_address: "",
             is_shipping: "",
         }),
         [localStorageData]
@@ -69,7 +69,7 @@ const CheckoutBillingaddress = ({ backCLick, ship, handleClick, checkship, check
     const onSubmit = async (data) => {
         const cart_id = localStorage?.getItem('cart_id') || null;
         const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
-        const is_shipping = data?.is_shipping
+
         setLoading(true);
         try {
             await new Promise((resolve) => setTimeout(resolve, 500));
@@ -84,16 +84,14 @@ const CheckoutBillingaddress = ({ backCLick, ship, handleClick, checkship, check
                 city: data?.city,
                 email: data?.email,
                 addresstype: data?.addresstype,
-
-                defaultaddress: data?.defaultaddress,
-
-                ...(checkship ? { is_shipping: true } : { is_shipping }),
+                default_billing_address: data?.default_billing_address,
+                is_shipping: data?.is_shipping,
                 ...(checkbil ? { is_billing: true } : {}),
 
                 ...(cart_id && { cart_id }),
                 ...(customer_id && { customer_id })
             };
-            dispatch(postAddressCheckout(payload, toast, handleClick, paymentClick));
+            dispatch(postAddressBillingCheckout(payload, toast, handleClick, paymentClick));
         } catch (error) {
             console.error(error);
         } finally {
@@ -150,14 +148,12 @@ const CheckoutBillingaddress = ({ backCLick, ship, handleClick, checkship, check
                         <div className="grid grid-cols-12 md:gap-6 gap-0">
 
                             <div className='col-span-12 md:col-span-6'>
-                                <DefaultAddress />
+                                <DefaultBillingAddress />
                             </div>
-
-                            {ship && (
-                                <div className='col-span-12 md:col-span-6'>
-                                    <ShipAddress />
-                                </div>
-                            )}
+                            
+                            <div className='col-span-12 md:col-span-6'>
+                                <ShipAddress />
+                            </div>
 
                         </div>
                     </div>
@@ -400,7 +396,7 @@ const AddressTypeInput = () => {
         <div className='mt-3'>
             <label className='block text-[#072320] font-dm text-lg capitalize font-medium'>Address Type</label>
             <div className='flex mt-2 gap-4'>
-                <label className='flex items-center text-base font-dm '>
+                <label className='flex items-center text-base font-dm cursor-pointer'>
                     <input
                         type="radio"
                         {...register('addresstype')}
@@ -409,7 +405,8 @@ const AddressTypeInput = () => {
                     />
                     Home
                 </label>
-                <label className='flex items-center text-base font-dm '>
+
+                <label className='flex items-center text-base font-dm cursor-pointer'>
                     <input
                         type="radio"
                         {...register('addresstype')}
@@ -419,7 +416,7 @@ const AddressTypeInput = () => {
                     Work
                 </label>
 
-                <label className='flex items-center text-base font-dm '>
+                <label className='flex items-center text-base font-dm cursor-pointer'>
                     <input
                         type="radio"
                         {...register('addresstype')}
@@ -442,13 +439,12 @@ const ShipAddress = () => {
 
     return (
         <div className='mt-3 flex'>
-            <input
-                type="checkbox"
-                {...register('is_shipping')}
-                className='rounded '
-            />
-            <label className='ml-2 block text-[#072320] font-dm text-lg capitalize font-medium'>
-                {/* ship to this address */}
+            <label className='block text-[#072320] font-dm text-lg capitalize font-medium cursor-pointer'>
+                <input
+                    type="checkbox"
+                    {...register('is_shipping')}
+                    className='rounded mr-2'
+                />
                 Your Go-To Shipping Solution
             </label>
 
@@ -457,18 +453,18 @@ const ShipAddress = () => {
 };
 
 
-const DefaultAddress = () => {
+const DefaultBillingAddress = () => {
     const { register, formState: { errors } } = useFormContext();
 
     return (
         <div className='mt-3 flex'>
-            <input
-                type="checkbox"
-                {...register('defaultaddress')}
-                className='rounded cursor-pointer'
-            />
-            <label className='ml-2 block text-[#072320] font-dm text-lg capitalize font-medium'>
-                Make This My Default Address
+            <label className='block text-[#072320] font-dm text-lg capitalize font-medium cursor-pointer'>
+                <input
+                    type="checkbox"
+                    {...register('default_billing_address')}
+                    className='rounded  mr-2'
+                />
+                Make This Default Billing Address
             </label>
 
         </div>

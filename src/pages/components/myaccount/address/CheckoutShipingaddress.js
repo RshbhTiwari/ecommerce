@@ -3,11 +3,12 @@ import * as Yup from 'yup';
 import { useForm, FormProvider, useFormContext } from 'react-hook-form';
 import { useMemo, useState } from 'react';
 import { Btnone } from '../../basic/button';
-import { postAddressCheckout, postShipingAddressCheckout } from '../../../../redux/slices/address';
+import { postShipingAddressCheckout } from '../../../../redux/slices/address';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
 const CheckoutShipingaddress = ({ backCLick, handleClick, checkship }) => {
+
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
 
@@ -47,7 +48,7 @@ const CheckoutShipingaddress = ({ backCLick, handleClick, checkship }) => {
             city: "",
             email: localStorageData?.email || "",
             addresstype: "",
-            defaultaddress: "",
+            default_shipping_address: "",
             is_shipping: "",
         }),
         [localStorageData]
@@ -68,7 +69,7 @@ const CheckoutShipingaddress = ({ backCLick, handleClick, checkship }) => {
     const onSubmit = async (data) => {
         const cart_id = localStorage?.getItem('cart_id') || null;
         const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
-        const is_shipping = data?.is_shipping
+
         setLoading(true);
         try {
             await new Promise((resolve) => setTimeout(resolve, 500));
@@ -83,11 +84,8 @@ const CheckoutShipingaddress = ({ backCLick, handleClick, checkship }) => {
                 city: data?.city,
                 email: data?.email,
                 addresstype: data?.addresstype,
-
-                defaultaddress: data?.defaultaddress,
-
-                ...(checkship ? { is_shipping: true } : { is_shipping }),
-
+                default_shipping_address: data?.default_shipping_address,
+                ...(checkship ? { is_shipping: true } : {}),
                 ...(cart_id && { cart_id }),
                 ...(customer_id && { customer_id })
             };
@@ -145,13 +143,7 @@ const CheckoutShipingaddress = ({ backCLick, handleClick, checkship }) => {
                     </div>
 
                     <div className='col-span-12'>
-                        <div className="grid grid-cols-12 md:gap-6 gap-0">
-
-                            <div className='col-span-12 md:col-span-6'>
-                                <DefaultAddress />
-                            </div>
-
-                        </div>
+                        <DefaultShippingAddress />
                     </div>
                 </div>
                 <div className='mt-6 flex gap-4'>
@@ -429,42 +421,23 @@ const AddressTypeInput = () => {
 };
 
 
-const ShipAddress = () => {
+const DefaultShippingAddress = () => {
     const { register, formState: { errors } } = useFormContext();
 
     return (
         <div className='mt-3 flex'>
-            <input
-                type="checkbox"
-                {...register('is_shipping')}
-                className='rounded '
-            />
-            <label className='ml-2 block text-[#072320] font-dm text-lg capitalize font-medium'>
-                {/* ship to this address */}
-                Your Go-To Shipping Solution
+            <label className=' block text-[#072320] font-dm text-lg capitalize font-medium cursor-pointer'>
+                <input
+                    type="checkbox"
+                    {...register('default_shipping_address')}
+                    className='rounded mr-2'
+                />
+                Make This Default Shipping Address
             </label>
 
         </div>
     );
 };
 
-
-const DefaultAddress = () => {
-    const { register, formState: { errors } } = useFormContext();
-
-    return (
-        <div className='mt-3 flex'>
-            <input
-                type="checkbox"
-                {...register('defaultaddress')}
-                className='rounded cursor-pointer'
-            />
-            <label className='ml-2 block text-[#072320] font-dm text-lg capitalize font-medium'>
-                Make This My Default Address
-            </label>
-
-        </div>
-    );
-};
 
 export default CheckoutShipingaddress;

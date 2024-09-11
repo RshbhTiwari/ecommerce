@@ -90,7 +90,7 @@ export function postAddress(payload, toast, navigate) {
             if (response?.data?.status === true) {
                 navigate('/my-account/address-book')
                 toast.success("Address added successfully!");
-            } 
+            }
         } catch (error) {
             console.error("Unable to add address. Please try again later", error);
             dispatch(hasError(error.message || "Error adding address"));
@@ -99,7 +99,7 @@ export function postAddress(payload, toast, navigate) {
 }
 
 
-export function postAddressCheckout(payload, toast, handleClick, paymentClick) {
+export function postAddressBillingCheckout(payload, toast, handleClick, paymentClick) {
     return async (dispatch) => {
         try {
             dispatch(startLoading());
@@ -126,7 +126,6 @@ export function postShipingAddressCheckout(payload, toast, handleClick) {
     return async (dispatch) => {
         try {
             dispatch(startLoading());
-            console.log("payload223", payload)
             const response = await axios.post('/storeAddresses', payload, { headers });
             if (response?.data?.status === true) {
                 handleClick()
@@ -138,26 +137,6 @@ export function postShipingAddressCheckout(payload, toast, handleClick) {
             console.error("Unable to add address. Please try again later", error);
             toast.error('Unable to add address. Please try again later');
             dispatch(hasError(error.message || "Error adding address"));
-        }
-    };
-}
-
-export function postDefaultaddress(checkboxItem, toast) {
-    return async (dispatch) => {
-        try {
-            dispatch(startLoading());
-            const response = await axios.post('/setDefaultAddress', checkboxItem, { headers });
-            if (response?.data?.status === true) {
-                const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
-                dispatch(getAddress(customer_id));
-                toast.success(response?.data?.message);
-            } else {
-                toast.error("Address Linking Failed");
-            }
-        } catch (error) {
-            console.error("Address Linking Failed", error);
-            toast.error("Address Linking Failed");
-            dispatch(hasError(error.message || "Error linking address"));
         }
     };
 }

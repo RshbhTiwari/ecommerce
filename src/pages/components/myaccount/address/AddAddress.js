@@ -2,8 +2,7 @@
 import { useNavigate } from 'react-router-dom';
 import BreadCrum from '../../basic/BreadCrum';
 import { AccountSideNav } from '../sidenav';
-import { HeadingTitle, Paragraph } from '../../basic/title';
-import { Btnone } from '../../basic/button';
+import { HeadingTitle } from '../../basic/title';
 import AddEditAddressFrom from './AddEditAddressFrom';
 
 

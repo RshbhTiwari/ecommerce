@@ -79,28 +79,41 @@ function CheckoutshippingAddress({ allAddressData, handleClick, handlebackClick 
                         </div>
 
                         <div className="mt-4">
-                            <Paragraph textAlign='onyleft' title={item?.addressname} />
+                            <Paragraph textAlign='onyleft' title={item?.name} />
+                            <Paragraph textAlign='onyleft' title={item?.email} />
+                            <p className={`font-dm text-md capitalize font-medium text-left text-[#072320]`}>
+                                <span className="text-[#00A762]">+91 </span>{item?.contact}
+                            </p>
                         </div>
 
                         <div className="flex flex-col w-full mt-4">
-                            <h2 className={`font-dm text-lg capitalize font-medium text-left text-[#072320]`}>
-                                <span className="text-[#00A762]">+91 </span>{item?.contact}
-                            </h2>
+                            <p className={`font-dm text-md capitalize font-medium text-left text-[#072320]`}>
+                                <span className="text-[#00A762]">Addressname : </span>{item?.addressname}
+                            </p>
+                            <p className={`font-dm text-md capitalize font-medium text-left text-[#072320]`}>
+                                <span className="text-[#00A762]">Landmarkname : </span>{item?.landmarkname}
+                            </p>
+                            <p className={`font-dm text-md capitalize font-medium text-left text-[#072320]`}>
+                                <span className="text-[#00A762]">City : </span>{item?.city}
+                            </p>
+                            <p className={`font-dm text-md capitalize font-medium text-left text-[#072320]`}>
+                                <span className="text-[#00A762]">Pincode : </span>{item?.pincode}
+                            </p>
 
                             <div className="flex w-full items-center justify-between mt-4">
-                                <h2 className={`font-dm text-lg capitalize font-medium text-left text-[#072320]`}>
-                                    <span className="text-[#00A762]">Address Type :</span> {item?.addresstype}
-                                </h2>
+                                <p className={`font-dm text-md capitalize font-medium text-left text-[#072320]`}>
+                                    <span className="text-[#00A762]">Address Type : </span>{item?.addresstype}
+                                </p>
 
                                 <div
-                                    className="flex items-center justify-center
-                                    cursor-pointer  font-dm font-medium text-[#072320] capitalize "
+                                    className="flex items-center cursor-pointer justify-center font-dm font-medium text-[#072320] capitalize "
                                     onClick={() => handleEditRow(item?.id)}
                                 >
                                     <FaRegEdit className='text-[#072320] mr-2 text-xl' /> edit
                                 </div>
                             </div>
                         </div>
+
 
                     </div>
                 ))}

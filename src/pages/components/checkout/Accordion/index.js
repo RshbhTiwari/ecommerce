@@ -7,8 +7,10 @@ import { IoMdAdd } from 'react-icons/io';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAddress } from '../../../../redux/slices/address';
 import { CheckoutbillingAddress, CheckoutshippingAddress } from '../../myaccount/address/DefultAddress';
-import {  CheckoutShipingaddress, GuestAddress } from '../../myaccount/address';
+import { CheckoutShipingaddress, GuestAddress } from '../../myaccount/address';
 import CheckoutBillingaddress from '../../myaccount/address/CheckoutBillingaddress';
+import GuestAddressBilling from '../../myaccount/address/GuestAddressBilling';
+import GuestAddressShipping from '../../myaccount/address/GuestAddressShipping';
 
 const AccordionExample = () => {
     const dispatch = useDispatch();
@@ -211,7 +213,6 @@ const AccordionExample = () => {
                                             <CheckoutBillingaddress
                                                 backCLick={() => handlebackBillClick()}
                                                 checkbil={true}
-                                                ship={true}
                                                 handleClick={handleBillingClick}
                                                 paymentClick={handlePaymentClick}
                                             />
@@ -238,12 +239,13 @@ const AccordionExample = () => {
                             ) : (
                                 <>
                                     <div className="shadow-md rounded-lg border-[#00A762] border-2 p-4 my-4">
-                                        <GuestAddress
+                                        <GuestAddressBilling
                                             backCLick={() => handlebackBillClick()}
-                                            checkbil={true} ship={true}
                                             handleClick={() => handleAccordionToggle(setIsShippingOpen)}
-                                            paymentopenClick={() => handleAccordionToggle(setIsPaymentOpen)} />
+                                            paymentClick={() => handleAccordionToggle(setIsPaymentOpen)} />
                                     </div>
+
+
                                 </>
                             )}
                         </div>
@@ -283,8 +285,8 @@ const AccordionExample = () => {
                                             <CheckoutShipingaddress
                                                 backCLick={() => handlebackShipClick()}
                                                 checkship={true}
-                                                handleClick={handleShippingClick} 
-                                                />
+                                                handleClick={handleShippingClick}
+                                            />
                                         </div>
                                     ) : null}
 
@@ -308,7 +310,10 @@ const AccordionExample = () => {
                             ) : (
                                 <>
                                     <div className="shadow-md rounded-lg border-[#00A762] border-2 p-4 my-4">
-                                        <GuestAddress backCLick={() => handlebackShipClick()} checkship={true} ship={false} handleClick={() => handleAccordionToggle(setIsPaymentOpen)} />
+                                        <GuestAddressShipping
+                                            backCLick={() => handlebackShipClick()}
+                                            handleClick={() => handleAccordionToggle(setIsPaymentOpen)}
+                                        />
                                     </div>
                                 </>
                             )}
