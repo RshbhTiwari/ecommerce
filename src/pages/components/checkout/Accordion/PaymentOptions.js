@@ -10,35 +10,109 @@ import { Btnone } from '../../basic/button';
 const PaymentOptions = ({ onConfirmOrder, backCLick }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [paymentOption, setPaymentOption] = useState('upi');
-    const [upiSubOption, setUpiSubOption] = useState('');
+    const [paymentOption, setPaymentOption] = useState('paymentgateway');
 
     const handleOptionChange = (e) => {
         setPaymentOption(e.target.value);
-        setUpiSubOption('');
-    };
-
-
-
-    const handleUpiSubOptionChange = (e) => {
-        setUpiSubOption(e.target.value);
     };
 
     const handleConfirmOrder = () => {
         if (paymentOption === 'cod') {
-            toast.info('Order Confirmed with Cash on Delivery.');
             onConfirmOrder();
         } else {
             const cart_id = localStorage?.getItem('cart_id') || null;
             const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
-            console.log("customer_id?","ddf",customer_id)
-            dispatch(initiateRazorpayPayment(paymentOption, upiSubOption, cart_id,customer_id, toast, navigate))
+            console.log("customer_id?", "ddf", customer_id)
+            dispatch(initiateRazorpayPayment(cart_id, customer_id, toast, navigate))
         }
     };
 
     return (
         <div className="">
-            <div className={`flex px-3 py-6 space-x-4 ${paymentOption === 'upi' ? 'bg-gray-100' : 'bg-light'}`}>
+
+            <div className={`flex px-3 py-6 space-x-4 ${paymentOption === 'paymentgateway' ? 'bg-gray-100' : 'bg-light'}`}>
+                <div>
+                    <input
+                        type="radio"
+                        id="paymentgateway"
+                        name="paymentOption"
+                        value="paymentgateway"
+                        checked={paymentOption === 'paymentgateway'}
+                        onChange={handleOptionChange}
+                        className='cursor-pointer'
+                    />
+                </div>
+                <div htmlFor="paymentgateway" className="flex flex-col text-base font-dm">
+                    Payment Gateway
+                    <p className='text-sm font-dm text-[#0000009e]'>Accept multiple payment methods (e.g., credit cards, UPI, net banking).</p>
+                </div>
+            </div>
+
+            <hr />
+            <div className={`flex px-3 py-6 space-x-4 ${paymentOption === 'cod' ? 'bg-gray-100' : 'bg-light'}`}>
+                <div>
+                    <input
+                        type="radio"
+                        id="cod"
+                        name="paymentOption"
+                        value="cod"
+                        checked={paymentOption === 'cod'}
+                        onChange={handleOptionChange}
+                        className='cursor-pointer'
+                    />
+                </div>
+                <div htmlFor="cod" className="flex flex-col text-base font-dm">
+                    Cash on Delivery
+                    <p className='text-sm font-dm text-[#0000009e]'>Pay when you receive your order</p>
+                </div>
+            </div>
+
+            <div className='px-3 py-6 flex gap-4'>
+                <Btnone
+                    title='Back'
+                    bgColor="#072320"
+                    width="100%"
+                    handleClick={backCLick}
+                />
+
+                <Btnone
+                    title='Confirm Order'
+                    bgColor="#072320"
+                    width="100%"
+                    handleClick={handleConfirmOrder}
+                />
+            </div>
+        </div>
+    );
+};
+
+export default PaymentOptions;
+
+
+// const [paymentOption, setPaymentOption] = useState('upi');
+// const [upiSubOption, setUpiSubOption] = useState('');
+
+// const handleOptionChange = (e) => {
+//     setPaymentOption(e.target.value);
+//     setUpiSubOption('');
+// };
+
+// const handleUpiSubOptionChange = (e) => {
+//     setUpiSubOption(e.target.value);
+// };
+
+// const handleConfirmOrder = () => {
+//     if (paymentOption === 'cod') {
+//         onConfirmOrder();
+//     } else {
+//         const cart_id = localStorage?.getItem('cart_id') || null;
+//         const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+//         console.log("customer_id?", "ddf", customer_id)
+//         dispatch(initiateRazorpayPayment(paymentOption, upiSubOption, cart_id, customer_id, toast, navigate))
+//     }
+// };
+
+{/* <div className={`flex px-3 py-6 space-x-4 ${paymentOption === 'upi' ? 'bg-gray-100' : 'bg-light'}`}>
                 <div>
                     <input
                         type="radio"
@@ -131,61 +205,25 @@ const PaymentOptions = ({ onConfirmOrder, backCLick }) => {
                 </div>
             </div>
 
-            <hr />
-            <div className={`flex px-3 py-6 space-x-4 ${paymentOption === 'netbanking' ? 'bg-gray-100' : 'bg-light'}`}>
-                <div>
-                    <input
-                        type="radio"
-                        id="netbanking"
-                        name="paymentOption"
-                        value="netbanking"
-                        checked={paymentOption === 'netbanking'}
-                        onChange={handleOptionChange}
-                        className='cursor-pointer'
-                    />
-                </div>
-                <div htmlFor="netbanking" className="flex flex-col text-base font-dm">
-                    Net Banking
-                    <p className='text-sm font-dm text-[#0000009e]'>This instrument has low success, use UPI or cards for better experience</p>
-                </div>
-            </div>
+            <hr /> */}
 
-            <hr />
-            <div className={`flex px-3 py-6 space-x-4 ${paymentOption === 'cod' ? 'bg-gray-100' : 'bg-light'}`}>
-                <div>
-                    <input
-                        type="radio"
-                        id="cod"
-                        name="paymentOption"
-                        value="cod"
-                        checked={paymentOption === 'cod'}
-                        onChange={handleOptionChange}
-                        className='cursor-pointer'
-                    />
-                </div>
-                <div htmlFor="cod" className="flex flex-col text-base font-dm">
-                    Cash on Delivery
-                    <p className='text-sm font-dm text-[#0000009e]'>Pay when you receive your order</p>
-                </div>
-            </div>
+{/* <div className="grid grid-cols-12 gap-4 px-3 py-6">
 
-            <div className='px-3 py-6 flex gap-4'>
-                <Btnone
-                    title='Back'
-                    bgColor="#072320"
-                    width="100%"
-                    handleClick={backCLick}
-                />
+    <div
+        className=" col-span-12 lg:col-span-12 "
+    >
+        <Btnone
+            title='Back'
+            bgColor="#072320"
+            width="100%"
+            handleClick={backCLick}
+        />
+    </div>
+   <Btnone
+    title='Confirm Order'
+    bgColor="#072320"
+    width="100%"
+    handleClick={handleConfirmOrder}
+/> 
+</div> */}
 
-                <Btnone
-                    title='Confirm Order'
-                    bgColor="#072320"
-                    width="100%"
-                    handleClick={handleConfirmOrder}
-                />
-            </div>
-        </div>
-    );
-};
-
-export default PaymentOptions;

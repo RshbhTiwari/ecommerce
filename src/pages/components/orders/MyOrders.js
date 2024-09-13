@@ -5,6 +5,7 @@ import OrdersPagination from "./OrdersPagination";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getOrders } from "../../../redux/slices/orders";
+import OrdersTable from "./OrdersTable";
 
 function MyOrders() {
     const dispatch = useDispatch();
@@ -46,7 +47,7 @@ function MyOrders() {
                             <HeadingTitle title="My Orders" textAlign='left' /> 
 
                             <div className="">
-                              <OrdersPagination Ordersdata={allOrdersData}/>
+                              <OrdersTable ordersitems={allOrdersData} />
                             </div>
                         </div>
                     </div>

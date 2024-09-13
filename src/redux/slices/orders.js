@@ -54,7 +54,7 @@ const getHeaders = () => {
 export const getOrders = (id) => async (dispatch) => {
     try {
         dispatch(startLoading());
-        const response = await axios.get(`/my-orders/${id}`, { headers: getHeaders() });
+        const response = await axios.get(`/my-orders-list/${id}`, { headers: getHeaders() });
         dispatch(getAllOrdersSuccess(response?.data?.orders));
     } catch (error) {
         console.error("Unable to retrieve address list. Please try again later", error);
@@ -65,8 +65,8 @@ export const getOrders = (id) => async (dispatch) => {
 export const getOneOrders = (id) => async (dispatch) => {
     try {
         dispatch(startLoading());
-        const response = await axios.get(`/getAddresses/${id}`,{ headers: getHeaders() });
-        dispatch(getOneOrdersSuccess(response?.data?.address));
+        const response = await axios.get(`/my-orders-details/${id}`,{ headers: getHeaders() });
+        dispatch(getOneOrdersSuccess(response?.data?.order_details));
     } catch (error) {
         console.error("Failed to load address details. Please try again later", error);
         dispatch(hasError(error.message || "Error loading address details"));

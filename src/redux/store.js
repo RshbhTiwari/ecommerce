@@ -10,6 +10,7 @@ import initiaterazorpay from './slices/initiaterazorpay';
 import contact from './slices/contactfrom';
 import blog from './slices/blog';
 import orders from './slices/orders';
+import codorder from './slices/codorder';
 
 const store = configureStore({
     reducer: {
@@ -24,6 +25,7 @@ const store = configureStore({
         contact: contact,
         blog: blog,
         orders: orders,
+        codorder:codorder,
     },
 })
 

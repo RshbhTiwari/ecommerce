@@ -11,9 +11,14 @@ import { CheckoutShipingaddress, GuestAddress } from '../../myaccount/address';
 import CheckoutBillingaddress from '../../myaccount/address/CheckoutBillingaddress';
 import GuestAddressBilling from '../../myaccount/address/GuestAddressBilling';
 import GuestAddressShipping from '../../myaccount/address/GuestAddressShipping';
+import { toast } from 'react-toastify';
+import { ModelCashonDelivery } from '../../basic/model';
+import { useNavigate } from 'react-router-dom';
+import { postcodorder } from '../../../../redux/slices/codorder';
 
 const AccordionExample = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [allAddressData, setAllAddressData] = useState([]);
     const [shipAddress, setShipAddress] = useState([]);
     const [billAddress, setBillingAddress] = useState([]);
@@ -26,6 +31,7 @@ const AccordionExample = () => {
     const [isNewShippingOpen, setIsNewShippingOpen] = useState(false);
 
     const [trigger, setTrigger] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const accessToken = localStorage.getItem('accessToken') || null;
     const userName = JSON.parse(localStorage.getItem('user'))?.name || null;
@@ -104,7 +110,33 @@ const AccordionExample = () => {
 
 
     const handleConfirmOrder = () => {
-        console.log('Order confirmed from parent component');
+        const cartDataid = localStorage?.getItem('cart_id') || null;
+        const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+
+        const cart_id = cartDataid !== null ? Number(cartDataid) : null;
+        const cartItem = {
+            ...(cart_id && { cart_id }),
+            ...(customer_id && { customer_id })
+        };
+        dispatch(postcodorder(cartItem, setIsModalOpen));
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        navigate(`/`);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+
+    const handlecontinueshopping = () => {
+        navigate(`/shop`);
+        setIsModalOpen(false);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     };
 
     return (
@@ -330,7 +362,6 @@ const AccordionExample = () => {
                         </h2>
                         <div
                             className="flex items-center justify-center h-8 w-8 rounded-md bg-[#072320] cursor-pointer"
-                        // onClick={() => handleAccordionToggle(setIsPaymentOpen)}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -350,6 +381,12 @@ const AccordionExample = () => {
                     </>
                 )}
             </div>
+
+            <ModelCashonDelivery
+                isOpen={isModalOpen}
+                onClose={closeModal} 
+                oncontinueshopping={handlecontinueshopping}
+            />
         </>
     );
 };

@@ -1,9 +1,8 @@
 
 import { useNavigate, Link } from "react-router-dom";
-import productcard from "../../../data/productcard";
 import { Paragraph } from "../basic/title";
 
-export default function OrderDetailsList({ ordersitems }) {
+export default function OrderDetailsList({ ordersitem }) {
     const navigate = useNavigate();
 
     const formatDate = (dateString) => {
@@ -21,7 +20,7 @@ export default function OrderDetailsList({ ordersitems }) {
                     <thead className="bg-gray-100">
                         <tr>
                             <th className=" py-3 pr-3 text-left font-dm text-[#072320] uppercase text-lg font-medium">sku</th>
-                            <th className=" py-3 pr-3 text-left font-dm text-[#072320] uppercase text-lg font-medium">Description</th>
+                            <th className=" py-3 pr-3 text-left font-dm text-[#072320] uppercase text-lg font-medium">Product Name</th>
                             <th className=" py-3 pr-3 text-left font-dm text-[#072320] uppercase text-lg font-medium">Qty</th>
                             <th className=" py-3 pr-3 text-left font-dm text-[#072320] uppercase text-lg font-medium">shipped</th>
                             <th className=" py-3 pr-3 text-left font-dm text-[#072320] uppercase text-lg font-medium">price</th>
@@ -29,35 +28,36 @@ export default function OrderDetailsList({ ordersitems }) {
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                        {productcard.slice(0, 3).map((item, index) => (
+                        {ordersitem?.items?.map((item, index) => (
                             <tr key={index} className={index % 2 === 0 ? 'bg-white border-b border-gray-200' : 'bg-gray-100 border-b border-gray-200'}>
-                                <td className="py-4 pr-3 whitespace-nowrap"><Paragraph title={item.orderid} textAlign='left' /></td>
+                                <td className="py-4 pr-3 whitespace-nowrap"><Paragraph title={item?.product_id} textAlign='left' /></td>
                                 <td className="py-4 pr-3">
-                                    <Paragraph title={item.subtitle} textAlign='left' />
+                                    <Paragraph title={item?.product_name} textAlign='left' />
                                 </td>
 
                                 <td className="py-4 whitespace-nowrap pr-3">
-                                    <Paragraph title={item.qty} textAlign='left' />
+                                    <Paragraph title={item?.quantity} textAlign='left' />
                                 </td>
                                 <td className="py-4 whitespace-nowrap pr-3">
                                     <Paragraph title='0' textAlign='left' />
                                 </td>
                                 <td className="py-4 whitespace-nowrap pr-3">
-                                    <Paragraph title='$23.00' textAlign='left' />
+                                    <Paragraph title={`₹ ${item?.price}`}  textAlign='left' />
                                 </td>
                                 <td className="py-4 whitespace-nowrap pr-3">
-                                    <Paragraph title='$23.00' textAlign='left' />
+                                    <Paragraph title={`₹ ${item?.total_price}`} textAlign='left' />
                                 </td>
                             </tr>
 
                         ))}
+
+
                         <tr className="border-b border-gray-200 " >
                             <td className="py-4 whitespace-nowrap pr-3 text-right" colspan="5">
                                 <Paragraph title="Subtotal" textAlign='right' />
                             </td>
                             <td className="py-4 whitespace-nowrap pr-3">
-                                {/* <Paragraph title={`1*${item.categorie}`} textAlign='left' /> */}
-                                <Paragraph title="$ 35.89" textAlign='left' />
+                                <Paragraph title={`₹ ${ordersitem?.subtotal}`} textAlign='left' />
                             </td>
                         </tr>
                         <tr className="border-b border-gray-200 " >
@@ -65,8 +65,7 @@ export default function OrderDetailsList({ ordersitems }) {
                                 <Paragraph title="Shipping" textAlign='right' />
                             </td>
                             <td className="py-4 whitespace-nowrap pr-3">
-                                {/* <Paragraph title={`1*${item.categorie}`} textAlign='left' /> */}
-                                <Paragraph title="$ 10.89" textAlign='left' />
+                            <Paragraph title={`₹ ${ordersitem?.shipping}`} textAlign='left' />
                             </td>
                         </tr>
 
@@ -75,8 +74,7 @@ export default function OrderDetailsList({ ordersitems }) {
                                 <Paragraph title="Tax" textAlign='right' />
                             </td>
                             <td className="py-4 whitespace-nowrap pr-3">
-                                {/* <Paragraph title={`1*${item.categorie}`} textAlign='left' /> */}
-                                <Paragraph title="$ 35.89" textAlign='left' />
+                            <Paragraph title={`₹ ${ordersitem?.tax}`} textAlign='left' />
                             </td>
                         </tr>
                         <tr className="border-b border-gray-200 " >
@@ -84,8 +82,7 @@ export default function OrderDetailsList({ ordersitems }) {
                                 <Paragraph title="Total" textAlign='right' />
                             </td>
                             <td className="py-4 whitespace-nowrap pr-3">
-                                {/* <Paragraph title={`1*${item.categorie}`} textAlign='left' /> */}
-                                <Paragraph title="$ 10.89" textAlign='left' />
+                            <Paragraph title={`₹ ${ordersitem?.total}`} textAlign='left' />
                             </td>
                         </tr>
                     </tbody>
