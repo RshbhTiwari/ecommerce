@@ -38,6 +38,11 @@ const AccordionExample = () => {
     const customer_id = JSON.parse(localStorage.getItem('user'))?.id || null;
     const { allAddress } = useSelector(state => state.address);
 
+
+    const { oneId } = useSelector(
+        (state) => state.codorder
+    );
+
     useEffect(() => {
         dispatch(getAddress(customer_id));
     }, [dispatch, customer_id]);
@@ -112,8 +117,8 @@ const AccordionExample = () => {
     const handleConfirmOrder = () => {
         const cartDataid = localStorage?.getItem('cart_id') || null;
         const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
-
         const cart_id = cartDataid !== null ? Number(cartDataid) : null;
+
         const cartItem = {
             ...(cart_id && { cart_id }),
             ...(customer_id && { customer_id })
@@ -123,7 +128,7 @@ const AccordionExample = () => {
 
     const closeModal = () => {
         setIsModalOpen(false);
-        navigate(`/`);
+        navigate(`/my-account/orders/${oneId}`);
         window.scrollTo({
             top: 0,
             behavior: 'smooth'

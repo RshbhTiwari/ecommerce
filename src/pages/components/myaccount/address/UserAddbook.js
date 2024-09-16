@@ -28,6 +28,14 @@ function UserAddbook() {
     const handleDeletClick = (id) => {
         setAllAddressData(allAddressData.filter(address => address.id !== id));
     };
+
+    const scrollToClick = (path) => {
+        navigate(path);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
  
     return (
         <>
@@ -43,14 +51,14 @@ function UserAddbook() {
 
                     <div className='lg:col-span-8 col-span-12 w-full md:gap-4 gap-0'>
                         <div className="flex sm:flex-row flex-col space-y-4 sm:items-center  items-start justify-between border-b-2 pb-2 w-full  border-[#072320]" >
-                            <h2 className={`font-dm text-2xl capitalize  font-medium  text-left  text-[#072320]`} onClick={() =>
-                                navigate('/my-account')
+                            <h2 className={`font-dm text-2xl capitalize cursor-pointer  font-medium  text-left  text-[#072320]`} onClick={() =>
+                                scrollToClick('/my-account')
                             }>my account</h2>
 
 
                             <div className={`font-dm text-lg cursor-pointer capitalize flex items-center justify-end rounded-lg shadow-md border-[#00A762] border-[2px] px-3 py-1
                       font-medium  text-left  text-[#00A762]`} onClick={() =>
-                                    navigate('/my-account/add-address')
+                        scrollToClick('/my-account/add-address')
                                 }>
                                 <IoMdAdd className="mr-2 text-2xl" />Add New Address</div>
                         </div>

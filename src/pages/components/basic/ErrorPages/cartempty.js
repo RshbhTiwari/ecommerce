@@ -8,6 +8,10 @@ export default function CartEmpty({height}) {
     const navigate = useNavigate();
     const handleClick = () => {
         navigate(`/shop`);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     };
     const titleStyle = {
         height: height,

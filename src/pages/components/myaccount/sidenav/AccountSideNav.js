@@ -2,16 +2,23 @@ import { useNavigate } from "react-router-dom";
 import { Paragraph } from "../../basic/title";
 import myaccountlink from "../../../../data/myaccountlink";
 
-
-
 function AccountSideNav() {
     const navigate = useNavigate();
+
+    const scrollToClick = (path) => {
+        navigate(path);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
     return (
         <>
             {myaccountlink.map((row, index) => (
                 <div className='gap-4 mb-4 
-                 flex items-center border-2  border-[#072320] rounded-lg px-4 py-4 cursor-pointer' key={index} onClick={() => {
-                        navigate(row.link);
+                 flex items-center border-2  border-[#072320] rounded-lg px-4 py-4 cursor-pointer' key={index} 
+                 onClick={() => {
+                        scrollToClick(row.link);
                     }} >
 
                     <div className="w-1/6 flex items-center justify-center">

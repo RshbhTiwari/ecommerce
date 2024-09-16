@@ -1,5 +1,4 @@
 
-import { useNavigate } from 'react-router-dom';
 import BreadCrum from '../../basic/BreadCrum';
 import { AccountSideNav } from '../sidenav';
 import { HeadingTitle } from '../../basic/title';
@@ -7,7 +6,6 @@ import AddEditAddressFrom from './AddEditAddressFrom';
 
 
 function AddAddress() {
-    const navigate = useNavigate();
     return (
         <>
             <BreadCrum componentName="my account" link="/my-account" componentSecondName='Add Address' />

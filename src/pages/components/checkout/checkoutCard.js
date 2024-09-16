@@ -1,12 +1,9 @@
-import { useNavigate } from 'react-router-dom';
 import BreadCrum from '../basic/BreadCrum';
 import { HeadingTitle } from '../basic/title';
 import AccordionExample from './Accordion';
 import OrderSummary from './Accordion/OrderSummary';
-import { Btnone } from '../basic/button';
 
 export default function CheckoutCard({ cartData, itemCount, allCartItems }) {
-    const navigate = useNavigate();
     return (
         <>
             <BreadCrum componentName="checkout" link="/checkout" />

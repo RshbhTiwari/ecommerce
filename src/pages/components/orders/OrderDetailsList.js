@@ -1,9 +1,6 @@
-
-import { useNavigate, Link } from "react-router-dom";
 import { Paragraph } from "../basic/title";
 
 export default function OrderDetailsList({ ordersitem }) {
-    const navigate = useNavigate();
 
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'short', day: 'numeric' };

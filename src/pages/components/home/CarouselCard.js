@@ -64,7 +64,7 @@ const CarouselCard = () => {
     navigate(`/categories/${id}`);
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'  // This adds a smooth scroll effect
+      behavior: 'smooth'  
   });
 
   };

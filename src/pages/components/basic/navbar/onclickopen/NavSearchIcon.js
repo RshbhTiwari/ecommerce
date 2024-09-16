@@ -64,6 +64,10 @@ function NavSearchIcon() {
     const handleRow = (filterName) => {
         navigate(`/search?filter=${encodeURIComponent(filterName)}`);
         setIsSearchOpen(false);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     };
 
     const handleAddToCart = (product_id) => {

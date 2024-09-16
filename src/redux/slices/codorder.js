@@ -4,6 +4,7 @@ import axios from "../../utils/axios";
 const initialState = {
     isLoading: false,
     error: null,
+    oneId: {},
 };
 
 const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") : "";
@@ -26,12 +27,18 @@ const codorderSlice = createSlice({
             state.isLoading = false;
             state.error = action.payload;
         },
+
+        getOneIdSuccess(state, action) {
+            state.isLoading = false;
+            state.oneId = action.payload;
+        },
     },
 });
 
 export const {
     startLoading,
     hasError,
+    getOneIdSuccess
 } = codorderSlice.actions;
 
 export default codorderSlice.reducer;
@@ -41,6 +48,7 @@ export function postcodorder(cartItem, setIsModalOpen) {
         try {
             dispatch(startLoading());
             const response = await axios.post('/order/create-cod-order', cartItem);
+            dispatch(getOneIdSuccess(response?.data?.order_id));
             if (response?.data?.status === true) {
                 setIsModalOpen(true);
             } 

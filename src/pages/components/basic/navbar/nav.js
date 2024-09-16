@@ -93,13 +93,17 @@ export default function Nav() {
                                                 onMouseLeave={handleMouseLeave}
                                             >
                                                 <div className="flex items-center flex-col justify-center px-2">
-                                                    <div className="h-[40px] w-fit mb-1">
-                                                        <img
-                                                            className="h-full w-auto"
-                                                            src={item?.image}
-                                                            alt="logo"
-                                                        />
-                                                    </div>
+                                                    <a
+                                                        href={item.link}>
+                                                        <div className="h-[40px] w-fit mb-1">
+                                                            <img
+                                                                className="h-full w-auto"
+                                                                src={item?.image}
+                                                                alt="logo"
+                                                            />
+
+                                                        </div>
+                                                    </a>
                                                     <a
                                                         href={item.link}
                                                         className={`text-gray-300 px-3 py-2 text-sm font-dm font-medium ease-in-out duration-700 

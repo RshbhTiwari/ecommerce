@@ -78,6 +78,10 @@ export default function DetailsCategoriesPages({ id }) {
     const categoriDetailsRow = (id) => {
         navigate(`/categories/${id}`);
         setReloadPage(true);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     };
 
     const handleSubProductsRow = (id) => {

@@ -5,6 +5,7 @@ module.exports = {
     fontFamily: {
       'dm': ["Lora", 'serif'],
     },
+  
   },
   plugins: [],
 };

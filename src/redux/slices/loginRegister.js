@@ -211,7 +211,10 @@ export function postLogoutUser(toast, navigate) {
                 window.location.reload();
                 // Show success toast message
                 toast.success("You’ve successfully logged out");
-
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
                 return Promise.resolve();
             } else {
                 // If the response status is not as expected

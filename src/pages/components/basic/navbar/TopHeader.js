@@ -3,9 +3,19 @@ import './navbar.css';
 import comLogo from '../../../../assets/header/tastydaily-0556409248.webp';
 import imgSrcDelivery from '../../../../assets/header/time.png';
 import { NavCartIcon, NavUserIcon, NavSearchIcon } from "./onclickopen";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function TopHeader({ cartData, itemCount }) {
+
+    const navigate = useNavigate();
+
+    const scrollToClick = (path) => {
+        navigate(path);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
     return (
         <>
             <div className="bg-[#00A762]">
@@ -24,15 +34,15 @@ export default function TopHeader({ cartData, itemCount }) {
                             <h6 className='text-white font-dm text-sm  ml-2 capitalize'>Delivery on Next Day from 10:00 AM to 08:00 PM</h6>
                         </div>
 
-                        <Link to="/">
-                            <div className='flex items-center h-[40px] company_logo'>
+                   
+                            <div className='flex items-center h-[40px] company_logo cursor-pointer' onClick={() => scrollToClick('/')}>
                                 <img
                                     className="h-full w-auto"
                                     src={comLogo}
                                     alt="logo"
                                 />
                             </div>
-                        </Link>
+                       
 
                         
                         <div className='flex items-center justify-end nav_width_box'>

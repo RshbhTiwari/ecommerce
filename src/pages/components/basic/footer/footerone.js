@@ -43,6 +43,13 @@ export default function Footerone() {
         });
     };
 
+    const scrollToClick = (path) => {
+        navigate(path);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
 
 
     return (
@@ -69,15 +76,15 @@ export default function Footerone() {
 
                         <div className='lg:col-span-4 col-span-12  flex-col flex items-center justify-center'>
 
-                            <Link to="/">
-                                <div className='flex items-center h-[40px] mb-2'>
-                                    <img
-                                        className="h-full w-auto"
-                                        src={comLogo}
-                                        alt="logo"
-                                    />
-                                </div>
-                            </Link>
+
+                            <div className='flex items-center h-[40px] mb-2 cursor-pointer'
+                                onClick={() => scrollToClick('/')}>
+                                <img
+                                    className="h-full w-auto"
+                                    src={comLogo}
+                                    alt="logo"
+                                />
+                            </div>
 
                             <p className="text-white text-center font-dm  text-base font-light">Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eius od tempor incididunt ut labore et dolore magna.</p>
                         </div>
@@ -111,8 +118,9 @@ export default function Footerone() {
 
                             <div className='md:col-span-3 col-span-12  flex flex-col md:justify-start md:items-start justify-center items-center'>
                                 <p className="text-white font-dm text-sm mb-1 capitalize font-light">How to Make an Order?</p>
-                                <p className="text-white font-dm text-sm  mb-1 capitalize font-light">About Us </p>
-                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">My Orders</p>
+                                <p className="text-white font-dm text-sm  mb-1 capitalize font-light">About Us</p>
+                                <p className="text-white font-dm text-sm mb-1 capitalize font-light cursor-pointer"
+                                onClick={() => scrollToClick('/my-account/orders')}>My Orders</p>
                                 <p className="text-white font-dm text-sm mb-1 capitalize font-light">Delivery Terms</p>
                                 <p className="text-white font-dm text-sm mb-1 capitalize font-light">Return</p>
                             </div>
@@ -139,25 +147,28 @@ export default function Footerone() {
                             <h6 className="text-[#072320] text-lg  font-dm  mb-3 capitalize font-medium">Shop</h6>
 
                             <div className='md:col-span-3 col-span-12  flex flex-col    md:justify-start md:items-start justify-center items-center'>
-                                <Link to="/shop">
-                                    <p className="text-white font-dm text-sm mb-1 capitalize font-light">Products</p>
-                                </Link>
 
-                                <Link to="/cart">
-                                    <p className="text-white font-dm text-sm  mb-1 capitalize font-light">Cart</p>
-                                </Link>
+                                <p className="text-white font-dm text-sm mb-1 capitalize font-light cursor-pointer"
+                                    onClick={() => scrollToClick('/shop')}>
+                                    Products</p>
 
-                                <Link to="/my-account/wishlist">
-                                    <p className="text-white font-dm text-sm mb-1 capitalize font-light">Wishlist</p>
-                                </Link>
+                                <p className="text-white font-dm text-sm  mb-1 capitalize font-light cursor-pointer"
+                                    onClick={() => scrollToClick('/cart')}>
+                                    Cart</p>
 
-                                <Link to="/my-account">
-                                    <p className="text-white font-dm text-sm mb-1 capitalize font-light">My Account</p>
-                                </Link>
+                                <p className="text-white font-dm text-sm mb-1 capitalize font-light cursor-pointer"
+                                    onClick={() => scrollToClick('/my-account/wishlist')}>
+                                    Wishlist</p>
 
-                                <Link to="/contact">
-                                    <p className="text-white font-dm text-sm mb-1 capitalize font-light">Contacts</p>
-                                </Link>
+
+                                <p className="text-white font-dm text-sm mb-1 capitalize font-light cursor-pointer"
+                                    onClick={() => scrollToClick('/my-account')}>
+                                    My Account</p>
+
+
+                                <p className="text-white font-dm text-sm mb-1 capitalize font-light cursor-pointer"
+                                    onClick={() => scrollToClick('/contact')}>
+                                    Contacts</p>
                             </div>
                         </div>
 

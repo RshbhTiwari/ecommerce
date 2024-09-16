@@ -13,7 +13,7 @@ const Modelminidelete = ({ isOpen, onClose, onConfirm }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="absolute inset-0 bg-black opacity-50" onClick={onClose}></div>
-      <div className="bg-white p-8 rounded-lg  shadow-lg relative z-10 w-11/12" data-aos="zoom-in">
+      <div className="bg-white p-8 rounded-lg shadow-lg relative z-10 w-11/12" data-aos="zoom-in">
 
         <div className="flex items-center justify-between border-b-2 pb-2 border-[#072320]">
           <h2 className="font-dm text-xl capitalize font-medium text-left text-[#072320]">Confirm Deletion</h2>

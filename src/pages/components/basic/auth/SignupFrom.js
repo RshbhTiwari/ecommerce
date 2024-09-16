@@ -53,6 +53,14 @@ const SignupFrom = () => {
         }
     };
 
+    const scrollToClick = (path) => {
+        navigate(path);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+
     return (
         <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -69,7 +77,8 @@ const SignupFrom = () => {
                     <h2 href='#' className="text-center 
                                   font-dm text-base capitalize font-medium 
                                    ">You A Member?
-                        <a className='text-[#00A762] ml-2' href='/login'>Login</a></h2>
+                        <span className='text-[#00A762] ml-2 cursor-pointer'
+                        onClick={() => scrollToClick('/login')}>Login</span></h2>
                 </div>
             </form>
         </FormProvider>

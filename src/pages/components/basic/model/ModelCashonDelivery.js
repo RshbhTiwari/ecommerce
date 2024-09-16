@@ -14,7 +14,11 @@ const ModelCashonDelivery = ({ isOpen, onClose, oncontinueshopping }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="absolute inset-0 bg-black opacity-50" onClick={onClose}></div>
-      <div className="bg-white p-8 rounded-lg  shadow-lg relative z-10 w-11/12 sm:w-1/3" data-aos="zoom-in">
+      <div className="bg-white p-8 rounded-lg  shadow-lg relative z-10     
+       w-11/12 
+      md:w-8/12 
+      lg:w-7/12
+      xl:w-1/3" data-aos="zoom-in">
 
         <div className='h-20 w-20 mx-auto mb-2'>
           <img src={cod} alt="cod" height="100%" width="100%" />
@@ -29,24 +33,25 @@ const ModelCashonDelivery = ({ isOpen, onClose, oncontinueshopping }) => {
         </div>
 
 
-        <div className="flex justify-start space-x-4">
-          <Btnone
-            title='Cancel'
-            bgColor="#072320"
-            width="100%"
-            handleClick={onClose}
-          />
+        <div className="sm:flex justify-start block sm:space-x-4 space-x-0 sm:space-y-0 space-y-3">
 
-          <Btnone
-            title='continue shopping'
-            bgColor="#072320"
-            width="100%"
-            handleClick={oncontinueshopping}
-          />
+          <div className='w-full'>
+            <Btnone
+              title='Cancel'
+              bgColor="#072320"
+              width="100%"
+              handleClick={onClose}
+            />
+          </div>
 
-
-          {/* <Btnone title="Confirm" handleClick={onConfirm}
-            bgColor="#00A762" /> */}
+          <div className='w-full'> 
+            <Btnone
+              title='continue shopping'
+              bgColor="#072320"
+              width="100%"
+              handleClick={oncontinueshopping}
+            />
+          </div>
 
         </div>
       </div>

@@ -42,12 +42,24 @@ const LoginForm = ({ handleClick }) => {
                 handleClick()
             } else {
                 navigate('/');
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
             }
         } catch (error) {
             console.error(error);
         }
     };
 
+    const scrollToClick = (path) => {
+        navigate(path);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+    
     return (
         <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -55,9 +67,11 @@ const LoginForm = ({ handleClick }) => {
                 <PasswordInput />
 
                 <div className='mt-3 flex items-center'>
-                    <a href='/forgotpassword' className="text-[#00A762] text-center font-dm text-base capitalize font-medium">
+                    <span 
+                    className="text-[#00A762] text-center font-dm text-base capitalize font-medium cursor-pointer "
+                     onClick={() => scrollToClick('/forgotpassword')}>
                         Lost Your Password ?
-                    </a>
+                    </span>
                 </div>
 
                 <div className='mt-6'>
@@ -73,7 +87,8 @@ const LoginForm = ({ handleClick }) => {
                 <div className='mt-3 flex items-center'>
                     <h2 className="text-center font-dm text-base capitalize font-medium">
                         Not A Member?
-                        <a className='text-[#00A762] ml-2' href='/signup'>Register ?</a>
+                        <span className='text-[#00A762] ml-2 cursor-pointer'
+                         onClick={() => scrollToClick('/signup')}>Register ?</span>
                     </h2>
                 </div>
             </form>

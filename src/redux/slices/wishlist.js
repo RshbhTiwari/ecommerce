@@ -93,6 +93,10 @@ export function postMoveCartItem(payload, toast, navigate) {
                 dispatch(getAllCartItems(customer_id, payload));
             }
             navigate('/cart');
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         } catch (error) {
             dispatch(hasError(error?.response?.data?.message || "Failed to move item to cart"));
             toast.error(error?.message || "An error occurred");

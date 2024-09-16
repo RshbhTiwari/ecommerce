@@ -29,6 +29,10 @@ function CheckoutAddress({ allAddressData, deletClick, handleClick }) {
 
     const handleEditRow = (id) => {
         navigate(`/my-account/edit-address/${id}`);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     };
 
     const handleCheckboxChange = (id) => {

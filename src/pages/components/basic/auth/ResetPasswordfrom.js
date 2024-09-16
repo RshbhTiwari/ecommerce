@@ -54,6 +54,10 @@ const ResetPasswordfrom = ({ token }) => {
             };
             dispatch(postResetPasswordUser(payload, toast, reset));
             navigate('/login');
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         } catch (error) {
             console.error(error);
         }

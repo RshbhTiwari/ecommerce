@@ -51,6 +51,14 @@ function Useramyccount({ customer_id }) {
 
     console.log("myccountdata?.orders?", myccountdata?.orders)
 
+    const scrollToClick = (path) => {
+        navigate(path);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+
     return (
         <>
             <BreadCrum componentName="my account" link="/my-account" />
@@ -98,7 +106,7 @@ function Useramyccount({ customer_id }) {
                                     </div>
 
                                     <div className='col-span-12 w-full md:gap-4 gap-0'>
-                                        <Btnone title="edit" bgColor="#00A762" handleClick={() => navigate('/my-account/update-profile')} />
+                                        <Btnone title="edit" bgColor="#00A762" handleClick={() => scrollToClick('/my-account/update-profile')} />
                                     </div>
 
 

@@ -1,18 +1,16 @@
 import { Paragraph } from "../basic/title";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Btnone } from "../basic/button";
 import OrderStatus from "./OrderStatus";
 
 export default function OrdersTable({ ordersitems }) {
-    const navigate = useNavigate();
+
 
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'short', day: 'numeric' };
         const dateObj = new Date(dateString);
         return dateObj.toLocaleDateString('en-US', options);
     };
-
-    console.log("ordersitems", ordersitems)
 
     return (
         <>

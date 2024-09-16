@@ -27,11 +27,19 @@ function NavCartIcon({ cartData, itemCount }) {
     const handleClickCheckout = () => {
         navigate(`/checkout`);
         setIsCartOpen(false);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     };
 
     const handleClickCart = () => {
         navigate(`/cart`);
         setIsCartOpen(false);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     };
 
     return (

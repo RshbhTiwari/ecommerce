@@ -8,6 +8,14 @@ import { MdOutlineArrowBackIos } from "react-icons/md";
 
 export default function ShoppingCard({ cartData, itemCount, allCartItems, cartIsLoading, cartErorr }) {
     const navigate = useNavigate();
+
+    const scrollToClick = (path) => {
+        navigate(path);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
     return (
         <>
             <BreadCrum componentName="Cart" link="/shop" />
@@ -21,7 +29,7 @@ export default function ShoppingCard({ cartData, itemCount, allCartItems, cartIs
                             <div className="flex items-center justify-between border-b-2 pb-2 border-[#072320]">
                                 <h2 className={`font-dm text-2xl capitalize font-medium text-left text-[#072320]`} >Shopping Cart</h2>
                                 <div className='font-dm  text-[#072320] flex items-center justify-start cursor-pointer'
-                                    onClick={() => navigate('/shop')} >
+                                    onClick={() => scrollToClick('/shop')} >
                                     <MdOutlineArrowBackIos className='font-xl text-[#072320]' />
                                     <h1 className='capitalize font-medium'>continue shopping</h1>
                                 </div>
@@ -78,7 +86,7 @@ export default function ShoppingCard({ cartData, itemCount, allCartItems, cartIs
                                 </table>
 
                                 <div className='w-full py-4'>
-                                    <Btnone title="Proceed to Checkout" handleClick={() => navigate('/checkout')} bgColor="#00A762" borderColor="#00A762" width="100%" />
+                                    <Btnone title="Proceed to Checkout" handleClick={() => scrollToClick('/checkout')} bgColor="#00A762" borderColor="#00A762" width="100%" />
                                 </div>
                             </div>
                         </div>

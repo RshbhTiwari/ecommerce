@@ -7,6 +7,10 @@ const BestSeller = ({ allblog }) => {
 
     const handleDetailsRow = (id) => {
         navigate(`/blog/${id}`);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     };
 
     return (

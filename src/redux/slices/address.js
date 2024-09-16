@@ -90,6 +90,10 @@ export function postAddress(payload, toast, navigate) {
             if (response?.data?.status === true) {
                 navigate('/my-account/address-book')
                 toast.success("Address added successfully!");
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
             }
         } catch (error) {
             console.error("Unable to add address. Please try again later", error);
@@ -170,6 +174,10 @@ export function putAddress(id, payload, toast, navigate, onClose) {
                 if (navigate) { navigate('/my-account/address-book'); }
                 toast.success("Address updated successfully!");
                 onClose()
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
             }
         } catch (error) {
             dispatch(hasError(error.message || "Error updating address"));

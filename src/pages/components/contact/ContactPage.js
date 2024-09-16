@@ -57,7 +57,7 @@ export default function ContactPage() {
                                         <div className='mt-3 flex items-center '>
                                             <RiMapPinLine className='text-2xl text-white' />
                                             <div className='ml-2'>
-                                                <Paragraph title="No: 58 A, East Madison Street,? Baltimore, MD, USA 4508"
+                                                <Paragraph title="Office No. 266, 2nd Floor, Block - B, Motia Plaza, Baddi, Distt. Solan (H.P.) India - 173205"
                                                     textAlign="left" color='white' />
                                             </div>
                                         </div>
@@ -68,7 +68,7 @@ export default function ContactPage() {
                                         <div className='mt-3 flex items-center'>
                                             <IoCallOutline className='text-2xl text-white' />
                                             <div className='ml-2'>
-                                                <Paragraph title="0803 - 080 - 3081" textAlign="left" color='white' />
+                                                <Paragraph title="+91-1795-292032" textAlign="left" color='white' />
                                             </div>
                                         </div>
                                     </a>
@@ -78,7 +78,7 @@ export default function ContactPage() {
                                         <div className='mt-3 flex items-center'>
                                             <IoIosMail className='text-2xl text-white ' />
                                             <div className='ml-2'>
-                                                <Paragraph title="mail@example.com" textAlign="left" color='white' />
+                                                <Paragraph title="info@starreify.com" textAlign="left" color='white' />
                                             </div>
                                         </div>
                                     </a>
