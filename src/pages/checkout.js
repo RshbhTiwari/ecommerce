@@ -5,6 +5,6 @@ function Checkout({cartData, itemCount, allCartItems}) {
         <>
             <CheckoutCard cartData={cartData} itemCount={itemCount} allCartItems={allCartItems}/>
         </>
-    );
+    ); 
 }
 export default Checkout;

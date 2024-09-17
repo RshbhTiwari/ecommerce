@@ -12,7 +12,7 @@ export default function CheckoutCard({ cartData, itemCount, allCartItems }) {
                     <div className="grid grid-cols-12 md:gap-8 gap-4 ">
 
                         <div className='lg:col-span-7 col-span-12'>
-                            <AccordionExample />
+                            <AccordionExample cartData={cartData} />
                         </div>
 
                         <div className='lg:col-span-5 col-span-12'>

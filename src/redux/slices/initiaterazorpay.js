@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../utils/axios";
+import { getAllCartItems } from "./addToCart";
 
 const initialState = {
     isLoading: false,
@@ -29,7 +30,7 @@ export const { startLoading, hasError } = initiaterazorpaySlice.actions;
 
 export default initiaterazorpaySlice.reducer;
 
-export const initiateRazorpayPayment = ( cart_id, customer_id, toast, navigate) => async (dispatch) => {
+export const initiateRazorpayPayment = ( cart_id, customer_id, toast, navigate) => async (dispatch) => { 
     try {
         dispatch(startLoading());
         const response = await axios.post("/order/create", { customer_id, cart_id });
@@ -53,11 +54,25 @@ export const initiateRazorpayPayment = ( cart_id, customer_id, toast, navigate) 
                         .then((res) => {
                             if (res.data.status === true) {
                                 toast.success('Payment verified successfully');
-                                navigate(`/my-account/orders/${paymentData?.order_id}`);
+                                navigate(`/order-confirmation/${paymentData?.order_id}`);
                                 window.scrollTo({
                                     top: 0,
                                     behavior: 'smooth'
                                 });
+                                const cart_id = localStorage?.getItem('cart_id') || null;
+                                const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+                                const token = localStorage?.getItem('accessToken') || null;
+                                if (token) {
+                                    const payload = {
+                                        status: true,
+                                    };
+                                    dispatch(getAllCartItems(customer_id, payload));
+                                } else {
+                                    const payload = {
+                                        status: false,
+                                    };
+                                    dispatch(getAllCartItems(cart_id, payload));
+                                }
                             } else {
                                 toast.error('Payment Verification Failed');
                             }

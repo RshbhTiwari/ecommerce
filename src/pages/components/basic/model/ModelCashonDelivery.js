@@ -44,7 +44,7 @@ const ModelCashonDelivery = ({ isOpen, onClose, oncontinueshopping }) => {
             />
           </div>
 
-          <div className='w-full'> 
+          <div className='w-full'>
             <Btnone
               title='continue shopping'
               bgColor="#072320"

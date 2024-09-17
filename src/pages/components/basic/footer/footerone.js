@@ -11,6 +11,8 @@ import { fetchAllCategories } from "../../../../redux/slices/category";
 export default function Footerone() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const accessToken = localStorage.getItem('accessToken') || null;
+
     const [loading, setLoading] = useState(true);
     const [allCategoriesData, setAllCategoriesData] = useState([]);
 
@@ -58,9 +60,6 @@ export default function Footerone() {
                 <div className="container mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 py-8">
 
                     <div className="grid grid-cols-12 md:gap-4 gap-0">
-
-
-
                         <div className='lg:col-span-4 col-span-12  flex flex-col justify-end items-start'>
                             <h6 className="text-white font-dm text-lg mb-2 capitalize text-center width_change w-3/4">Newsletter Signup</h6>
                             <div className="relative w-3/4 width_change">
@@ -119,8 +118,9 @@ export default function Footerone() {
                             <div className='md:col-span-3 col-span-12  flex flex-col md:justify-start md:items-start justify-center items-center'>
                                 <p className="text-white font-dm text-sm mb-1 capitalize font-light">How to Make an Order?</p>
                                 <p className="text-white font-dm text-sm  mb-1 capitalize font-light">About Us</p>
-                                <p className="text-white font-dm text-sm mb-1 capitalize font-light cursor-pointer"
-                                onClick={() => scrollToClick('/my-account/orders')}>My Orders</p>
+                                {accessToken ? (
+                                    <p className="text-white font-dm text-sm mb-1 capitalize font-light cursor-pointer"
+                                        onClick={() => scrollToClick('/my-account/orders')}>My Orders</p>) : null}
                                 <p className="text-white font-dm text-sm mb-1 capitalize font-light">Delivery Terms</p>
                                 <p className="text-white font-dm text-sm mb-1 capitalize font-light">Return</p>
                             </div>
@@ -156,15 +156,19 @@ export default function Footerone() {
                                     onClick={() => scrollToClick('/cart')}>
                                     Cart</p>
 
-                                <p className="text-white font-dm text-sm mb-1 capitalize font-light cursor-pointer"
-                                    onClick={() => scrollToClick('/my-account/wishlist')}>
-                                    Wishlist</p>
+                                {accessToken ? (
+                                    <>
+                                        <p className="text-white font-dm text-sm mb-1 capitalize font-light cursor-pointer"
+                                            onClick={() => scrollToClick('/my-account/wishlist')}>
+                                            Wishlist</p>
 
 
-                                <p className="text-white font-dm text-sm mb-1 capitalize font-light cursor-pointer"
-                                    onClick={() => scrollToClick('/my-account')}>
-                                    My Account</p>
+                                        <p className="text-white font-dm text-sm mb-1 capitalize font-light cursor-pointer"
+                                            onClick={() => scrollToClick('/my-account')}>
+                                            My Account</p>
+                                    </>
 
+                                ) : null}
 
                                 <p className="text-white font-dm text-sm mb-1 capitalize font-light cursor-pointer"
                                     onClick={() => scrollToClick('/contact')}>

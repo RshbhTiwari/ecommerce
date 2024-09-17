@@ -29,6 +29,7 @@ import { useEffect, useState } from "react";
 import ResetPasswordPage from "./pages/resetpasswordpage";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import Thankyou from "./pages/thankyou";
 
 AOS.init();
 
@@ -57,7 +58,7 @@ function App() {
     }
   }, [allCartItems]);
 
-  useEffect(() => {
+  useEffect(() => { 
     if (token) {
       const payload = {
         status: true,
@@ -74,7 +75,7 @@ function App() {
   useEffect(() => {
     console.log('Item count has changed:', itemCount);
   }, [itemCount, localCartItems]);
-
+ 
   return (
     <>
       <BrowserRouter>
@@ -104,6 +105,7 @@ function App() {
           <Route path="/my-account/wishlist" element={<Wishlist />} />
           <Route path="/my-account/orders" element={<Orders />} />
           <Route path="/my-account/orders/:id" element={<OrdersDetails />} />
+          <Route path="/order-confirmation/:id" element={<Thankyou />} />
         </Routes>
         <Footer />
       </BrowserRouter>

@@ -7,7 +7,7 @@ import CollectionsShopCard from '../shop/CollectionsShopCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOneProduct, getproduct, getProducts } from '../../../redux/slices/product';
 
-const ShopSingleDetails = ({ id }) => {
+const ShopSingleDetails = ({ id }) => { 
     const dispatch = useDispatch();
 
     const [allSingleProductsData, setSingleProductsData] = useState([]);

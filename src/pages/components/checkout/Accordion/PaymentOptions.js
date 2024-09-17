@@ -7,9 +7,11 @@ import { initiateRazorpayPayment } from '../../../../redux/slices/initiaterazorp
 import { useNavigate } from 'react-router-dom';
 import { Btnone } from '../../basic/button';
 
-const PaymentOptions = ({ onConfirmOrder, backCLick }) => {
+const PaymentOptions = ({ onConfirmOrder, backCLick }) => { 
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
     const [paymentOption, setPaymentOption] = useState('paymentgateway');
 
     const handleOptionChange = (e) => {
@@ -20,6 +22,7 @@ const PaymentOptions = ({ onConfirmOrder, backCLick }) => {
         if (paymentOption === 'cod') {
             onConfirmOrder();
         } else {
+            
             const cart_id = localStorage?.getItem('cart_id') || null;
             const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
             console.log("customer_id?", "ddf", customer_id)

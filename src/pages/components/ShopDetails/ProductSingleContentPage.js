@@ -50,6 +50,23 @@ const ProductSingleContentPage = ({ oneproduct, singleProductIsloading, singlePr
         dispatch(addCartItems(cartItem, toast, navigate));
     };
 
+    const handleBuynow = () => {
+        const cartDataid = localStorage?.getItem('cart_id') || null;
+        const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+
+        const cart_id = cartDataid !== null ? Number(cartDataid) : null;
+
+        const Buynow = true ;
+
+        const cartItem = {
+            item_id: oneproduct.id,
+            quantity,
+            ...(cart_id && { cart_id }),
+            ...(customer_id && { customer_id })
+        };
+        dispatch(addCartItems(cartItem, toast, navigate, Buynow));
+    };
+
     const { name, description, discount_price, sku, price, stock_status } = oneproduct;
 
     if (!oneproduct) {
@@ -63,7 +80,7 @@ const ProductSingleContentPage = ({ oneproduct, singleProductIsloading, singlePr
 
     return (
         <>
-            {singleProductIsloading || loading  ? (
+            {singleProductIsloading || loading ? (
                 <>
                     <div className="animate-pulse">
                         <div className="h-8 bg-gray-300 rounded mb-4"></div>
@@ -126,10 +143,12 @@ const ProductSingleContentPage = ({ oneproduct, singleProductIsloading, singlePr
                     </div>
                     <div className="grid grid-cols-12 gap-4 mb-8">
                         <div className='md:col-span-6 col-span-12'>
-                            <Btnoutline title="add to cart" width="100%" handleClick={handleAddToCart} />
+                            <Btnoutline title="add to cart" width="100%"
+                                handleClick={handleAddToCart} />
                         </div>
                         <div className='md:col-span-6 col-span-12'>
-                            <Btnone title="buy now" bgColor="#00A762" width="100%" />
+                            <Btnone title="buy now" bgColor="#00A762" width="100%"
+                                handleClick={handleBuynow} />
                         </div>
                     </div>
                 </>

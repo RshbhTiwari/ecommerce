@@ -8,7 +8,7 @@ import { getproduct, getProducts } from "../../../../../redux/slices/product";
 import { useDispatch, useSelector } from "react-redux";
 import { NoProducts } from '../../ErrorPages';
 import { useNavigate } from "react-router-dom";
-import { addCartItems } from '../../../../../redux/slices/addToCart';
+import { addCartItems, getAllCartItems } from '../../../../../redux/slices/addToCart';
 import { toast } from 'react-toastify';
 import { postWishlistUser } from '../../../../../redux/slices/wishlist';
 
@@ -22,9 +22,42 @@ function NavSearchIcon() {
     const [filterName, setFilterName] = useState('');
     const [allProductsData, setAllProductsData] = useState([]);
 
+    const cart_id = localStorage?.getItem('cart_id') || null;
+    const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+    const token = localStorage?.getItem('accessToken') || null;
+
+    const [localCartItems, setLocalCartItems] = useState([]);
+    const { allCartItems, isLoading: cartIsLoading, error: cartErorr } = useSelector(
+        (state) => state.addToCart
+    );
+
     const { isLoading: productIsLoading, error: productError, products } = useSelector(
         (state) => state.product
     );
+
+    useEffect(() => {
+        if (allCartItems?.items) {
+            setLocalCartItems(allCartItems?.items);
+        }
+    }, [allCartItems]);
+
+    useEffect(() => {
+        if (token) {
+            const payload = {
+                status: true,
+            };
+            dispatch(getAllCartItems(customer_id, payload));
+        } else {
+            const payload = {
+                status: false,
+            };
+            dispatch(getAllCartItems(cart_id, payload));
+        }
+    }, [dispatch, cart_id, customer_id, token]);
+
+    const isItemInCart = (itemId) => {
+        return localCartItems.some((cartItem) => cartItem.item_id === itemId);
+    };
 
     useEffect(() => {
         dispatch(getProducts());
@@ -75,7 +108,7 @@ function NavSearchIcon() {
         const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
 
         const cart_id = cartDataid !== null ? Number(cartDataid) : null;
-        
+
         const cartItem = {
             item_id: product_id,
             ...(cart_id && { cart_id }),
@@ -196,10 +229,14 @@ function NavSearchIcon() {
                                                                         <FaRegHeart className='text-white text-[22px]' />
                                                                     </div>
 
-                                                                    <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320] cursor-pointer' onClick={() => {
-                                                                        handleAddToCart(item?.id);
-                                                                    }}>
-                                                                        <HiOutlineShoppingBag className='text-white text-[22px]' />
+                                                                    <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320]'>
+                                                                        <button
+                                                                            onClick={() => handleAddToCart(item?.id)}
+                                                                            disabled={isItemInCart(item?.id)}
+                                                                            className={`flex items-center justify-center w-full h-full rounded-lg ${isItemInCart(item?.id) ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#072320] cursor-pointer'}`}
+                                                                        >
+                                                                            <HiOutlineShoppingBag className='text-white text-[22px]' />
+                                                                        </button>
                                                                     </div>
                                                                 </div>
                                                             </div>

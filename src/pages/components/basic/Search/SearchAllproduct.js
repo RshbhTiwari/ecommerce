@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getproduct, getProducts } from "../../../../redux/slices/product";
 import { useEffect, useState } from "react";
 import { NoProducts } from "../ErrorPages";
-import { addCartItems } from "../../../../redux/slices/addToCart";
+import { addCartItems, getAllCartItems } from "../../../../redux/slices/addToCart";
 import { toast } from 'react-toastify';
 import { Paragraph } from "../title";
 import { FaRegHeart } from "react-icons/fa";
@@ -11,18 +11,45 @@ import { HiOutlineShoppingBag } from "react-icons/hi";
 import { postWishlistUser } from "../../../../redux/slices/wishlist";
 
 function SearchAllproduct() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { search } = useLocation();
     const queryParams = new URLSearchParams(search);
     const initialFilterName = queryParams.get('filter') || '';
-
+    const cart_id = localStorage?.getItem('cart_id') || null;
+    const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+    const token = localStorage?.getItem('accessToken') || null;
     const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
-    
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    
+
+
     const [filterName, setFilterName] = useState(initialFilterName);  // State for search input
     const [filteredProducts, setFilteredProducts] = useState([]);  // State for filtered products
+    const [localCartItems, setLocalCartItems] = useState([]);
+
+    const { allCartItems, isLoading: cartIsLoading, error: cartErorr } = useSelector(
+        (state) => state.addToCart
+    );
     const { products } = useSelector((state) => state.product);
+
+    useEffect(() => {
+        if (allCartItems?.items) {
+            setLocalCartItems(allCartItems?.items);
+        }
+    }, [allCartItems]);
+
+    useEffect(() => {
+        if (token) {
+            const payload = {
+                status: true,
+            };
+            dispatch(getAllCartItems(customer_id, payload));
+        } else {
+            const payload = {
+                status: false,
+            };
+            dispatch(getAllCartItems(cart_id, payload));
+        }
+    }, [dispatch, cart_id, customer_id, token]);
 
     useEffect(() => {
         dispatch(getProducts());
@@ -41,7 +68,7 @@ function SearchAllproduct() {
     const handleSearchChange = (e) => {
         const newFilterName = e.target.value;
         setFilterName(newFilterName);
-        
+
         // Update the URL query parameter
         navigate(`?filter=${newFilterName}`, { replace: true });
     };
@@ -86,6 +113,10 @@ function SearchAllproduct() {
         });
     };
 
+    const isItemInCart = (itemId) => {
+        return localCartItems.some((cartItem) => cartItem.item_id === itemId);
+    };
+
     return (
         <>
             <div className="text-center flex w-full justify-center items-center my-10 gap-4">
@@ -109,8 +140,8 @@ function SearchAllproduct() {
                         >
                             <div className='flex justify-center items-center bg-[#00A762] cursor-pointer p-4 rounded-lg mt-3 mb-2 mx-6 relative'>
                                 <div className='overflow-hidden rounded-lg h-[200px] relative' onClick={() => {
-                                handleDetailsRow(item?.id);
-                            }}>
+                                    handleDetailsRow(item?.id);
+                                }}>
                                     <img
                                         src={BASE_IMAGE_URL + item?.additional_images[0]}
                                         alt="image"
@@ -126,8 +157,8 @@ function SearchAllproduct() {
 
                             <div className='flex flex-col justify-center items-center px-4'>
                                 <h2 className="text-[#00A762] text-center cursor-pointer font-dm text-lg capitalize font-medium" onClick={() => {
-                                handleDetailsRow(item?.id);
-                            }}>
+                                    handleDetailsRow(item?.id);
+                                }}>
                                     {item?.name}
                                 </h2>
                                 <div className='pb-2'>
@@ -149,14 +180,18 @@ function SearchAllproduct() {
 
                             <div className='flex justify-center items-center px-2 py-2 gap-2'>
                                 <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320] cursor-pointer' onClick={() => {
-                                handleAddWishlist(item?.id);
-                            }}>
+                                    handleAddWishlist(item?.id);
+                                }}>
                                     <FaRegHeart className='text-white text-[22px]' />
                                 </div>
-                                <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320] cursor-pointer' onClick={() => {
-                                    handleAddToCart(item?.id);
-                                }}>
-                                    <HiOutlineShoppingBag className='text-white text-[22px]' />
+                                <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320]'>
+                                    <button
+                                        onClick={() => handleAddToCart(item?.id)}
+                                        disabled={isItemInCart(item?.id)}
+                                        className={`flex items-center justify-center w-full h-full rounded-lg ${isItemInCart(item?.id) ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#072320] cursor-pointer'}`}
+                                    >
+                                        <HiOutlineShoppingBag className='text-white text-[22px]' />
+                                    </button>
                                 </div>
                             </div>
                         </div>

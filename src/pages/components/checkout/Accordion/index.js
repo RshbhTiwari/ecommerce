@@ -7,16 +7,15 @@ import { IoMdAdd } from 'react-icons/io';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAddress } from '../../../../redux/slices/address';
 import { CheckoutbillingAddress, CheckoutshippingAddress } from '../../myaccount/address/DefultAddress';
-import { CheckoutShipingaddress, GuestAddress } from '../../myaccount/address';
+import { CheckoutShipingaddress } from '../../myaccount/address';
 import CheckoutBillingaddress from '../../myaccount/address/CheckoutBillingaddress';
 import GuestAddressBilling from '../../myaccount/address/GuestAddressBilling';
 import GuestAddressShipping from '../../myaccount/address/GuestAddressShipping';
 import { toast } from 'react-toastify';
-import { ModelCashonDelivery } from '../../basic/model';
 import { useNavigate } from 'react-router-dom';
 import { postcodorder } from '../../../../redux/slices/codorder';
 
-const AccordionExample = () => {
+const AccordionExample = ({ cartData }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [allAddressData, setAllAddressData] = useState([]);
@@ -31,7 +30,7 @@ const AccordionExample = () => {
     const [isNewShippingOpen, setIsNewShippingOpen] = useState(false);
 
     const [trigger, setTrigger] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    // const [isModalOpen, setIsModalOpen] = useState(false);
 
     const accessToken = localStorage.getItem('accessToken') || null;
     const userName = JSON.parse(localStorage.getItem('user'))?.name || null;
@@ -123,26 +122,26 @@ const AccordionExample = () => {
             ...(cart_id && { cart_id }),
             ...(customer_id && { customer_id })
         };
-        dispatch(postcodorder(cartItem, setIsModalOpen));
+        dispatch(postcodorder(cartItem, navigate,toast));
     };
 
-    const closeModal = () => {
-        setIsModalOpen(false);
-        navigate(`/my-account/orders/${oneId}`);
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    };
+    // const closeModal = () => {
+    //     setIsModalOpen(false);
+    //     navigate(`/my-account/orders/${oneId}`);
+    //     window.scrollTo({
+    //         top: 0,
+    //         behavior: 'smooth'
+    //     });
+    // };
 
-    const handlecontinueshopping = () => {
-        navigate(`/shop`);
-        setIsModalOpen(false);
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    };
+    // const handlecontinueshopping = () => {
+    //     navigate(`/shop`);
+    //     setIsModalOpen(false);
+    //     window.scrollTo({
+    //         top: 0,
+    //         behavior: 'smooth'
+    //     });
+    // };
 
     return (
         <>
@@ -179,13 +178,15 @@ const AccordionExample = () => {
                                         title={`Welcome back ${userName}, Ready to complete your grocery shopping?`}
                                     />
                                 </div>
-                                <div className="flex flex-col items-start w-full pt-4">
-                                    <Btnone
-                                        title="continue"
-                                        handleClick={() => handleAccordionToggle(setIsBillingOpen)}
-                                        bgColor="#00A762"
-                                    />
-                                </div>
+                                {cartData?.length > 0 ? (
+                                    <div className="flex flex-col items-start w-full pt-4">
+                                        <Btnone
+                                            title="continue"
+                                            handleClick={() => handleAccordionToggle(setIsBillingOpen)}
+                                            bgColor="#00A762"
+                                        />
+                                    </div>
+                                ) : null}
                             </div>
                         ) : (
                             <div className="grid grid-cols-12 md:gap-8 gap-4">
@@ -387,11 +388,11 @@ const AccordionExample = () => {
                 )}
             </div>
 
-            <ModelCashonDelivery
+            {/* <ModelCashonDelivery
                 isOpen={isModalOpen}
-                onClose={closeModal} 
+                onClose={closeModal}
                 oncontinueshopping={handlecontinueshopping}
-            />
+            /> */}
         </>
     );
 };

@@ -49,7 +49,7 @@ export default function ShoppingCard({ cartData, itemCount, allCartItems, cartIs
                             ) : (
                                 <CartEmpty height="200px" />
                             )}
-                            
+
                         </div>
 
                         <div className='lg:col-span-4 col-span-12'>
@@ -60,6 +60,7 @@ export default function ShoppingCard({ cartData, itemCount, allCartItems, cartIs
                                     <div className='w-full'>
                                         <input className='code_input w-full bg-[#072320]' placeholder='Code' type="text" id="code" />
                                     </div>
+
                                     <div className='w-full'>
                                         <Btnone title="Apply Code" bgColor="#00A762" borderColor="#00A762" width="100%" />
                                     </div>
@@ -84,10 +85,11 @@ export default function ShoppingCard({ cartData, itemCount, allCartItems, cartIs
                                         <hr />
                                     </tbody>
                                 </table>
-
-                                <div className='w-full py-4'>
-                                    <Btnone title="Proceed to Checkout" handleClick={() => scrollToClick('/checkout')} bgColor="#00A762" borderColor="#00A762" width="100%" />
-                                </div>
+                                {cartData?.length > 0 ? (
+                                    <div className='w-full py-4'>
+                                        <Btnone title="Proceed to Checkout" handleClick={() => scrollToClick('/checkout')} bgColor="#00A762" borderColor="#00A762" width="100%" />
+                                    </div>
+                                ) : null}
                             </div>
                         </div>
                     </div>

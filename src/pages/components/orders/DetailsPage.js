@@ -11,7 +11,7 @@ function DetailsPage({ ordersitem }) {
     };
 
     const showPaymentInfo = ordersitem?.transaction && ordersitem?.transaction?.status === 'captured';
-    const showAddressInfo = ordersitem?.billing_address && ordersitem?.shipping_address;
+    const showAddressInfo = ordersitem?.billing_address && ordersitem?.shipping_address; 
 
     return (
         <>

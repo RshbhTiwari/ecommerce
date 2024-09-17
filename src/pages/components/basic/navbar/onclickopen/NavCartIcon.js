@@ -92,14 +92,16 @@ function NavCartIcon({ cartData, itemCount }) {
                             )}
 
                             <div className='flex flex-col fixed bottom-[17px] w-[92%]'>
-                                <div className='w-full mt-4'>
-                                    <Btnone title="checkout"
-                                        bgColor="#072320" borderColor="#00A762" width="100%" handleClick={handleClickCheckout} />
-                                </div>
-
+                                {cartData?.length > 0 ? (
+                                    <div className='w-full mt-4'>
+                                        <Btnone title="checkout"
+                                            bgColor="#072320" borderColor="#00A762" width="100%" handleClick={handleClickCheckout} />
+                                    </div>
+                                ) : null}
                                 <div className='w-full mt-4'>
                                     <Btnoutline title="edit cart" width="100%" handleClick={handleClickCart} />
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -110,11 +112,3 @@ function NavCartIcon({ cartData, itemCount }) {
 }
 
 export default NavCartIcon;
-
-
-// <div
-//                         className={`fixed top-0 right-0  z-50 h-full md:w-[420px] w-full bg-white shadow-lg transition-all duration-300 
-//                         ease-in-out
-//                              ${isClosing ? 'translate-x-full' : 'translate-x-0'}`}
-//                     >
-                    
