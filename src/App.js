@@ -31,6 +31,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Thankyou from "./pages/thankyou";
 
+
 AOS.init();
 
 AOS.init({

@@ -40,8 +40,6 @@ export default function ProductPage() {
         return () => clearTimeout(timer); 
     }, []);
 
-   
-
     useEffect(() => {
         dispatch(getProducts());
     }, [dispatch]);

@@ -3,8 +3,9 @@ import { useDispatch } from "react-redux";
 import { toast } from 'react-toastify';
 import { deleteCartItem } from "../../../../redux/slices/addToCart";
 import { useCallback } from "react";
+import { FormProvider } from "react-hook-form";
 
-export default function OrderSummary({ cartData }) {
+export default function OrderSummary({ cartData ,selectItemCartData}) {
     const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
     const dispatch = useDispatch();
     // Handle item deletion
@@ -13,6 +14,18 @@ export default function OrderSummary({ cartData }) {
     }, [dispatch]);
 
 
+    const handleCheckboxChange = async (e) => {
+        try {
+
+        } catch (error) {
+            toast.error('');
+        }
+    };
+
+    const isCheckedItemInCart = (itemId) => {
+        return selectItemCartData?.some((item) => item?.id === itemId);
+    };
+ 
     return (
         <div className="overflow-x-auto max-h-[460px] overflow-y-auto">
             <table className="w-full mt-6">
@@ -21,11 +34,21 @@ export default function OrderSummary({ cartData }) {
                         <tr className="flex shadow-md glass_effect rounded-lg my-4 bg-white justify-between" key={index}>
                             <td className="flex items-center py-4 px-4 gap-4">
                                 <div className='rounded-md w-32 h-24 sm:block hidden'>
+                                <div className="relative h-full w-full">
                                     <img
                                         src={BASE_IMAGE_URL + item?.additional_images[0]}
                                         alt='product_img'
                                         className='h-full w-full rounded-md'
                                     />
+                                        <div className="absolute left-1 top-1">
+                                            <FormProvider>
+                                                <FormContent
+                                                    isChecked={isCheckedItemInCart(item?.id)}
+                                                    onCheckboxChange={() => handleCheckboxChange(item.id)}
+                                                />
+                                            </FormProvider>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="flex justify-center flex-col">
                                     <h2 className="text-white text-left font-dm text-lg capitalize font-medium">{item?.name}</h2>
@@ -54,5 +77,26 @@ export default function OrderSummary({ cartData }) {
                 </tbody>
             </table>
         </div>
+    );
+}
+function FormContent({ isChecked, onCheckboxChange }) {
+    return (
+        // <form className="w-fit">
+        //     <input
+        //         type="checkbox"
+        //         checked={isChecked}
+        //         onChange={onCheckboxChange}
+        //     />
+        // </form>
+        <form className="w-fit">
+            <label className="custom-checkbox">
+                <input
+                    type="checkbox"
+                    checked={isChecked}
+                    onChange={onCheckboxChange}
+                />
+                <span className="checkmark"></span>
+            </label>
+        </form>
     );
 }

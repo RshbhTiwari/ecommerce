@@ -116,11 +116,13 @@ const ProductsortpillsCard = ({ skeletonCount, allProducts, productIsLoading, pr
         <>
             {allProducts.map((item, index) => (
                 <div
-                    className={`grid grid-cols-12 gap-4 mb-2 py-2 px-2 flex relative h-full items-center rounded-lg shadow-md
+                    className={`grid grid-cols-12 sm:gap-4 gap-2 mb-2 sm:py-2 py-1 sm:px-2 px-1 flex relative h-full items-center rounded-lg shadow-md
                      ${index % 2 === 0 ? '' : 'bg-gray-200 '}`}
                     key={index}
                 >
-                    <div className="lg:col-span-3 sm:col-span-4 col-span-12 flex items-center h-[150px] w-full justify-center rounded-md bg-[#00A762] p-3 sm:block hidden">
+                    {/* sm:block hidden */}
+                    <div className="lg:col-span-3 sm:col-span-4 col-span-4 flex items-center 
+                    h-[150px] w-full justify-center rounded-md bg-[#00A762] sm:p-3 p-0">
                         {item.additional_images && item.additional_images.length > 0 ? (
                             <img
                                 src={BASE_IMAGE_URL + item.additional_images[0]}
@@ -132,7 +134,7 @@ const ProductsortpillsCard = ({ skeletonCount, allProducts, productIsLoading, pr
                         )}
                     </div>
 
-                    <div className="col-span-12 sm:col-span-8 lg:col-span-9 flex justify-center flex-col">
+                    <div className="col-span-8 sm:col-span-8 lg:col-span-9 flex justify-center flex-col">
                         <h2 className="text-[#00A762] text-left font-dm text-lg capitalize font-medium">
                             {item.name}
                         </h2>

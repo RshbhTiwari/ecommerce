@@ -7,7 +7,7 @@ const myaccountlink = [
     {
         title: "My Profile",
         subtitle: "Edit your basic details",
-        link: "/my-account/update-profile",
+        link: "/my-account",
         image: usericon,
         
     },

@@ -26,7 +26,7 @@ export default function ContactPage() {
                         >
                             <div
                                 className='bg_contact_image rounded-tl-lg rounded-bl-lg
-                              overflow-hidden hover:scale-110 transition-all w-full h-full duration-500'
+                              overflow-hidden hover:scale-110 transition-all w-full sm:h-full h-[500px] duration-500'
                                 style={{
                                     backgroundImage: `url(${imgSrc})`
                                 }}

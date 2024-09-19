@@ -53,6 +53,20 @@ export default function Footerone() {
         });
     };
 
+    const linkToShare = 'https://yourwebsite.com';
+    
+    const shareOnFacebook = () => {
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(linkToShare)}`, '_blank');
+    };
+
+    const shareOnTwitter = () => {
+        window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(linkToShare)}`, '_blank');
+    };
+
+    const shareOnWhatsApp = () => {
+        window.open(`https://wa.me/?text=${encodeURIComponent(linkToShare)}`, '_blank');
+    };
+
 
     return (
         <>
@@ -91,11 +105,10 @@ export default function Footerone() {
                         <div className='lg:col-span-4 col-span-12 flex flex-col justify-end items-end'>
                             <h6 className="text-white font-dm text-lg mb-2 capitalize text-center width_change w-3/4">Get in Touch With Us</h6>
                             <div className="flex justify-center items-center w-3/4 width_change	 bg-[#00a76282] gap-2 py-2 px-3">
-                                <FaFacebookF className="text-[25px] text-[#00a762]" />
-                                <FaInstagram className="text-[25px] text-[#00a762]" />
-                                <RiSkypeFill className="text-[25px] text-[#00a762]" />
-                                <FaSquareTwitter className="text-[25px] text-[#00a762]" />
-                                <FaWhatsapp className="text-[25px] text-[#00a762]" />
+
+                                <FaFacebookF className="text-[25px] text-[#00a762] cursor-pointer"  onClick={shareOnFacebook}/>
+                                <FaSquareTwitter className="text-[25px] text-[#00a762] cursor-pointer" onClick={shareOnTwitter}/>
+                                <FaWhatsapp className="text-[25px] text-[#00a762] cursor-pointer"    onClick={shareOnWhatsApp}/>
                             </div>
 
                         </div>

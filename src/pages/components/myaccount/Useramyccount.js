@@ -101,14 +101,24 @@ function Useramyccount({ customer_id }) {
 
                                         <h3 className='block  text-[#072320] 
                         font-dm text-lg capitalize font-medium'><span className="text-[#00A762]">Password   : </span> <br />
-                                         *********
+                                            *********
                                         </h3>
                                     </div>
 
-                                    <div className='col-span-12 w-full md:gap-4 gap-0'>
-                                        <Btnone title="edit" bgColor="#00A762" handleClick={() => scrollToClick('/my-account/update-profile')} />
-                                    </div>
 
+
+                                    <div className='col-span-12'>
+
+                                        <div className="w-full sm:gap-4 gap-2 flex  items-center justify-between sm:justify-start ">
+                                            <div>
+                                                <Btnone title="edit" bgColor="#00A762" handleClick={() => scrollToClick('/my-account/update-profile')} />
+                                            </div>
+
+                                            <div>
+                                                <Btnone title="Password Recovery" bgColor="#072320" handleClick={() => scrollToClick('/forgotpassword')} />
+                                            </div>
+                                        </div>
+                                    </div>
 
                                 </div>
 

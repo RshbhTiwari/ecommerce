@@ -13,6 +13,8 @@ import { toast } from 'react-toastify';
 
 const ProductSingleContentPage = ({ oneproduct, singleProductIsloading, singleProductError }) => {
 
+    const linkToShare = 'http://localhost:3000/shop';
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [quantity, setQuantity] = useState(1);
@@ -56,7 +58,7 @@ const ProductSingleContentPage = ({ oneproduct, singleProductIsloading, singlePr
 
         const cart_id = cartDataid !== null ? Number(cartDataid) : null;
 
-        const Buynow = true ;
+        const Buynow = true;
 
         const cartItem = {
             item_id: oneproduct.id,
@@ -77,6 +79,23 @@ const ProductSingleContentPage = ({ oneproduct, singleProductIsloading, singlePr
         );
     }
 
+    const copyToClipboard = () => {
+        navigator.clipboard.writeText(linkToShare).then(() => {
+            alert('Link copied to clipboard!');
+        });
+    };
+
+    const shareOnFacebook = () => {
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(linkToShare)}`, '_blank');
+    };
+
+    const shareOnTwitter = () => {
+        window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(linkToShare)}`, '_blank');
+    };
+
+    const shareOnWhatsApp = () => {
+        window.open(`https://wa.me/?text=${encodeURIComponent(linkToShare)}`, '_blank');
+    };
 
     return (
         <>
@@ -164,19 +183,25 @@ const ProductSingleContentPage = ({ oneproduct, singleProductIsloading, singlePr
                 </div>
 
                 <div className="flex items-center justify-center sm:gap-6 gap-2">
-                    <div className="rounded-full bg-[#808080] h-10 w-10 flex items-center justify-center">
+
+                    <div className="rounded-full bg-[#808080] h-10 w-10 flex items-center justify-center cursor-pointer"
+                        onClick={copyToClipboard}
+                    >
                         <FaLink className="text-white text-xl" />
                     </div>
 
-                    <div className="rounded-full bg-[#1877F2] h-10 w-10 flex items-center justify-center">
+                    <div className="rounded-full bg-[#1877F2] h-10 w-10 flex items-center justify-center cursor-pointer"
+                        onClick={shareOnFacebook}>
                         <FaFacebookF className="text-white text-xl" />
                     </div>
 
-                    <div className="rounded-full bg-green-500 h-10 w-10 flex items-center justify-center">
+                    <div className="rounded-full bg-green-500 h-10 w-10 flex items-center justify-center cursor-pointer"
+                        onClick={shareOnWhatsApp}>
                         <FaWhatsapp className="text-white text-2xl" />
                     </div>
 
-                    <div className="rounded-full bg-[#1DA1F2] h-10 w-10 flex items-center justify-center">
+                    <div className="rounded-full bg-[#1DA1F2] h-10 w-10 flex items-center justify-center cursor-pointer"
+                        onClick={shareOnTwitter}>
                         <FaTwitter className="text-white text-xl" />
                     </div>
                 </div>

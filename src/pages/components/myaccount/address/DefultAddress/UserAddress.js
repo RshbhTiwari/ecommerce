@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 import { Modeldelete } from '../../../basic/model';
-
+ 
 function UserAddress({ allAddressData, deletClick }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
