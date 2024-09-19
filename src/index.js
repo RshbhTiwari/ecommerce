@@ -6,7 +6,6 @@ import reportWebVitals from './reportWebVitals';
 import { Provider as ReduxProvider } from "react-redux";
 import store from '../src/redux/store'
 import 'react-toastify/dist/ReactToastify.css';
-import 'react-image-lightbox/style.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
