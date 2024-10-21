@@ -86,7 +86,7 @@ function App() {
           <Route exact path="/" element={<Home />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/shop" element={<Shop />} />
-          <Route path="/shop/:id" element={<ShopDetails />} />
+          <Route path="/shop/:id" element={<ShopDetails allCartItems={cartData} />} />
           <Route path="/blog" element={<Blog />} />
           <Route exact path="/blog/:id" element={<DetailsBlog />} />
           <Route exact path="/categories/:id" element={<DetailsCategories />} />

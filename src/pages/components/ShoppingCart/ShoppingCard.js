@@ -13,6 +13,8 @@ export default function ShoppingCard({ cartData, itemCount, allCartItems, cartIs
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+
+
     const getCheckboxState = () => {
         const cartLength = cartData?.length;
         const selectLength = SelectItemcartData?.length;
@@ -22,7 +24,7 @@ export default function ShoppingCard({ cartData, itemCount, allCartItems, cartIs
         } else if (selectLength === 0) {
             return false; // No items selected
         } else {
-            return 'indeterminate'; // Some items selected
+            return 'indeterminate'; // Some items selected 
         }
     };
 
@@ -137,6 +139,7 @@ export default function ShoppingCard({ cartData, itemCount, allCartItems, cartIs
                                 ) : null}
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -219,6 +222,8 @@ function FormContent({ isChecked, onCheckboxChange, itemCount }) {
 //         </>
 //     );
 // }
+
+
 // function FormContent({ isChecked, onCheckboxChange, itemCount }) {
 //     return (
 //         <form className="w-fit">

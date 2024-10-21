@@ -54,7 +54,7 @@ export default function Footerone() {
     };
 
     const linkToShare = 'https://yourwebsite.com';
-    
+
     const shareOnFacebook = () => {
         window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(linkToShare)}`, '_blank');
     };
@@ -106,9 +106,9 @@ export default function Footerone() {
                             <h6 className="text-white font-dm text-lg mb-2 capitalize text-center width_change w-3/4">Get in Touch With Us</h6>
                             <div className="flex justify-center items-center w-3/4 width_change	 bg-[#00a76282] gap-2 py-2 px-3">
 
-                                <FaFacebookF className="text-[25px] text-[#00a762] cursor-pointer"  onClick={shareOnFacebook}/>
-                                <FaSquareTwitter className="text-[25px] text-[#00a762] cursor-pointer" onClick={shareOnTwitter}/>
-                                <FaWhatsapp className="text-[25px] text-[#00a762] cursor-pointer"    onClick={shareOnWhatsApp}/>
+                                <FaFacebookF className="text-[25px] text-[#00a762] cursor-pointer" onClick={shareOnFacebook} />
+                                <FaSquareTwitter className="text-[25px] text-[#00a762] cursor-pointer" onClick={shareOnTwitter} />
+                                <FaWhatsapp className="text-[25px] text-[#00a762] cursor-pointer" onClick={shareOnWhatsApp} />
                             </div>
 
                         </div>
@@ -146,11 +146,19 @@ export default function Footerone() {
 
                             <div className='md:col-span-3 col-span-12  flex flex-col 
                                  md:justify-start md:items-start justify-center items-center'>
-                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">Instagram</p>
-                                <p className="text-white font-dm text-sm  mb-1 capitalize font-light">Facebook</p>
-                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">Pinterest</p>
-                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">Twitter</p>
-                                <p className="text-white font-dm text-sm mb-1 capitalize font-light">YouTube</p>
+
+                                <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
+                                    <p className="text-white font-dm text-sm mb-1 capitalize font-light">Facebook</p>
+                                </a>
+                                <a href="https://www.pinterest.com" target="_blank" rel="noopener noreferrer">
+                                    <p className="text-white font-dm text-sm mb-1 capitalize font-light">Pinterest</p>
+                                </a>
+                                <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">
+                                    <p className="text-white font-dm text-sm mb-1 capitalize font-light">Twitter</p>
+                                </a>
+                                <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer">
+                                    <p className="text-white font-dm text-sm mb-1 capitalize font-light">YouTube</p>
+                                </a>
                             </div>
 
                         </div>

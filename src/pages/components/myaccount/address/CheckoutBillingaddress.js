@@ -382,7 +382,7 @@ const CityInput = () => {
                 placeholder='Enter city'
                 {...register('city')}
             />
-            {errors.state && (
+            {errors.city && (
                 <p className="text-red-500 mt-1">{errors.city.message}</p>
             )}
         </div>

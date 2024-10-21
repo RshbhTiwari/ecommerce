@@ -11,7 +11,7 @@ import { useDispatch } from 'react-redux';
 import { addCartItems } from '../../../redux/slices/addToCart';
 import { toast } from 'react-toastify';
 
-const ProductSingleContentPage = ({ oneproduct, singleProductIsloading, singleProductError }) => {
+const ProductSingleContentPage = ({ oneproduct, singleProductIsloading, singleProductError, allCartItems }) => {
 
     const linkToShare = 'http://localhost:3000/shop';
 
@@ -69,7 +69,14 @@ const ProductSingleContentPage = ({ oneproduct, singleProductIsloading, singlePr
         dispatch(addCartItems(cartItem, toast, navigate, Buynow));
     };
 
-    const { name, description, discount_price, sku, price, stock_status } = oneproduct;
+    const { id, name, description, discount_price, sku, price, stock_status } = oneproduct;
+
+
+
+    const matchingItems = allCartItems.filter(item => item.item_id === id);
+
+    console.log("matchingItems", matchingItems)
+
 
     if (!oneproduct) {
         return (
@@ -95,6 +102,14 @@ const ProductSingleContentPage = ({ oneproduct, singleProductIsloading, singlePr
 
     const shareOnWhatsApp = () => {
         window.open(`https://wa.me/?text=${encodeURIComponent(linkToShare)}`, '_blank');
+    };
+
+    const handleClickCart = () => {
+        navigate(`/cart`);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     };
 
     return (
@@ -161,10 +176,20 @@ const ProductSingleContentPage = ({ oneproduct, singleProductIsloading, singlePr
                         </div>
                     </div>
                     <div className="grid grid-cols-12 gap-4 mb-8">
-                        <div className='md:col-span-6 col-span-12'>
-                            <Btnoutline title="add to cart" width="100%"
-                                handleClick={handleAddToCart} />
-                        </div>
+
+                        {matchingItems.length > 0 ? (
+                            <div className='md:col-span-6 col-span-12'>
+                                <Btnoutline title="go to cart" width="100%" handleClick={handleClickCart}/>
+                            </div>
+                        ) : (
+                            <div className='md:col-span-6 col-span-12'>
+                                <Btnoutline title="add to cart" width="100%"
+                                    handleClick={handleAddToCart} />
+                            </div>
+                        )}
+
+
+
                         <div className='md:col-span-6 col-span-12'>
                             <Btnone title="buy now" bgColor="#00A762" width="100%"
                                 handleClick={handleBuynow} />

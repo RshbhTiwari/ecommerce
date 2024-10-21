@@ -7,7 +7,7 @@ import CollectionsShopCard from '../shop/CollectionsShopCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOneProduct, getproduct, getProducts } from '../../../redux/slices/product';
 
-const ShopSingleDetails = ({ id }) => { 
+const ShopSingleDetails = ({ id, allCartItems }) => { 
     const dispatch = useDispatch();
 
     const [allSingleProductsData, setSingleProductsData] = useState([]);
@@ -27,7 +27,9 @@ const ShopSingleDetails = ({ id }) => {
         if (oneProduct) {
             setSingleProductsData(oneProduct);
         }
-    }, [oneProduct]);
+    }, [oneProduct]); 
+
+   
 
     return (
         <>
@@ -41,8 +43,9 @@ const ShopSingleDetails = ({ id }) => {
                     </div>
 
                     <div className='lg:col-span-7 col-span-12'>
-                        <ProductSingleContentPage oneproduct={allSingleProductsData}
-                         singleProductError={singleProductError} singleProductIsloading={singleProductIsloading} />
+                        <ProductSingleContentPage oneproduct={allSingleProductsData} 
+                         singleProductError={singleProductError} singleProductIsloading={singleProductIsloading}
+                         allCartItems={allCartItems} />
                     </div>
                 </div>
 
