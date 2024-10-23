@@ -6,7 +6,7 @@ import { Paragraph } from '../../basic/title';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { addCartItems, getAllCartItems } from '../../../../redux/slices/addToCart';
-import { postWishlistUser } from '../../../../redux/slices/wishlist';
+import { getWishlist, postWishlistUser } from '../../../../redux/slices/wishlist';
 
 const ProductCard = ({ allProducts, productIsLoading, productError, skeletonCount }) => {
 
@@ -28,6 +28,12 @@ const ProductCard = ({ allProducts, productIsLoading, productError, skeletonCoun
         (state) => state.addToCart
     );
 
+    const { wishlist } = useSelector((state) => state.wishlist);
+
+    useEffect(() => {
+        dispatch(getWishlist());
+    }, [dispatch]);
+
     useEffect(() => {
         if (allCartItems?.items) {
             setLocalCartItems(allCartItems?.items);
@@ -47,6 +53,11 @@ const ProductCard = ({ allProducts, productIsLoading, productError, skeletonCoun
             dispatch(getAllCartItems(cart_id, payload));
         }
     }, [dispatch, cart_id, customer_id, token]);
+
+    const isItemInwishlist = (itemId) => {
+        return wishlist.some((wishlistItem) => wishlistItem.product_id === itemId);
+    };
+
 
     const isItemInCart = (itemId) => {
         return localCartItems.some((cartItem) => cartItem.item_id === itemId);
@@ -76,7 +87,7 @@ const ProductCard = ({ allProducts, productIsLoading, productError, skeletonCoun
             ...(cart_id && { cart_id }),
             ...(customer_id && { customer_id })
         };
-        dispatch(addCartItems(cartItem, toast, navigate));
+        dispatch(addCartItems(cartItem, toast, navigate)); 
     };
 
     const handleAddWishlist = (product_id) => {
@@ -87,7 +98,7 @@ const ProductCard = ({ allProducts, productIsLoading, productError, skeletonCoun
                 product_id: product_id,
                 ...(user_id && { user_id })
             };
-            dispatch(postWishlistUser(payload, toast, navigate));
+            dispatch(postWishlistUser(payload, toast));
         } else {
             navigate('/login');
             toast.error("You need to log in to add to wishlist");
@@ -179,12 +190,18 @@ const ProductCard = ({ allProducts, productIsLoading, productError, skeletonCoun
                         )}
                     </div>
                     <div className='flex justify-center items-center px-2 py-2 gap-2'>
-                        <div
-                            className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320] cursor-pointer'
-                            onClick={() => handleAddWishlist(item?.id)}
-                        >
-                            <FaRegHeart className='text-white text-[22px]' />
+
+                        <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320]'>
+                            <button
+                                onClick={() => handleAddWishlist(item?.id)}
+                                disabled={isItemInwishlist(item?.id)}
+                                className={`flex items-center justify-center w-full h-full rounded-lg ${isItemInwishlist(item?.id) ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#072320] cursor-pointer'}`}
+                            >
+                                <FaRegHeart className='text-white text-[22px]' />
+                            </button>
                         </div>
+
+                      
 
                         <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320]'>
                             <button

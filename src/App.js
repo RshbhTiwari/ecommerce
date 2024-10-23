@@ -53,13 +53,15 @@ function App() {
   const cartData = allCartItems?.items || [];
   const itemCount = cartData.length;
 
+  console.log("allCartItems", allCartItems)
+
   useEffect(() => {
     if (allCartItems?.items) {
       setLocalCartItems(allCartItems?.items);
     }
   }, [allCartItems]);
 
-  useEffect(() => { 
+  useEffect(() => {
     if (token) {
       const payload = {
         status: true,
@@ -76,7 +78,7 @@ function App() {
   useEffect(() => {
     console.log('Item count has changed:', itemCount);
   }, [itemCount, localCartItems]);
- 
+
   return (
     <>
       <BrowserRouter>
@@ -100,9 +102,10 @@ function App() {
           <Route path="/my-account/address-book" element={<Addressbook />} />
           <Route path="/my-account/add-address" element={<AddAddressBook />} />
           <Route path="/my-account/edit-address/:id" element={<EditAddressBook />} />
-          <Route path="/cart" element={<Cart cartData={localCartItems} itemCount={itemCount} allCartItems={allCartItems}
+          <Route path="/cart" element={<Cart selectLength={allCartItems?.selectLength}
+           cartData={localCartItems} itemCount={itemCount} allCartItems={allCartItems}
             cartIsLoading={cartIsLoading} cartErorr={cartErorr} />} />
-          <Route path="/checkout" element={<Checkout cartData={localCartItems} itemCount={itemCount} allCartItems={allCartItems} />} />
+          <Route path="/checkout" element={<Checkout selectLength={allCartItems?.selectLength} cartData={localCartItems} itemCount={itemCount} allCartItems={allCartItems} />} />
           <Route path="/my-account/wishlist" element={<Wishlist />} />
           <Route path="/my-account/orders" element={<Orders />} />
           <Route path="/my-account/orders/:id" element={<OrdersDetails />} />

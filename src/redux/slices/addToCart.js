@@ -36,7 +36,7 @@ const cartSlice = createSlice({
             state.isLoading = false;
             state.allCartItems = action.payload;
         },
-      
+
         deleteCartSuccess(state, action) {
             state.isLoading = false;
             state.deleteStatus = action.payload;
@@ -83,7 +83,7 @@ export function getAllCartItems(cart_id, payload) {
     };
 }
 
-export function addCartItems(cartItem, toast, navigate,Buynow) {
+export function addCartItems(cartItem, toast, navigate, Buynow) {
     return async (dispatch) => {
         try {
             dispatch(startLoading());
@@ -92,7 +92,7 @@ export function addCartItems(cartItem, toast, navigate,Buynow) {
             console.log(response?.data?.cart_id)
             localStorage.setItem("cart_id", response?.data?.cart_id);
             if (response?.data?.status === true) {
-                
+
                 const cart_id = localStorage?.getItem('cart_id') || null;
                 const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
                 const token = localStorage?.getItem('accessToken') || null;
@@ -114,7 +114,7 @@ export function addCartItems(cartItem, toast, navigate,Buynow) {
                         top: 0,
                         behavior: 'smooth'
                     });
-                } 
+                }
                 // else {
                 //     navigate('/cart');
                 //     window.scrollTo({
@@ -122,7 +122,7 @@ export function addCartItems(cartItem, toast, navigate,Buynow) {
                 //         behavior: 'smooth'
                 //     });
                 // }
-               
+
                 toast.success("Continue shopping or view your cart.");
             } else {
                 toast.error("Ensure the item is available and try again later");
@@ -196,6 +196,134 @@ export function deleteCartItem(itemId, toast) {
         } catch (error) {
             console.error("Error deleting cart item. Verify the item and try deleting it again.", error);
             toast.error("Verify the item and try deleting it again.");
+            dispatch(hasError(error.message || "Error deleting cart item"));
+        }
+    };
+}
+
+
+export function PostAddAllSalectItems(payload, cart_id, toast) {
+    return async (dispatch) => {
+        try {
+            dispatch(startLoading());
+            const response = await axios.post(`/cart/items/select/${cart_id}`, payload);
+            if (response?.data?.status === true) {
+                const cart_id = localStorage?.getItem('cart_id') || null;
+                const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+                const token = localStorage?.getItem('accessToken') || null;
+                if (token) {
+                    const payload = {
+                        status: true,
+                    };
+                    dispatch(getAllCartItems(customer_id, payload));
+                } else {
+                    const payload = {
+                        status: false,
+                    };
+                    dispatch(getAllCartItems(cart_id, payload));
+                }
+            } else {
+                toast.error("Address Linking Failed");
+            }
+        } catch (error) {
+            console.error("Address Linking Failed", error);
+            toast.error("Address Linking Failed");
+            dispatch(hasError(error.message || "Error linking address"));
+        }
+    };
+}
+
+// export function RemoveAllSalectItems(cart_id, toast) {
+//     return async (dispatch) => {
+//         try {
+//             dispatch(startLoading());
+//             const response = await axios.post(`/cart/items/select/${cart_id}`);
+//             if (response?.data?.status === true) {
+//                 const cart_id = localStorage?.getItem('cart_id') || null;
+//                 const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+//                 const token = localStorage?.getItem('accessToken') || null;
+//                 if (token) {
+//                     const payload = {
+//                         status: true,
+//                     };
+//                     dispatch(getAllCartItems(customer_id, payload));
+//                 } else {
+//                     const payload = {
+//                         status: false,
+//                     };
+//                     dispatch(getAllCartItems(cart_id, payload));
+//                 }
+//             } else {
+//                 toast.error("Address Linking Failed");
+//             }
+//         } catch (error) {
+//             console.error("Address Linking Failed", error);
+//             toast.error("Address Linking Failed");
+//             dispatch(hasError(error.message || "Error linking address"));
+//         }
+//     };
+// }
+
+
+export function PostAddSalectItems(payload, itemId, toast) {
+    return async (dispatch) => {
+        try {
+
+            dispatch(startLoading());
+            console.log("payload", payload, itemId,);
+            const response = await axios.post(`/cart/item/select/${itemId}`, payload);
+            if (response?.data?.status === true) {
+                const cart_id = localStorage?.getItem('cart_id') || null;
+                const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+                const token = localStorage?.getItem('accessToken') || null;
+                if (token) {
+                    const payload = {
+                        status: true,
+                    };
+                    dispatch(getAllCartItems(customer_id, payload));
+                } else {
+                    const payload = {
+                        status: false,
+                    };
+                    dispatch(getAllCartItems(cart_id, payload));
+                }
+            } else {
+                toast.error("Address Linking Failed");
+            }
+        } catch (error) {
+            console.error("Address Linking Failed", error);
+            toast.error("Address Linking Failed");
+            dispatch(hasError(error.message || "Error linking address"));
+        }
+    };
+}
+
+export function RemoveAllCartItems(cart_id, toast) {
+    return async (dispatch) => {
+        try {
+            dispatch(startLoading());
+            const response = await axios.delete(`/cart/items/remove/${cart_id}`);
+       
+
+            if (response?.data?.status === true) {
+                const cart_id = localStorage?.getItem('cart_id') || null;
+                const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
+                const token = localStorage?.getItem('accessToken') || null;
+                if (token) {
+                    const payload = {
+                        status: true,
+                    };
+                    dispatch(getAllCartItems(customer_id, payload));
+                } else {
+                    const payload = {
+                        status: false,
+                    };
+                    dispatch(getAllCartItems(cart_id, payload));
+                }
+            } else {
+                toast.error("Address Linking Failed");
+            }
+        } catch (error) {
             dispatch(hasError(error.message || "Error deleting cart item"));
         }
     };

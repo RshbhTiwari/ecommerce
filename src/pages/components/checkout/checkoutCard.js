@@ -4,34 +4,52 @@ import { HeadingTitle } from '../basic/title';
 import AccordionExample from './Accordion';
 import OrderSummary from './Accordion/OrderSummary';
 import { toast } from 'react-toastify';
+import { PostAddAllSalectItems, RemoveAllCartItems } from '../../../redux/slices/addToCart';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
-export default function CheckoutCard({ cartData, itemCount, allCartItems, SelectItemcartData }) {
+export default function CheckoutCard({ selectLength, cartData, itemCount, allCartItems }) {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
     const getCheckboxState = () => {
         const cartLength = cartData?.length;
-        const selectLength = SelectItemcartData?.length;
+        const SelectItemcartData = selectLength;
 
-        if (cartLength === selectLength && cartLength > 0) {
+        if (cartLength === SelectItemcartData && cartLength > 0) {
             return true; // All items selected
-        } else if (selectLength === 0) {
+        } else if (SelectItemcartData === 0) {
             return false; // No items selected
         } else {
-            return 'indeterminate'; // Some items selected
+            return 'indeterminate'; // Some items selected 
         }
     };
 
     const handleCheckboxChange = async (e) => {
         try {
             const isChecked = e.target.checked;
-            if (isChecked) {
-                // dispatch(PostAddAllSalectItems());
-            } else {
-            }
+            console.log("isChecked", isChecked)
+            const cart_id = localStorage?.getItem('cart_id') || null;
+            const payload = {
+                selected: isChecked,
+            };
+            dispatch(PostAddAllSalectItems(payload, cart_id, toast));
         } catch (error) {
-            toast.error('Failed to update address.');
+            toast.error('An error occurred');
+        }
+    };
+
+    const handleAllCartRemove = async () => {
+        try {
+            const cart_id = localStorage?.getItem('cart_id') || null;
+            dispatch(RemoveAllCartItems(cart_id, toast));
+        } catch (error) {
+            toast.error('An error occurred');
         }
     };
 
     const checkboxState = getCheckboxState();
+
     return (
         <>
             <BreadCrum componentName="checkout" link="/checkout" />
@@ -53,12 +71,15 @@ export default function CheckoutCard({ cartData, itemCount, allCartItems, Select
                                     <FormProvider>
                                         <FormContent
                                             isChecked={checkboxState === true ? true : checkboxState === 'indeterminate' ? false : false}
-                                            onCheckboxChange={handleCheckboxChange}
+                                            onCheckboxChange={(e) => handleCheckboxChange(e)}
                                             itemCount={itemCount}
+                                            selectLength={selectLength}
+                                            checkboxState={checkboxState}
                                         />
                                     </FormProvider>
 
-                                    <p class="text-base font-dm text-left  text-white"> REMOVE </p>
+                                    <p class="text-base font-dm text-left cursor-pointer text-white"
+                                          onClick={() => handleAllCartRemove()}>Remove All Items</p>
                                 </div>
 
 
@@ -95,12 +116,13 @@ export default function CheckoutCard({ cartData, itemCount, allCartItems, Select
     );
 }
 
-function FormContent({ isChecked, onCheckboxChange, itemCount }) {
+function FormContent({ isChecked, onCheckboxChange, itemCount, selectLength, checkboxState }) {
+    console.log("checkboxState", checkboxState)
     return (
-        <form className="w-fit">
-            <label className="font-dm text-md flex justify-center items-center font-medium cursor-pointer text-white" >
+        <form className="w-fit flex items-center justify-center">
+            <label className="custom-checkbox">
                 <input
-                    className="mr-1 "
+                    id="myCheckbox"
                     type="checkbox"
                     checked={isChecked === true}
                     onChange={onCheckboxChange}
@@ -110,8 +132,17 @@ function FormContent({ isChecked, onCheckboxChange, itemCount }) {
                         }
                     }}
                 />
-                {itemCount}/{itemCount} Items Selected
+                {checkboxState === 'indeterminate' ? (
+                    <span className="checkmark text-[38px] text-[#072320]"
+                        style={{
+                            paddingBottom: "9px"
+                        }}>-</span>
+                ) : (
+                    <span className="checkmark"></span>
+                )}
+
             </label>
+            <div className='ml-2 text-white' htmlFor="myCheckbox">{selectLength}/{itemCount} Items Selected</div>
         </form>
     );
 }

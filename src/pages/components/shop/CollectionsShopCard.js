@@ -6,10 +6,10 @@ import { Paragraph } from "../basic/title";
 import { Btnone } from '../basic/button';
 import { FaRegHeart } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { addCartItems } from '../../../redux/slices/addToCart';
-import { postWishlistUser } from '../../../redux/slices/wishlist';
+import { getWishlist, postWishlistUser } from '../../../redux/slices/wishlist';
 
 const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
 
@@ -42,10 +42,15 @@ const settings = {
 const CollectionsShopCard = ({ allproducts }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
-
-
     const [allProductsData, setAllProductsData] = useState([]);
+
+    const { wishlist } = useSelector((state) => state.wishlist);
+
+    useEffect(() => {
+        dispatch(getWishlist());
+    }, [dispatch]);
+
+
     useEffect(() => {
         if (allproducts?.length) {
             setAllProductsData(allproducts);
@@ -82,7 +87,7 @@ const CollectionsShopCard = ({ allproducts }) => {
                 product_id: product_id,
                 ...(user_id && { user_id })
             };
-            dispatch(postWishlistUser(payload, toast, navigate));
+            dispatch(postWishlistUser(payload, toast));
         } else {
             navigate('/login')
             toast.error("You need to log in to add to wishlist");
@@ -91,6 +96,10 @@ const CollectionsShopCard = ({ allproducts }) => {
                 behavior: 'smooth'
             });
         }
+    };
+
+    const isItemInwishlist = (itemId) => {
+        return wishlist.some((wishlistItem) => wishlistItem.product_id === itemId);
     };
 
 
@@ -102,7 +111,7 @@ const CollectionsShopCard = ({ allproducts }) => {
                     <div className='group
                           flex flex-col justify-center relative h-full items-center rounded-br-lg rounded-tl-lg
                             border-2  border-[#072320]'
-                        >
+                    >
 
                         <div className='flex justify-center items-center cursor-pointer bg-[#00A762]
                          rounded-br-lg rounded-tl-lg m-4 p-4 relative w-full' onClick={() => {
@@ -123,11 +132,22 @@ const CollectionsShopCard = ({ allproducts }) => {
                                 />
                             </div>
 
-                            <div className="show_box flex justify-evenly items-center absolute h-10 w-10 bg-[#072320c7] mx-auto px-2 py-1 rounded-full" onClick={() => {
+                            <div className='show_box flex justify-evenly items-center absolute h-10 w-10 mx-auto rounded-full'>
+                                <button
+                                    onClick={() => handleAddWishlist(item?.id)}
+                                    disabled={isItemInwishlist(item?.id)}
+                                    className={`flex items-center justify-center h-10 w-10 rounded-full
+                                         ${isItemInwishlist(item?.id) ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#072320] cursor-pointer'}`}
+                                >
+                                    <FaRegHeart className='text-white text-[20px]' />
+                                </button>
+                            </div>
+
+                            {/* <div className="show_box flex justify-evenly items-center absolute h-10 w-10 bg-[#072320c7] mx-auto px-2 py-1 rounded-full" onClick={() => {
                                 handleAddWishlist(item?.id);
                             }}>
                                 <FaRegHeart className='text-white text-[20px]' />
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className="flex flex-col justify-center items-center mt-2 mb-4">

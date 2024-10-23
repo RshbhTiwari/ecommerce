@@ -6,7 +6,7 @@ import { Paragraph } from '../../basic/title';
 import { addCartItems, getAllCartItems } from '../../../../redux/slices/addToCart';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
-import { postWishlistUser } from '../../../../redux/slices/wishlist';
+import { getWishlist, postWishlistUser } from '../../../../redux/slices/wishlist';
 
 const ProductsortpillsCard = ({ skeletonCount, allProducts, productIsLoading, productError }) => {
 
@@ -25,6 +25,12 @@ const ProductsortpillsCard = ({ skeletonCount, allProducts, productIsLoading, pr
     const { allCartItems, isLoading: cartIsLoading, error: cartErorr } = useSelector(
         (state) => state.addToCart
     );
+
+    const { wishlist } = useSelector((state) => state.wishlist);
+
+    useEffect(() => {
+        dispatch(getWishlist());
+    }, [dispatch]);
 
     useEffect(() => {
         if (allCartItems?.items) {
@@ -112,6 +118,10 @@ const ProductsortpillsCard = ({ skeletonCount, allProducts, productIsLoading, pr
         return <div className="text-red-500">An error occurred: {productError}</div>;
     }
 
+    const isItemInwishlist = (itemId) => {
+        return wishlist.some((wishlistItem) => wishlistItem.product_id === itemId);
+    };
+
     return (
         <>
             {allProducts.map((item, index) => (
@@ -152,11 +162,15 @@ const ProductsortpillsCard = ({ skeletonCount, allProducts, productIsLoading, pr
                     </div>
                     <div className="absolute inset-0 flex items-center right-0 top-0 left-0 bottom-0 justify-center rounded-lg opacity-0 bg-[#00000040] hover:opacity-100 transition-opacity duration-300">
                         <div className="text-white text-center flex justify-center items-center gap-2">
-                            <div
-                                className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320] cursor-pointer'
-                                onClick={() => handleAddWishlist(item?.id)}
-                            >
-                                <FaRegHeart className='text-white text-[22px]' />
+
+                            <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320]'>
+                                <button
+                                    onClick={() => handleAddToCart(item?.id)}
+                                    disabled={isItemInCart(item?.id)}
+                                    className={`flex items-center justify-center w-full h-full rounded-lg ${isItemInCart(item?.id) ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#072320] cursor-pointer'}`}
+                                >
+                                    <HiOutlineShoppingBag className='text-white text-[22px]' />
+                                </button>
                             </div>
 
                             <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320]'>

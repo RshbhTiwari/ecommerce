@@ -10,7 +10,7 @@ import { NoProducts } from '../../ErrorPages';
 import { useNavigate } from "react-router-dom";
 import { addCartItems, getAllCartItems } from '../../../../../redux/slices/addToCart';
 import { toast } from 'react-toastify';
-import { postWishlistUser } from '../../../../../redux/slices/wishlist';
+import { getWishlist, postWishlistUser } from '../../../../../redux/slices/wishlist';
 
 function NavSearchIcon() {
 
@@ -34,6 +34,12 @@ function NavSearchIcon() {
     const { isLoading: productIsLoading, error: productError, products } = useSelector(
         (state) => state.product
     );
+
+    const { wishlist } = useSelector((state) => state.wishlist);
+
+    useEffect(() => {
+        dispatch(getWishlist());
+    }, [dispatch]);
 
     useEffect(() => {
         if (allCartItems?.items) {
@@ -127,7 +133,7 @@ function NavSearchIcon() {
                 ...(user_id && { user_id })
             };
             setIsSearchOpen(false);
-            dispatch(postWishlistUser(payload, toast, navigate));
+            dispatch(postWishlistUser(payload, toast));
         } else {
             navigate('/login')
             setIsSearchOpen(false);
@@ -137,6 +143,10 @@ function NavSearchIcon() {
             });
             toast.error("You need to log in to add to wishlist");
         }
+    };
+
+    const isItemInwishlist = (itemId) => {
+        return wishlist.some((wishlistItem) => wishlistItem.product_id === itemId);
     };
 
 
@@ -223,11 +233,15 @@ function NavSearchIcon() {
 
                                                             <div className="absolute inset-0 flex items-center right-0 top-0 left-0 bottom-0 justify-center rounded-lg opacity-0 bg-[#00000040] hover:opacity-100 transition-opacity duration-300">
                                                                 <div className="text-white text-center flex justify-center items-center gap-2">
-                                                                    <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320] cursor-pointer' onClick={() => {
-                                                                        handleAddWishlist(item?.id);
-                                                                    }}>
-                                                                        <FaRegHeart className='text-white text-[22px]' />
-                                                                    </div>
+                                                                <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320]'>
+                            <button
+                                onClick={() => handleAddWishlist(item?.id)}
+                                disabled={isItemInwishlist(item?.id)}
+                                className={`flex items-center justify-center w-full h-full rounded-lg ${isItemInwishlist(item?.id) ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#072320] cursor-pointer'}`}
+                            >
+                                <FaRegHeart className='text-white text-[22px]' />
+                            </button>
+                        </div>
 
                                                                     <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320]'>
                                                                         <button

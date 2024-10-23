@@ -8,20 +8,20 @@ import { MdOutlineArrowBackIos } from "react-icons/md";
 import { FormProvider } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
+import { PostAddAllSalectItems, RemoveAllCartItems } from '../../../redux/slices/addToCart';
 
-export default function ShoppingCard({ cartData, itemCount, allCartItems, cartIsLoading, cartErorr, SelectItemcartData }) {
+
+export default function ShoppingCard({ selectLength, cartData, itemCount, allCartItems, cartIsLoading, cartErorr }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-
-
     const getCheckboxState = () => {
         const cartLength = cartData?.length;
-        const selectLength = SelectItemcartData?.length;
+        const SelectItemcartData = selectLength;
 
-        if (cartLength === selectLength && cartLength > 0) { 
+        if (cartLength === SelectItemcartData && cartLength > 0) {
             return true; // All items selected
-        } else if (selectLength === 0) {
+        } else if (SelectItemcartData === 0) {
             return false; // No items selected
         } else {
             return 'indeterminate'; // Some items selected 
@@ -31,12 +31,23 @@ export default function ShoppingCard({ cartData, itemCount, allCartItems, cartIs
     const handleCheckboxChange = async (e) => {
         try {
             const isChecked = e.target.checked;
-            if (isChecked) {
-                // dispatch(PostAddAllSalectItems());
-            } else {
-            }
+            console.log("isChecked", isChecked)
+            const cart_id = localStorage?.getItem('cart_id') || null;
+            const payload = {
+                selected: isChecked,
+            };
+            dispatch(PostAddAllSalectItems(payload, cart_id, toast));
         } catch (error) {
-            toast.error('Failed to update address.');
+            toast.error('An error occurred');
+        }
+    };
+
+    const handleAllCartRemove = async () => {
+        try {
+            const cart_id = localStorage?.getItem('cart_id') || null;
+            dispatch(RemoveAllCartItems(cart_id, toast));
+        } catch (error) {
+            toast.error('An error occurred');
         }
     };
 
@@ -80,17 +91,24 @@ export default function ShoppingCard({ cartData, itemCount, allCartItems, cartIs
                                         <FormProvider>
                                             <FormContent
                                                 isChecked={checkboxState === true ? true : checkboxState === 'indeterminate' ? false : false}
-                                                onCheckboxChange={handleCheckboxChange}
+                                                onCheckboxChange={(e) => handleCheckboxChange(e)}
                                                 itemCount={itemCount}
+                                                selectLength={selectLength}
+                                                checkboxState={checkboxState}
                                             />
                                         </FormProvider>
 
-                                        <p class="text-base font-dm text-left  text-[#000000]"> REMOVE </p>
+                                        <p class="text-base font-dm text-left cursor-pointer text-[#072320]"
+                                          onClick={() => handleAllCartRemove()}>Remove All Items</p>
                                     </div>
 
 
                                     <div className="overflow-x-auto mt-6">
-                                        <ShoppingCartTable shoppingcart={cartData} itemCount={itemCount} cartIsLoading={cartIsLoading} cartErorr={cartErorr} SelectItemcartData={SelectItemcartData} />
+                                        <ShoppingCartTable
+                                            shoppingcart={cartData}
+                                            itemCount={itemCount} cartIsLoading={cartIsLoading}
+                                            cartErorr={cartErorr}
+                                        /> 
                                     </div>
                                 </>
                             ) : (
@@ -147,12 +165,13 @@ export default function ShoppingCard({ cartData, itemCount, allCartItems, cartIs
     );
 }
 
-function FormContent({ isChecked, onCheckboxChange, itemCount }) {
+function FormContent({ isChecked, onCheckboxChange, itemCount, selectLength, checkboxState }) {
+    console.log("checkboxState", checkboxState)
     return (
-        <form className="w-fit">
-            <label className="font-dm text-md flex justify-center items-center font-medium cursor-pointer" >
+        <form className="w-fit flex items-center justify-center">
+            <label className="custom-checkbox">
                 <input
-                    className="mr-1 "
+                    id="myCheckbox"
                     type="checkbox"
                     checked={isChecked === true}
                     onChange={onCheckboxChange}
@@ -162,25 +181,36 @@ function FormContent({ isChecked, onCheckboxChange, itemCount }) {
                         }
                     }}
                 />
-                {itemCount}/{itemCount} Items Selected
+                {checkboxState === 'indeterminate' ? (
+                    <span className="checkmark text-[38px] text-[#072320]"
+                        style={{
+                            paddingBottom: "9px"
+                        }}>-</span>
+                ) : (
+                    <span className="checkmark"></span>
+                )}
+
             </label>
+            <div className='ml-2' htmlFor="myCheckbox">{selectLength}/{itemCount} Items Selected</div>
         </form>
     );
 }
 
-//  how to achive react js if cart cartData.lenght and 
-//  SelectItemcartData.lenght equel equal than checkbox 
+//  how to achive react js if cart cartData.lenght and
+//  SelectItemcartData.lenght equel equal than checkbox
 //  true else SelectItemcartData.lenght xero than checkbox false and middele value checkbox design -
-//   how to possible this type code 
+//   how to possible this type code
 
 // import React from 'react';
 // import { FormProvider } from 'react-hook-form';
 // import { useDispatch } from 'react-redux';
 // import { useNavigate } from 'react-router-dom';
 // import { toast } from 'react-toastify';
-// export default function ShoppingCard({ cartData, itemCount, SelectItemcartData }) {
+// export default function ShoppingCard({ cartData, itemCount, selectLength }) {
+
 //     const navigate = useNavigate();
 //     const dispatch = useDispatch();
+
 //     const getCheckboxState = () => {
 //         const cartLength = cartData?.length;
 //         const selectLength = SelectItemcartData?.length;
@@ -193,15 +223,18 @@ function FormContent({ isChecked, onCheckboxChange, itemCount }) {
 //             return 'indeterminate'; // Some items selected
 //         }
 //     };
+
 //     const handleCheckboxChange = async (e) => {
 //         try {
 //             const isChecked = e.target.checked;
-//             if (isChecked) {
-//                 // dispatch(PostAddAllSalectItems());
-//             } else {
-//             }
+//             console.log("isChecked",isChecked)
+//             const cart_id = localStorage?.getItem('cart_id') || null;
+//             const payload = {
+//                 selected: isChecked,
+//             };
+//             dispatch(PostAddAllSalectItems(payload, cart_id, toast));
 //         } catch (error) {
-//             toast.error('Failed to update address.');
+//             toast.error('An error occurred');
 //         }
 //     };
 
@@ -210,13 +243,14 @@ function FormContent({ isChecked, onCheckboxChange, itemCount }) {
 //     return (
 //         <>
 //             <div className="mt-2 flex flex-col sm:flex-row gap-2 sm:gap-0 justify-start sm:justify-between">
-//                 <FormProvider>
-//                     <FormContent
-//                         isChecked={checkboxState === true ? true : checkboxState === 'indeterminate' ? false : false}
-//                         onCheckboxChange={handleCheckboxChange}
-//                         itemCount={itemCount}
-//                     />
-//                 </FormProvider>
+//             <FormProvider>
+//                                             <FormContent
+//                                                 isChecked={checkboxState === true ? true : checkboxState === 'indeterminate' ? false : false}
+//                                                 onCheckboxChange={(e) => handleCheckboxChange(e)}
+//                                                 itemCount={itemCount}
+//                                                 selectLength={selectLength}
+//                                             />
+//                                         </FormProvider>
 //                 <p className="text-base font-dm text-left text-[#000000]"> REMOVE </p>
 //             </div>
 //         </>
@@ -224,12 +258,12 @@ function FormContent({ isChecked, onCheckboxChange, itemCount }) {
 // }
 
 
-// function FormContent({ isChecked, onCheckboxChange, itemCount }) {
+// function FormContent({ isChecked, onCheckboxChange, itemCount, selectLength }) {
 //     return (
 //         <form className="w-fit">
-//             <label className="font-dm text-md flex justify-center items-center font-medium">
+//             <label className="font-dm text-md flex justify-center items-center font-medium cursor-pointer" >
 //                 <input
-//                     className="mr-1 cursor-pointer"
+//                     className="mr-1 "
 //                     type="checkbox"
 //                     checked={isChecked === true}
 //                     onChange={onCheckboxChange}
@@ -239,7 +273,8 @@ function FormContent({ isChecked, onCheckboxChange, itemCount }) {
 //                         }
 //                     }}
 //                 />
-//                 {itemCount}/{itemCount} Items Selected
+//                 {selectLength}/{itemCount} Items Selected
 //             </label>
 //         </form>
 //     );
+// }

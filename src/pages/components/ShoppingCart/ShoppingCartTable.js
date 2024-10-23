@@ -334,13 +334,13 @@ import { MdAdd, MdDeleteForever } from "react-icons/md";
 import { FiMinus } from "react-icons/fi";
 import { useState, useEffect, useCallback } from "react";
 import { useDispatch } from 'react-redux';
-import { deleteCartItem, putCartItem } from "../../../redux/slices/addToCart";
+import { deleteCartItem, PostAddSalectItems, putCartItem } from "../../../redux/slices/addToCart";
 import { toast } from 'react-toastify';
 import { RxCross2 } from "react-icons/rx";
 import { Modeldelete, Modelminidelete } from "../basic/model";
 import { FormProvider } from "react-hook-form";
 
-export default function ShoppingCartTable({ shoppingcart, minicart, cartIsLoading, cartErorr, selectItemCartData }) {
+export default function ShoppingCartTable({ shoppingcart, minicart, cartIsLoading }) {
 
     const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
 
@@ -351,6 +351,10 @@ export default function ShoppingCartTable({ shoppingcart, minicart, cartIsLoadin
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [cartitemId, setCartItemId] = useState(null);
+
+    const [selectedItems, setSelectedItems] = useState({});
+
+
 
     const openModal = (id) => {
 
@@ -451,17 +455,30 @@ export default function ShoppingCartTable({ shoppingcart, minicart, cartIsLoadin
     }, [dispatch, cartitemId, closeModal]);
 
 
-    const handleCheckboxChange = async (e) => {
-        try {
 
+
+    useEffect(() => {
+        const initialSelectedState = cartItems.reduce((acc, item) => {
+            acc[item.id] = item.selected; // Use item.selected for initial state
+            return acc;
+        }, {});
+        setSelectedItems(initialSelectedState);
+    }, [cartItems]);
+
+    const handleCheckboxChange = async (e, itemId) => {
+        try {
+            const isChecked = e.target.checked;
+            const payload = {
+                selected: isChecked,
+            };
+            console.log("payload", payload);
+            dispatch(PostAddSalectItems(payload, itemId, toast));
+            setSelectedItems((prev) => ({ ...prev, [itemId]: isChecked }));
         } catch (error) {
-            toast.error('');
+            toast.error('An error occurred');
         }
     };
 
-    const isCheckedItemInCart = (itemId) => {
-        return selectItemCartData?.some((item) => item?.id === itemId);
-    };
 
     return (
 
@@ -491,8 +508,8 @@ export default function ShoppingCartTable({ shoppingcart, minicart, cartIsLoadin
                                         <div className="absolute left-1 top-1">
                                             <FormProvider>
                                                 <FormContent
-                                                    isChecked={isCheckedItemInCart(item?.id)}
-                                                    onCheckboxChange={() => handleCheckboxChange(item.id)}
+                                                    isChecked={selectedItems[item.id]}
+                                                    onCheckboxChange={(e) => handleCheckboxChange(e, item.id)}
                                                 />
                                             </FormProvider>
                                         </div>
@@ -556,8 +573,8 @@ export default function ShoppingCartTable({ shoppingcart, minicart, cartIsLoadin
                                                     <div className="absolute left-1 top-1">
                                                         <FormProvider>
                                                             <FormContent
-                                                                isChecked={isCheckedItemInCart(item?.id)}
-                                                                onCheckboxChange={() => handleCheckboxChange(item.id)}
+                                                                isChecked={selectedItems[item.id]}
+                                                                onCheckboxChange={(e) => handleCheckboxChange(e, item.id)}
                                                             />
                                                         </FormProvider>
                                                     </div>
@@ -700,18 +717,11 @@ const SkeletonLoader = ({ cartItems }) => {
 
 function FormContent({ isChecked, onCheckboxChange }) {
     return (
-        // <form className="w-fit">
-        //     <input
-        //         type="checkbox"
-        //         checked={isChecked}
-        //         onChange={onCheckboxChange}
-        //     />
-        // </form>
         <form className="w-fit">
             <label className="custom-checkbox">
                 <input
                     type="checkbox"
-                    checked={isChecked}
+                    checked={isChecked || false}
                     onChange={onCheckboxChange}
                 />
                 <span className="checkmark"></span>

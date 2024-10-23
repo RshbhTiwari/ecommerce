@@ -1,10 +1,14 @@
 import { CheckoutCard } from "./components/checkout";
 
-function Checkout({cartData, itemCount, allCartItems}) {
+function Checkout({ selectLength, cartData, itemCount, allCartItems }) {
     return (
         <>
-            <CheckoutCard cartData={cartData} itemCount={itemCount} allCartItems={allCartItems}/>
+            <CheckoutCard
+                selectLength={selectLength}
+                cartData={cartData}
+                itemCount={itemCount}
+                allCartItems={allCartItems} />
         </>
-    ); 
+    );
 }
 export default Checkout;

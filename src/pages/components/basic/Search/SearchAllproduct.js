@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import { Paragraph } from "../title";
 import { FaRegHeart } from "react-icons/fa";
 import { HiOutlineShoppingBag } from "react-icons/hi";
-import { postWishlistUser } from "../../../../redux/slices/wishlist";
+import { getWishlist, postWishlistUser } from "../../../../redux/slices/wishlist";
 
 function SearchAllproduct() {
     const dispatch = useDispatch();
@@ -30,6 +30,12 @@ function SearchAllproduct() {
         (state) => state.addToCart
     );
     const { products } = useSelector((state) => state.product);
+
+    const { wishlist } = useSelector((state) => state.wishlist);
+
+    useEffect(() => {
+        dispatch(getWishlist());
+    }, [dispatch]);
 
     useEffect(() => {
         if (allCartItems?.items) {
@@ -54,6 +60,8 @@ function SearchAllproduct() {
     useEffect(() => {
         dispatch(getProducts());
     }, [dispatch]);
+
+
 
     useEffect(() => {
         if (products) {
@@ -94,7 +102,7 @@ function SearchAllproduct() {
                 product_id: product_id,
                 ...(user_id && { user_id })
             };
-            dispatch(postWishlistUser(payload, toast, navigate));
+            dispatch(postWishlistUser(payload, toast));
         } else {
             navigate('/login')
             toast.error("You need to log in to add to wishlist");
@@ -115,6 +123,10 @@ function SearchAllproduct() {
 
     const isItemInCart = (itemId) => {
         return localCartItems.some((cartItem) => cartItem.item_id === itemId);
+    };
+
+    const isItemInwishlist = (itemId) => {
+        return wishlist.some((wishlistItem) => wishlistItem.product_id === itemId);
     };
 
     return (
@@ -179,11 +191,18 @@ function SearchAllproduct() {
                             </div>
 
                             <div className='flex justify-center items-center px-2 py-2 gap-2'>
-                                <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320] cursor-pointer' onClick={() => {
-                                    handleAddWishlist(item?.id);
-                                }}>
-                                    <FaRegHeart className='text-white text-[22px]' />
+
+
+                                <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320]'>
+                                    <button
+                                        onClick={() => handleAddWishlist(item?.id)}
+                                        disabled={isItemInwishlist(item?.id)}
+                                        className={`flex items-center justify-center w-full h-full rounded-lg ${isItemInwishlist(item?.id) ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#072320] cursor-pointer'}`}
+                                    >
+                                        <FaRegHeart className='text-white text-[22px]' />
+                                    </button>
                                 </div>
+                                
                                 <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320]'>
                                     <button
                                         onClick={() => handleAddToCart(item?.id)}

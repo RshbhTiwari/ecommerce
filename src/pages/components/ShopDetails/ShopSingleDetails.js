@@ -7,18 +7,18 @@ import CollectionsShopCard from '../shop/CollectionsShopCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOneProduct, getproduct, getProducts } from '../../../redux/slices/product';
 
-const ShopSingleDetails = ({ id, allCartItems }) => { 
+const ShopSingleDetails = ({ id, allCartItems }) => {
     const dispatch = useDispatch();
 
     const [allSingleProductsData, setSingleProductsData] = useState([]);
 
-    const { isLoading:singleProductIsloading, error:singleProductError, oneProduct, products } = useSelector(
+    const { isLoading: singleProductIsloading, error: singleProductError, oneProduct, products } = useSelector(
         (state) => state.product
     );
     useEffect(() => {
         dispatch(getProducts());
     }, [dispatch]);
-    
+
     useEffect(() => {
         dispatch(getOneProduct(id));
     }, [dispatch, id]);
@@ -27,9 +27,9 @@ const ShopSingleDetails = ({ id, allCartItems }) => {
         if (oneProduct) {
             setSingleProductsData(oneProduct);
         }
-    }, [oneProduct]); 
+    }, [oneProduct]);
 
-   
+
 
     return (
         <>
@@ -43,9 +43,11 @@ const ShopSingleDetails = ({ id, allCartItems }) => {
                     </div>
 
                     <div className='lg:col-span-7 col-span-12'>
-                        <ProductSingleContentPage oneproduct={allSingleProductsData} 
-                         singleProductError={singleProductError} singleProductIsloading={singleProductIsloading}
-                         allCartItems={allCartItems} />
+                        <ProductSingleContentPage
+                            oneproduct={allSingleProductsData}
+                            singleProductError={singleProductError}
+                            singleProductIsloading={singleProductIsloading}
+                            allCartItems={allCartItems} />
                     </div>
                 </div>
 

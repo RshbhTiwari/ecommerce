@@ -59,18 +59,14 @@ export const getWishlist = () => async (dispatch) => {
     }
 };
 
-export function postWishlistUser(payload, toast, navigate) {
+export function postWishlistUser(payload, toast) {
     return async (dispatch) => {
         try {
             dispatch(startLoading());
             const response = await axios.post("/addWishlist", payload, { headers: getHeaders() });
             toast.success(response?.data?.message || "Item added to wishlist");
             dispatch(getWishlist());
-            navigate('/my-account/wishlist');
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+          
         } catch (error) {
             dispatch(hasError(error?.response?.data?.message || "Failed to add item to wishlist"));
             toast.error(error?.message || "An error occurred");

@@ -79,24 +79,31 @@ const HomePage = () => {
             <div className="container mx-auto max-w-7xl  px-2 sm:px-6 lg:px-8">
 
                 {allProductsData?.length > 0 ? (
+
                     <div className="pb-10">
-                                   <div className="" data-aos="zoom-in" data-aos-delay="200">
+
+                        <div className="" data-aos="zoom-in" data-aos-delay="200">
                             <HeadingTitle title="Bestsellers in September" />
                         </div>
+
                         <div className="mt-4" data-aos="fade-up" data-aos-delay="200">
                             <ProductCard skeletonCount={4}
                                 allProducts={productsToDisplay}
                                 productIsLoading={productIsLoading}
                                 productError={productError} />
                         </div>
+
                     </div>
+
                 ) : null}
 
                 <div className="pb-10">
+
                     <ImageContent />
+
                 </div>
 
-                <div className="pb-10"  data-aos="fade-up" data-aos-delay="200">
+                <div className="pb-10" data-aos="fade-up" data-aos-delay="200">
                     <OfferContent />
                 </div>
             </div>
