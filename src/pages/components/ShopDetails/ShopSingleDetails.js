@@ -5,19 +5,16 @@ import { HeadingTitle } from '../basic/title';
 import ProductSingleContentPage from './ProductSingleContentPage';
 import CollectionsShopCard from '../shop/CollectionsShopCard';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOneProduct, getproduct, getProducts } from '../../../redux/slices/product';
+import { getOneProduct } from '../../../redux/slices/product';
 
-const ShopSingleDetails = ({ id, allCartItems }) => {
+const ShopSingleDetails = ({ id, localCartItems, allProductsData, wishlist }) => {
     const dispatch = useDispatch();
 
     const [allSingleProductsData, setSingleProductsData] = useState([]);
 
-    const { isLoading: singleProductIsloading, error: singleProductError, oneProduct, products } = useSelector(
+    const { isLoading: singleProductIsloading, error: singleProductError, oneProduct } = useSelector(
         (state) => state.product
     );
-    useEffect(() => {
-        dispatch(getProducts());
-    }, [dispatch]);
 
     useEffect(() => {
         dispatch(getOneProduct(id));
@@ -28,8 +25,6 @@ const ShopSingleDetails = ({ id, allCartItems }) => {
             setSingleProductsData(oneProduct);
         }
     }, [oneProduct]);
-
-
 
     return (
         <>
@@ -47,14 +42,17 @@ const ShopSingleDetails = ({ id, allCartItems }) => {
                             oneproduct={allSingleProductsData}
                             singleProductError={singleProductError}
                             singleProductIsloading={singleProductIsloading}
-                            allCartItems={allCartItems} />
+                            localCartItems={localCartItems} />
                     </div>
                 </div>
 
                 <div className="pb-10">
                     <HeadingTitle title="related products" />
                     <div className="mt-4">
-                        <CollectionsShopCard allproducts={products} />
+                        <CollectionsShopCard
+                            allproducts={allProductsData}
+                            localCartItems={localCartItems}
+                            wishlist={wishlist} />
                     </div>
                 </div>
             </div>

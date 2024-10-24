@@ -39,17 +39,10 @@ const settings = {
     ]
 };
 
-const CollectionsShopCard = ({ allproducts }) => {
+const CollectionsShopCard = ({ allproducts, wishlist, localCartItems }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [allProductsData, setAllProductsData] = useState([]);
-
-    const { wishlist } = useSelector((state) => state.wishlist);
-
-    useEffect(() => {
-        dispatch(getWishlist());
-    }, [dispatch]);
-
 
     useEffect(() => {
         if (allproducts?.length) {
@@ -62,7 +55,7 @@ const CollectionsShopCard = ({ allproducts }) => {
         navigate(`/shop/${id}`);
         window.scrollTo({
             top: 0,
-            behavior: 'smooth'  // This adds a smooth scroll effect
+            behavior: 'smooth' 
         });
     };
 
@@ -99,7 +92,11 @@ const CollectionsShopCard = ({ allproducts }) => {
     };
 
     const isItemInwishlist = (itemId) => {
-        return wishlist.some((wishlistItem) => wishlistItem.product_id === itemId);
+        return wishlist?.some((wishlistItem) => wishlistItem.product_id === itemId);
+    };
+
+    const isItemInCart = (itemId) => {
+        return localCartItems?.some((cartItem) => cartItem.item_id === itemId);
     };
 
 
@@ -143,11 +140,6 @@ const CollectionsShopCard = ({ allproducts }) => {
                                 </button>
                             </div>
 
-                            {/* <div className="show_box flex justify-evenly items-center absolute h-10 w-10 bg-[#072320c7] mx-auto px-2 py-1 rounded-full" onClick={() => {
-                                handleAddWishlist(item?.id);
-                            }}>
-                                <FaRegHeart className='text-white text-[20px]' />
-                            </div> */}
                         </div>
 
                         <div className="flex flex-col justify-center items-center mt-2 mb-4">
@@ -158,13 +150,13 @@ const CollectionsShopCard = ({ allproducts }) => {
                                 <Paragraph title={item?.short_description} shortDescription='true' lineclamp='3' />
                             </div>
 
-                            <div className="mt-2">
+                            <div className='mt-2'>
                                 <button
-                                    className={`bg-[#072320] text-white rounded-lg shadow-md font-dm px-3 py-2 capitalize whitespace-nowrap flex items-center justify-center`}
-
-                                    onClick={() => {
-                                        handleAddToCart(item?.id);
-                                    }}
+                                    onClick={() => handleAddToCart(item?.id)}
+                                    disabled={isItemInCart(item?.id)}
+                                    className={`text-white rounded-lg 
+                                    ${isItemInCart(item?.id) ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#072320] cursor-pointer'}
+                                    shadow-md font-dm px-3 py-2 capitalize whitespace-nowrap flex items-center justify-center`}
                                 >
                                     add to cart
                                 </button>

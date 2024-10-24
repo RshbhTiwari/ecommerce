@@ -1,10 +1,17 @@
 import { BlogPage } from "./components/blog";
 
-function Blog() {
-    
+function Blog({
+    allCategoriesData,
+    categoryIsLoading,
+    categoryError
+}) {
+
     return (
         <>
-            <BlogPage /> 
+            <BlogPage
+                allCategoriesData={allCategoriesData}
+                categoryIsLoading={categoryIsLoading}
+                categoryError={categoryError} />
         </>
 
     );

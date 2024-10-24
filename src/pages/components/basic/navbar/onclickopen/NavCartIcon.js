@@ -7,7 +7,12 @@ import ShoppingCartTable from "../../../ShoppingCart/ShoppingCartTable";
 import CartEmpty from "../../ErrorPages/cartempty";
 import { useNavigate } from "react-router-dom";
 
-function NavCartIcon({ cartData, itemCount }) {
+function NavCartIcon({
+    cartData,
+    cartIsLoading,
+    cartErorr,
+    itemCount }) {
+
     const navigate = useNavigate();
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
@@ -18,7 +23,7 @@ function NavCartIcon({ cartData, itemCount }) {
             setTimeout(() => {
                 setIsCartOpen(false);
                 setIsClosing(false);
-            }, 300); // Duration should match animation time
+            }, 300);
         } else {
             setIsCartOpen(true);
         }
@@ -102,10 +107,7 @@ function NavCartIcon({ cartData, itemCount }) {
                                             <Btnoutline title="edit cart" width="100%" handleClick={handleClickCart} />
                                         </div>
                                     </>
-
                                 ) : null}
-
-
                             </div>
                         </div>
                     </div>

@@ -4,13 +4,12 @@ import { CgMenuGridR } from "react-icons/cg";
 import PaginationshopCard from './PaginationshopCard';
 import PaginationshoplistCard from './PaginationshoplistCard';
 
-const ProductTab = ({ allproducts, productIsLoading, productError }) => {
+const ProductTab = ({ allproducts, productIsLoading, productError, localCartItems, wishlist }) => {
     const [activeTab, setActiveTab] = useState('tab_a');
 
     const handleTabClick = (tab) => {
         setActiveTab(tab);
     };
-
 
     return (
         <>
@@ -38,12 +37,14 @@ const ProductTab = ({ allproducts, productIsLoading, productError }) => {
                 {activeTab === 'tab_a' && (
                     <div data-aos="fade-up" data-aos-delay="100">
                         <PaginationshopCard products={allproducts} productIsLoading={productIsLoading}
-                            productError={productError} /></div>
+                            productError={productError} localCartItems={localCartItems}
+                            wishlist={wishlist} /></div>
                 )}
                 {activeTab === 'tab_b' && (
                     <div data-aos="fade-up" data-aos-delay="100">
                         <PaginationshoplistCard products={allproducts} productIsLoading={productIsLoading}
-                            productError={productError} /></div>
+                            productError={productError} localCartItems={localCartItems}
+                            wishlist={wishlist} /></div>
                 )}
             </div>
         </>

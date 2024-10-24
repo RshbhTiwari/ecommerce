@@ -5,44 +5,26 @@ import Ordersection from "./Ordersection";
 import ImageContent from "./ImageContent";
 import OfferContent from "./OfferContent";
 import HomeBanner from "./HomeBanner";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import { fetchAllCategories } from "../../../redux/slices/category";
-import { getproduct, getProducts } from "../../../redux/slices/product";
 import ProductCard from "../shop/tab/ProductCard";
 
-const HomePage = () => {
+const HomePage = ({
+    allProductsData,
+    productIsLoading,
+    productError,
 
-    const dispatch = useDispatch();
+    allCategoriesData,
+    categoryIsLoading,
+    categoryError,
 
-    const [allCategoriesData, setAllCategoriesData] = useState([]);
-    const [allProductsData, setAllProductsData] = useState([]);
-    const { isLoading, error, categories } = useSelector(
-        (state) => state.category
-    );
-    const { isLoading: productIsLoading, error: productError, products } = useSelector(
-        (state) => state.product
-    );
+    cartData,
+    cartIsLoading,
+    cartErorr,
 
-    useEffect(() => {
-        dispatch(fetchAllCategories());
-    }, [dispatch]);
+    wishlist,
+    wishlistIsLoading,
+    wishlistError,
+}) => {
 
-    useEffect(() => {
-        dispatch(getProducts());
-    }, [dispatch]);
-
-    useEffect(() => {
-        if (categories?.length) {
-            setAllCategoriesData(categories);
-        }
-    }, [categories]);
-
-    useEffect(() => {
-        if (products?.length) {
-            setAllProductsData(products);
-        }
-    }, [products]);
 
     const productsToDisplay = allProductsData.slice(0, 4);
 
@@ -63,7 +45,9 @@ const HomePage = () => {
 
                             <div data-aos="fade-up" data-aos-delay="200">
                                 <div className="mt-4">
-                                    <CategoriesCard />
+                                    <CategoriesCard allCategoriesData={allCategoriesData}
+                                        categoryIsLoading={categoryIsLoading}
+                                        categoryError={categoryError} />
                                 </div>
                             </div>
 
@@ -90,7 +74,16 @@ const HomePage = () => {
                             <ProductCard skeletonCount={4}
                                 allProducts={productsToDisplay}
                                 productIsLoading={productIsLoading}
-                                productError={productError} />
+                                productError={productError}
+
+                                localCartItems={cartData}
+                                cartIsLoading={cartIsLoading}
+                                cartErorr={cartErorr}
+
+                                wishlist={wishlist}
+                                wishlistIsLoading={wishlistIsLoading}
+                                wishlistError={wishlistError}
+                            />
                         </div>
 
                     </div>

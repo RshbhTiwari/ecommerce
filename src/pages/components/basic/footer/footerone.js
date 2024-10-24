@@ -8,17 +8,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { fetchAllCategories } from "../../../../redux/slices/category";
 
-export default function Footerone() {
+export default function Footerone({
+    allCategoriesData,
+    categoryIsLoading,
+    categoryError
+}) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const accessToken = localStorage.getItem('accessToken') || null;
 
     const [loading, setLoading] = useState(true);
-    const [allCategoriesData, setAllCategoriesData] = useState([]);
-
-    const { isLoading: categoryIsLoading, error: categoryError, categories } = useSelector(
-        (state) => state.category
-    );
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -26,16 +25,6 @@ export default function Footerone() {
         }, 1000);
         return () => clearTimeout(timer);
     }, []);
-
-    useEffect(() => {
-        dispatch(fetchAllCategories());
-    }, [dispatch]);
-
-    useEffect(() => {
-        if (categories?.length) {
-            setAllCategoriesData(categories);
-        }
-    }, [categories]);
 
     const categoriDetailsRow = (id) => {
         navigate(`/categories/${id}`);

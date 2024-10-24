@@ -1,24 +1,10 @@
-import { useDispatch, useSelector } from "react-redux";
-import { getOneUser } from "../../../redux/slices/user";
+
 import BreadCrum from "../basic/BreadCrum";
 import { HeadingTitle } from "../basic/title";
 import UpdateAccountFrom from "./UpdateAccountFrom";
 import { AccountSideNav } from "./sidenav";
-import { useEffect } from "react";
 
-
-function Updatemyaccount() {
-
-    const dispatch = useDispatch();
-
-    const { oneuser } = useSelector(
-        (state) => state.user
-    );
-
-    useEffect(() => {
-        dispatch(getOneUser());
-    }, [dispatch]);
-
+function Updatemyaccount({oneuser}) {
 
     return (
         <>

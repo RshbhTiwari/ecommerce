@@ -10,62 +10,34 @@ import { FaRegHeart } from "react-icons/fa";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import { getWishlist, postWishlistUser } from "../../../../redux/slices/wishlist";
 
-function SearchAllproduct() {
+function SearchAllproduct({
+    products,
+    productIsLoading,
+    productError,
+
+    localCartItems,
+    cartIsLoading,
+    cartErorr,
+
+    wishlist,
+    wishlistIsLoading,
+    wishlistError,
+}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { search } = useLocation();
     const queryParams = new URLSearchParams(search);
     const initialFilterName = queryParams.get('filter') || '';
-    const cart_id = localStorage?.getItem('cart_id') || null;
-    const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
-    const token = localStorage?.getItem('accessToken') || null;
+
+  
     const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
 
 
     const [filterName, setFilterName] = useState(initialFilterName);  // State for search input
     const [filteredProducts, setFilteredProducts] = useState([]);  // State for filtered products
-    const [localCartItems, setLocalCartItems] = useState([]);
-
-    const { allCartItems, isLoading: cartIsLoading, error: cartErorr } = useSelector(
-        (state) => state.addToCart
-    );
-    const { products } = useSelector((state) => state.product);
-
-    const { wishlist } = useSelector((state) => state.wishlist);
-
-    useEffect(() => {
-        dispatch(getWishlist());
-    }, [dispatch]);
-
-    useEffect(() => {
-        if (allCartItems?.items) {
-            setLocalCartItems(allCartItems?.items);
-        }
-    }, [allCartItems]);
-
-    useEffect(() => {
-        if (token) {
-            const payload = {
-                status: true,
-            };
-            dispatch(getAllCartItems(customer_id, payload));
-        } else {
-            const payload = {
-                status: false,
-            };
-            dispatch(getAllCartItems(cart_id, payload));
-        }
-    }, [dispatch, cart_id, customer_id, token]);
-
-    useEffect(() => {
-        dispatch(getProducts());
-    }, [dispatch]);
-
-
 
     useEffect(() => {
         if (products) {
-            // Filter products based on filterName
             const filtered = products.filter(product =>
                 product?.name.toLowerCase().includes(filterName.toLowerCase())
             );
@@ -126,7 +98,7 @@ function SearchAllproduct() {
     };
 
     const isItemInwishlist = (itemId) => {
-        return wishlist.some((wishlistItem) => wishlistItem.product_id === itemId);
+        return wishlist?.some((wishlistItem) => wishlistItem.product_id === itemId);
     };
 
     return (

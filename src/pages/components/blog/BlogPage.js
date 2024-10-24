@@ -9,36 +9,23 @@ import { AllCategories, LatestPosts } from '../basic/MultiUses';
 import populartagsdata from '../../../data/populartagsdata';
 import { Squarebtn } from '../basic/button';
 import PaginationBlog from './PaginationBlog';
-import {
-    fetchAllCategories,
-    startLoading,
-    hasError,
-} from "../../../redux/slices/category";
 
-const BlogPage = () => {
+const BlogPage = ({
+    allCategoriesData,
+    categoryIsLoading,
+    categoryError,
+}) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [allCategoriesData, setAllCategoriesData] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const { isLoading: categoryIsLoading, error: categoryError, categories } = useSelector(
-        (state) => state.category
-    );
     useEffect(() => {
         const timer = setTimeout(() => {
             setLoading(false);
         }, 1000);
         return () => clearTimeout(timer);
     }, []);
-    useEffect(() => {
-        dispatch(fetchAllCategories());
-    }, [dispatch]);
-
-    useEffect(() => {
-        if (categories?.length) {
-            setAllCategoriesData(categories);
-        }
-    }, [categories]);
+    
 
     const categoriDetailsRow = (id) => {
         navigate(`/categories/${id}`);

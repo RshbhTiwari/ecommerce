@@ -9,7 +9,7 @@ import { getMyccount } from "../../../redux/slices/user";
 
 const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
 
-function Useramyccount({ customer_id }) {
+function Useramyccount({ customer_id, oneuser }) {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -24,10 +24,6 @@ function Useramyccount({ customer_id }) {
 
     console.log("myccountdata", myccountdata)
 
-
-    // if (userIsLoading) {
-    //     return <div>Loading...</div>;
-    // }
 
     if (userError) {
         return <div>Error: {userError.message}</div>;
@@ -74,7 +70,7 @@ function Useramyccount({ customer_id }) {
                     <div className='lg:col-span-8 col-span-12 w-full md:gap-4 gap-0'>
                         <HeadingTitle title="my account" textAlign='left' />
 
-                        {myccountdata?.user ? (
+                        {oneuser ? (
                             <div className="border-[2px] mt-8 w-full border-[#00A762] py-8 px-8  rounded-md shadow-md mx-auto" data-aos="fade-up"
                                 data-aos-duration="1000">
                                 <HeadingTitle title="Account Summary" textAlign='left' />
@@ -85,14 +81,14 @@ function Useramyccount({ customer_id }) {
 
                                         <h3 className='block  text-[#072320] 
                          font-dm text-lg capitalize font-medium'><span className="text-[#00A762]">customer Name : </span>
-                                            <br />{myccountdata?.user?.name}</h3>
+                                            <br />{oneuser?.name}</h3>
                                     </div>
 
                                     <div className='md:col-span-6 lg:col-span-4 col-span-12 w-full md:gap-4 gap-0'>
 
                                         <h3 className='block  text-[#072320] 
                          font-dm text-lg capitalize font-medium'>
-                                            <span className="text-[#00A762]">Email : </span> <br />{myccountdata?.user?.email}</h3>
+                                            <span className="text-[#00A762]">Email : </span> <br />{oneuser?.email}</h3>
                                     </div>
 
 
@@ -258,9 +254,6 @@ function Useramyccount({ customer_id }) {
                     </div>
                 </div>
             </div>
-
-
-
         </>
 
     );

@@ -12,7 +12,6 @@ function UserAddress({ allAddressData, deletClick }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const [loadingId, setLoadingId] = useState(null);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [itemId, setItemId] = useState(null);
@@ -27,20 +26,6 @@ function UserAddress({ allAddressData, deletClick }) {
         setItemId(null);
     };
 
-    // const handleCheckboxChange = async (id) => {
-    //     try {
-    //         const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
-    //         const checkboxItem = {
-    //             address_id: id,
-    //             defaultaddress: true,
-    //             ...(customer_id && { customer_id })
-    //         };
-    //         dispatch(postDefaultaddress(checkboxItem, toast));
-    //     ;
-    //     } catch (error) {
-    //         toast.error('Failed to update address.');
-    //     }
-    // };
 
     const handleDeleteRow = async () => {
         try {
@@ -77,15 +62,7 @@ function UserAddress({ allAddressData, deletClick }) {
                                     </div>
                                 )}
 
-                                {/* <div>
-                    <FormProvider>
-                        <FormContent
-                            id={item?.id}
-                            isChecked={isChecked}
-                            onCheckboxChange={handleCheckboxChange}
-                        />
-                    </FormProvider>
-                </div> */}
+                            
                             </div>
                             <div className="mt-2">
                                 <Paragraph textAlign='onyleft' title={item?.name} />
@@ -144,20 +121,5 @@ function UserAddress({ allAddressData, deletClick }) {
     );
 }
 
-// function FormContent({ id, isChecked, onCheckboxChange }) {
-//     return (
-//         <form className="w-fit">
-//             <label className="font-dm text-xs flex justify-center items-center font-medium">
-//                 <input
-//                     className="mr-1 cursor-pointer"
-//                     type="checkbox"
-//                     checked={isChecked}
-//                     onChange={() => onCheckboxChange(id)}
-//                 />
-//                 Set as default
-//             </label>
-//         </form>
-//     );
-// }
 
 export default UserAddress;

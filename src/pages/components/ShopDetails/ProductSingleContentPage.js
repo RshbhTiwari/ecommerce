@@ -11,7 +11,7 @@ import { useDispatch } from 'react-redux';
 import { addCartItems } from '../../../redux/slices/addToCart';
 import { toast } from 'react-toastify';
 
-const ProductSingleContentPage = ({ oneproduct, singleProductIsloading, singleProductError, allCartItems }) => {
+const ProductSingleContentPage = ({ oneproduct, singleProductIsloading, singleProductError, localCartItems }) => {
 
     const linkToShare = 'http://localhost:3000/shop';
 
@@ -73,7 +73,7 @@ const ProductSingleContentPage = ({ oneproduct, singleProductIsloading, singlePr
 
 
 
-    const matchingItems = allCartItems.filter(item => item.item_id === id);
+    const matchingItems = localCartItems.filter(item => item.item_id === id);
 
     console.log("matchingItems", matchingItems)
 
@@ -197,10 +197,6 @@ const ProductSingleContentPage = ({ oneproduct, singleProductIsloading, singlePr
                     </div>
                 </>
             )}
-
-
-
-
 
             <div className="flex items-center justify-between">
                 <div className="">

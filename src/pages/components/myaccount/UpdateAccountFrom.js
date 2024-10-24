@@ -6,10 +6,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { putUser } from '../../../redux/slices/user';
+import { useNavigate } from 'react-router-dom';
 
 const UpdateAccountFrom = ({ isEdit = false, userData }) => {
 
-    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const dispatch = useDispatch(); 
 
     const getLocalStorageData = () => {
         const localData = localStorage.getItem('user');
@@ -20,10 +22,9 @@ const UpdateAccountFrom = ({ isEdit = false, userData }) => {
     const [loading, setLoading] = useState(false);
 
 
-    // Function to format date to 'YYYY-MM-DD'
     const formatDate = (dateString) => {
         const date = new Date(dateString);
-        return date.toISOString().split('T')[0]; // Extracts 'YYYY-MM-DD' part
+        return date.toISOString().split('T')[0];
     };
 
     const schema = Yup.object().shape({
@@ -36,7 +37,7 @@ const UpdateAccountFrom = ({ isEdit = false, userData }) => {
             name: userData?.name || localStorageData?.name || "",
             contact: userData?.contact || localStorageData?.contact || "",
             email: userData?.email || localStorageData?.email || "",
-            dob: userData?.dob ? formatDate(userData.dob) : '', // Format date function
+            dob: userData?.dob ? formatDate(userData.dob) : '',
             gender: userData?.gender || '',
         }),
         [userData]
@@ -76,7 +77,7 @@ const UpdateAccountFrom = ({ isEdit = false, userData }) => {
                 dob: data?.dob,
                 gender: data?.gender,
             };
-            dispatch(putUser(payload, toast));
+            dispatch(putUser(payload, toast, navigate));
         } catch (error) {
             console.error(error);
         } finally {

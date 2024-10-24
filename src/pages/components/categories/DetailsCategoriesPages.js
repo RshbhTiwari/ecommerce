@@ -17,17 +17,20 @@ import ProductTab from '../shop/tab/productTab';
 import CollectionsShopCard from '../shop/CollectionsShopCard';
 import { getproduct, getProducts } from '../../../redux/slices/product';
 
-export default function DetailsCategoriesPages({ id }) {
+export default function DetailsCategoriesPages({ id, categoriesData, wishlist, localCartItems }) {
+
+    const allCategoriesData = categoriesData || [];
+
     const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [reloadPage, setReloadPage] = useState(false);
-    const [allCategoriesData, setAllCategoriesData] = useState([]);
+
     const [allSubProductsData, setAllSubProductsData] = useState([]);
 
     const [loading, setLoading] = useState(true);
 
-    const { isLoading: categoryIsLoading, error: categoryError, categories, oneCategory, oneSubCategory } = useSelector(
+    const { isLoading: categoryIsLoading, error: categoryError, oneCategory, oneSubCategory } = useSelector(
         (state) => state.category
     );
     const { isLoading: productIsLoading, error: productError, products } = useSelector(
@@ -38,19 +41,10 @@ export default function DetailsCategoriesPages({ id }) {
         dispatch(getProducts());
     }, [dispatch]);
 
-    useEffect(() => {
-        dispatch(fetchAllCategories());
-    }, [dispatch]);
 
     useEffect(() => {
         dispatch(fetchOneCategory(id));
     }, [dispatch, id]);
-
-    useEffect(() => {
-        if (categories?.length) {
-            setAllCategoriesData(categories);
-        }
-    }, [categories]);
 
     useEffect(() => {
         if (reloadPage) {
@@ -72,8 +66,6 @@ export default function DetailsCategoriesPages({ id }) {
         }, 1000);
         return () => clearTimeout(timer);
     }, []);
-
-
 
     const categoriDetailsRow = (id) => {
         navigate(`/categories/${id}`);
@@ -189,7 +181,7 @@ export default function DetailsCategoriesPages({ id }) {
                             <div className='my-6'>
                                 <HeadingTitle title="Sub Categories" textAlign='left' />
                             </div>
-                            {categoryIsLoading || loading  ? (
+                            {categoryIsLoading || loading ? (
                                 <>
                                     <div className='mb-6'>
                                         <div className="grid grid-cols-12 gap-6">
@@ -235,7 +227,7 @@ export default function DetailsCategoriesPages({ id }) {
                                                                         className="overflow-hidden rounded-lg 
                                                      zoom-image cursor-pointer"
                                                                     />
-                                                                </div> 
+                                                                </div>
                                                             </div>
 
                                                             <div className='pt-2'>
@@ -259,7 +251,11 @@ export default function DetailsCategoriesPages({ id }) {
 
                         <div className="max-w-screen-lg mx-auto p-4">
                             <ProductTab
-                                allproducts={allSubProductsData} productIsLoading={productIsLoading} productError={productError}
+                                allproducts={allSubProductsData}
+                                productIsLoading={productIsLoading}
+                                productError={productError}
+                                wishlist={wishlist}
+                                localCartItems={localCartItems}
                             />
                         </div>
                     </div>
@@ -270,7 +266,9 @@ export default function DetailsCategoriesPages({ id }) {
                 <div className="pb-10">
                     <HeadingTitle title="most purchased products" />
                     <div className="mt-4">
-                        <CollectionsShopCard allproducts={products} />
+                        <CollectionsShopCard allproducts={products}
+                            wishlist={wishlist}
+                            localCartItems={localCartItems} />
                     </div>
                 </div>
 

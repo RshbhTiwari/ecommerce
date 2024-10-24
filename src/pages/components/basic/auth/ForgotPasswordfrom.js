@@ -6,7 +6,7 @@ import { Btnone } from '../button';
 import { useDispatch } from 'react-redux';
 import { postForgotPasswordUser } from '../../../../redux/slices/loginRegister';
 
-const ForgotPasswordForm = () => { 
+const ForgotPasswordForm = () => {
     const dispatch = useDispatch();
 
     const schema = Yup.object().shape({
@@ -20,7 +20,7 @@ const ForgotPasswordForm = () => {
         },
     });
 
-    const {reset, handleSubmit, formState: { isSubmitting, isValid, errors } } = methods;
+    const { reset, handleSubmit, formState: { isSubmitting, isValid, errors } } = methods;
 
     const onSubmit = async (data) => {
         try {

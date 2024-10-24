@@ -30,6 +30,11 @@ import ResetPasswordPage from "./pages/resetpasswordpage";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Thankyou from "./pages/thankyou";
+import { fetchAllCategories } from "./redux/slices/category";
+import { getProducts } from "./redux/slices/product";
+import { getWishlist } from "./redux/slices/wishlist";
+import { getMyccount, getOneUser } from "./redux/slices/user";
+import { getAddress } from "./redux/slices/address";
 
 
 AOS.init();
@@ -41,25 +46,54 @@ AOS.init({
 });
 
 function App() {
+
   const dispatch = useDispatch();
+
   const cart_id = localStorage?.getItem('cart_id') || null;
   const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
   const token = localStorage?.getItem('accessToken') || null;
-  const [localCartItems, setLocalCartItems] = useState([]);
-  const { allCartItems, isLoading: cartIsLoading, error: cartErorr } = useSelector(
-    (state) => state.addToCart
-  );
 
+  const [cartAllItems, setCartAllItems] = useState([]);
+  const [allCategoriesData, setAllCategoriesData] = useState([]);
+  const [allProductsData, setAllProductsData] = useState([]);
+  const [wishListitems, setWishItems] = useState(null);
+  const [allAddressData, setAllAddressData] = useState([]);
+
+  const { allAddress, isLoading: addressIsLoading, error: addressError } = useSelector(state => state.address);
+  const { isLoading: userIsLoading, error: userError, myccountdata, oneuser } = useSelector((state) => state.user);
+  const { wishlist, isLoading: wishlistIsLoading, error: wishlistError } = useSelector((state) => state.wishlist);
+  const { isLoading: productIsLoading, error: productError, products } = useSelector((state) => state.product);
+  const { isLoading: categoriesIsLoading, error: categoriesErorr, categories } = useSelector((state) => state.category);
+  const { allCartItems, isLoading: cartIsLoading, error: cartErorr } = useSelector((state) => state.addToCart);
   const cartData = allCartItems?.items || [];
   const itemCount = cartData.length;
 
-  console.log("allCartItems", allCartItems)
+
+
 
   useEffect(() => {
-    if (allCartItems?.items) {
-      setLocalCartItems(allCartItems?.items);
-    }
-  }, [allCartItems]);
+    dispatch(getAddress(customer_id));
+  }, [dispatch, customer_id]);
+
+  useEffect(() => {
+    dispatch(getMyccount(customer_id));
+  }, [dispatch, customer_id]);
+
+  useEffect(() => {
+    dispatch(getOneUser());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getWishlist());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getProducts());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchAllCategories());
+  }, [dispatch]);
 
   useEffect(() => {
     if (token) {
@@ -76,42 +110,178 @@ function App() {
   }, [dispatch, cart_id, customer_id, token]);
 
   useEffect(() => {
+    if (wishlist?.length) {
+      setWishItems(wishlist);
+    }
+  }, [wishlist]);
+
+  useEffect(() => {
+    if (allAddress?.length) {
+      setAllAddressData(allAddress);
+    }
+  }, [allAddress]);
+
+  useEffect(() => {
+    if (categories?.length) {
+      setAllCategoriesData(categories);
+    }
+  }, [categories]);
+
+  useEffect(() => {
+    if (allCartItems?.items) {
+      setCartAllItems(allCartItems?.items);
+    }
+  }, [allCartItems]);
+
+  useEffect(() => {
+    if (products?.length) {
+      setAllProductsData(products);
+    }
+  }, [products]);
+
+  useEffect(() => {
     console.log('Item count has changed:', itemCount);
-  }, [itemCount, localCartItems]);
+  }, [itemCount, cartAllItems]);
 
   return (
     <>
       <BrowserRouter>
-        <Navbar cartData={localCartItems} itemCount={itemCount} />
+        <Navbar
+          itemCount={itemCount}
+
+          allProductsData={allProductsData}
+          productIsLoading={productIsLoading}
+          productError={productError}
+
+          cartData={cartAllItems}
+          cartIsLoading={cartIsLoading}
+          cartErorr={cartErorr}
+
+          wishlist={wishListitems}
+          wishlistIsLoading={wishlistIsLoading}
+          wishlistError={wishlistError}
+
+          allCategoriesData={allCategoriesData}
+          categoriesIsLoading={categoriesIsLoading}
+          categoriesErorr={categoriesErorr}
+        />
         <ToastContainer />
+
         <Routes>
-          <Route exact path="/" element={<Home />} />
+          <Route exact path="/" element={<Home
+            allProductsData={allProductsData}
+            productIsLoading={productIsLoading}
+            productError={productError}
+
+            allCategoriesData={allCategoriesData}
+            categoryIsLoading={categoriesIsLoading}
+            categoryError={categoriesErorr}
+
+            cartData={cartAllItems}
+            cartIsLoading={cartIsLoading}
+            cartErorr={cartErorr}
+
+            wishlist={wishListitems}
+            wishlistIsLoading={wishlistIsLoading}
+            wishlistError={wishlistError}
+
+          />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/shop/:id" element={<ShopDetails allCartItems={cartData} />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route exact path="/blog/:id" element={<DetailsBlog />} />
-          <Route exact path="/categories/:id" element={<DetailsCategories />} />
-          <Route path="/search" element={<SearchProduct />} />
+
+          <Route path="/shop" element={<Shop
+            cartData={cartAllItems}
+            cartIsLoading={cartIsLoading}
+            cartErorr={cartErorr}
+
+            wishlist={wishListitems}
+            wishlistIsLoading={wishlistIsLoading}
+            wishlistError={wishlistError}
+
+            allProductsData={allProductsData}
+            productIsLoading={productIsLoading}
+            productError={productError}
+
+            allCategoriesData={allCategoriesData}
+            categoryIsLoading={categoriesIsLoading}
+            categoryError={categoriesErorr} />}
+          />
+          <Route path="/shop/:id" element={<ShopDetails
+            cartData={cartAllItems}
+            cartIsLoading={cartIsLoading}
+            cartErorr={cartErorr}
+
+            wishlist={wishListitems}
+            wishlistIsLoading={wishlistIsLoading}
+            wishlistError={wishlistError}
+
+            allProductsData={allProductsData}
+            productIsLoading={productIsLoading}
+            productError={productError}
+          />} />
+          <Route path="/blog" element={<Blog
+            allCategoriesData={allCategoriesData}
+            categoryIsLoading={categoriesIsLoading}
+            categoryError={categoriesErorr} />} />
+          <Route exact path="/blog/:id" element={<DetailsBlog allCategoriesData={allCategoriesData}
+            categoryIsLoading={categoriesIsLoading}
+            categoryError={categoriesErorr} />} />
+
+          <Route exact path="/categories/:id" element={<DetailsCategories
+
+            allProductsData={allProductsData}
+            productIsLoading={productIsLoading}
+            productError={productError}
+
+            allCategoriesData={allCategoriesData}
+            categoryIsLoading={categoriesIsLoading}
+            categoryError={categoriesErorr}
+
+            cartData={cartAllItems}
+
+            wishlist={wishListitems}
+
+
+          />} />
+
+          <Route path="/search" element={<SearchProduct
+            allProductsData={allProductsData}
+            productIsLoading={productIsLoading}
+            productError={productError}
+            cartData={cartAllItems}
+            cartIsLoading={cartIsLoading}
+            cartErorr={cartErorr}
+            wishlist={wishListitems}
+            wishlistIsLoading={wishlistIsLoading}
+            wishlistError={wishlistError}
+          />} />
+
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/forgotpassword" element={<Forgotpassword />} />
           <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
-          <Route path="/my-account" element={<UserAccount />} />
-          <Route path="/my-account/update-profile" element={<Updateaccount />} />
+          <Route path="/my-account" element={<UserAccount oneuser={oneuser} />} />
+          <Route path="/my-account/update-profile" element={<Updateaccount oneuser={oneuser} />} />
+
           <Route path="/my-account/address-book" element={<Addressbook />} />
           <Route path="/my-account/add-address" element={<AddAddressBook />} />
           <Route path="/my-account/edit-address/:id" element={<EditAddressBook />} />
+
           <Route path="/cart" element={<Cart selectLength={allCartItems?.selectLength}
-           cartData={localCartItems} itemCount={itemCount} allCartItems={allCartItems}
+            cartData={cartAllItems} itemCount={itemCount} allCartItems={allCartItems}
             cartIsLoading={cartIsLoading} cartErorr={cartErorr} />} />
-          <Route path="/checkout" element={<Checkout selectLength={allCartItems?.selectLength} cartData={localCartItems} itemCount={itemCount} allCartItems={allCartItems} />} />
+          <Route path="/checkout" element={<Checkout selectLength={allCartItems?.selectLength} cartData={cartAllItems} itemCount={itemCount} allCartItems={allCartItems} />} />
+
           <Route path="/my-account/wishlist" element={<Wishlist />} />
           <Route path="/my-account/orders" element={<Orders />} />
           <Route path="/my-account/orders/:id" element={<OrdersDetails />} />
           <Route path="/order-confirmation/:id" element={<Thankyou />} />
         </Routes>
-        <Footer />
+
+        <Footer
+          allCategoriesData={allCategoriesData}
+          categoryIsLoading={categoriesIsLoading}
+          categoryError={categoriesErorr}
+        />
       </BrowserRouter>
     </>
   );

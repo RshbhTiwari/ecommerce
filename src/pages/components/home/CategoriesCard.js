@@ -38,16 +38,15 @@ const settings = {
     ],
 };
 
-const CategoriesCard = () => {
+const CategoriesCard = ({
+    allCategoriesData,
+    categoryIsLoading,
+    categoryError,
+}) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const sliderRef = useRef(null);
-    const [allCategoriesData, setAllCategoriesData] = useState([]);
     const [isDelayedLoading, setIsDelayedLoading] = useState(true); // New state for delay simulation
-
-    const { isLoading, error, categories } = useSelector(
-        (state) => state.category
-    );
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -57,11 +56,6 @@ const CategoriesCard = () => {
         return () => clearTimeout(timer);
     }, [dispatch]);
 
-    useEffect(() => {
-        if (categories?.length) {
-            setAllCategoriesData(categories);
-        }
-    }, [categories]);
 
     const nextSlide = () => {
         sliderRef.current.slickNext();
@@ -79,7 +73,7 @@ const CategoriesCard = () => {
         });
     };
 
-    if (isDelayedLoading || isLoading) {
+    if (isDelayedLoading || categoryIsLoading) {
         return (
             <Slider ref={sliderRef} {...settings} className="">
                 {[...Array(5)].map((_, index) => (
@@ -95,7 +89,7 @@ const CategoriesCard = () => {
         );
     }
 
-    if (error) {
+    if (categoryError) {
         return (
             <div className="text-center text-red-500">
                 <p>Error loading categories. Please try again later.</p>

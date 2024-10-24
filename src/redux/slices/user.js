@@ -28,6 +28,11 @@ const userSlice = createSlice({
             state.isLoading = false;
             state.myccountdata = action.payload;
         },
+
+        putUserSuccess(state, action) {
+            state.isLoading = false;
+            state.oneuser = action.payload;
+        },
     },
 });
 
@@ -35,7 +40,8 @@ export const {
     startLoading,
     hasError,
     getUserSuccess,
-    getMyccountSuccess
+    getMyccountSuccess,
+    putUserSuccess
 } = userSlice.actions;
 
 export default userSlice.reducer;
@@ -70,11 +76,19 @@ export const getMyccount = (customer_id) => async (dispatch) => {
     }
 };
 
-export const putUser = (payload, toast) => async (dispatch) => {
+export const putUser = (payload, toast, navigate) => async (dispatch) => {
     try {
         dispatch(startLoading());
         const response = await axios.put("/userUpdate", payload, { headers: getHeaders() });
+        console.log("responseresponse",response)
         if (response?.data?.status === true) {
+            dispatch(putUserSuccess(response?.data?.user));
+
+            navigate('/my-account')
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
             toast.success(response?.data?.message);
         }
     } catch (error) {

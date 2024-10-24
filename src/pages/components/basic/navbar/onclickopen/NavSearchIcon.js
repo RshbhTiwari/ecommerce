@@ -4,15 +4,22 @@ import { RxCross2 } from "react-icons/rx";
 import { FaRegHeart } from "react-icons/fa";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import { Paragraph } from "../../title";
-import { getproduct, getProducts } from "../../../../../redux/slices/product";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { NoProducts } from '../../ErrorPages';
 import { useNavigate } from "react-router-dom";
-import { addCartItems, getAllCartItems } from '../../../../../redux/slices/addToCart';
+import { addCartItems } from '../../../../../redux/slices/addToCart';
 import { toast } from 'react-toastify';
-import { getWishlist, postWishlistUser } from '../../../../../redux/slices/wishlist';
+import { postWishlistUser } from '../../../../../redux/slices/wishlist';
 
-function NavSearchIcon() {
+function NavSearchIcon({
+    allProductsData,
+    productIsLoading,
+    productError,
+    cartData,
+    wishlist,
+    wishlistIsLoading,
+    wishlistError,
+}) {
 
     const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
     const searchInputRef = useRef(null);
@@ -20,60 +27,10 @@ function NavSearchIcon() {
     const dispatch = useDispatch();
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [filterName, setFilterName] = useState('');
-    const [allProductsData, setAllProductsData] = useState([]);
-
-    const cart_id = localStorage?.getItem('cart_id') || null;
-    const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
-    const token = localStorage?.getItem('accessToken') || null;
-
-    const [localCartItems, setLocalCartItems] = useState([]);
-    const { allCartItems, isLoading: cartIsLoading, error: cartErorr } = useSelector(
-        (state) => state.addToCart
-    );
-
-    const { isLoading: productIsLoading, error: productError, products } = useSelector(
-        (state) => state.product
-    );
-
-    const { wishlist } = useSelector((state) => state.wishlist);
-
-    useEffect(() => {
-        dispatch(getWishlist());
-    }, [dispatch]);
-
-    useEffect(() => {
-        if (allCartItems?.items) {
-            setLocalCartItems(allCartItems?.items);
-        }
-    }, [allCartItems]);
-
-    useEffect(() => {
-        if (token) {
-            const payload = {
-                status: true,
-            };
-            dispatch(getAllCartItems(customer_id, payload));
-        } else {
-            const payload = {
-                status: false,
-            };
-            dispatch(getAllCartItems(cart_id, payload));
-        }
-    }, [dispatch, cart_id, customer_id, token]);
 
     const isItemInCart = (itemId) => {
-        return localCartItems.some((cartItem) => cartItem.item_id === itemId);
+        return cartData.some((cartItem) => cartItem.item_id === itemId);
     };
-
-    useEffect(() => {
-        dispatch(getProducts());
-    }, [dispatch]);
-
-    useEffect(() => {
-        if (products?.length) {
-            setAllProductsData(products);
-        }
-    }, [products]);
 
     useEffect(() => {
         if (isSearchOpen) {
@@ -146,7 +103,7 @@ function NavSearchIcon() {
     };
 
     const isItemInwishlist = (itemId) => {
-        return wishlist.some((wishlistItem) => wishlistItem.product_id === itemId);
+        return wishlist?.some((wishlistItem) => wishlistItem.product_id === itemId);
     };
 
 
@@ -233,15 +190,15 @@ function NavSearchIcon() {
 
                                                             <div className="absolute inset-0 flex items-center right-0 top-0 left-0 bottom-0 justify-center rounded-lg opacity-0 bg-[#00000040] hover:opacity-100 transition-opacity duration-300">
                                                                 <div className="text-white text-center flex justify-center items-center gap-2">
-                                                                <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320]'>
-                            <button
-                                onClick={() => handleAddWishlist(item?.id)}
-                                disabled={isItemInwishlist(item?.id)}
-                                className={`flex items-center justify-center w-full h-full rounded-lg ${isItemInwishlist(item?.id) ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#072320] cursor-pointer'}`}
-                            >
-                                <FaRegHeart className='text-white text-[22px]' />
-                            </button>
-                        </div>
+                                                                    <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320]'>
+                                                                        <button
+                                                                            onClick={() => handleAddWishlist(item?.id)}
+                                                                            disabled={isItemInwishlist(item?.id)}
+                                                                            className={`flex items-center justify-center w-full h-full rounded-lg ${isItemInwishlist(item?.id) ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#072320] cursor-pointer'}`}
+                                                                        >
+                                                                            <FaRegHeart className='text-white text-[22px]' />
+                                                                        </button>
+                                                                    </div>
 
                                                                     <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320]'>
                                                                         <button

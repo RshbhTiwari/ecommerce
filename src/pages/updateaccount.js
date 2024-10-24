@@ -1,9 +1,9 @@
 import { Updatemyaccount } from "./components/myaccount";
 
-function Updateaccount() {
+function Updateaccount({oneuser}) {
     return (
         <>
-           <Updatemyaccount />
+           <Updatemyaccount oneuser={oneuser}/>
         </>
     );
 }

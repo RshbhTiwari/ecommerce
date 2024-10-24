@@ -4,11 +4,11 @@ import { HiOutlineShoppingBag } from "react-icons/hi";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Paragraph } from '../../basic/title';
 import { toast } from 'react-toastify';
-import { useDispatch, useSelector } from 'react-redux';
-import { addCartItems, getAllCartItems } from '../../../../redux/slices/addToCart';
-import { getWishlist, postWishlistUser } from '../../../../redux/slices/wishlist';
+import { useDispatch } from 'react-redux';
+import { addCartItems } from '../../../../redux/slices/addToCart';
+import { postWishlistUser } from '../../../../redux/slices/wishlist';
 
-const ProductCard = ({ allProducts, productIsLoading, productError, skeletonCount }) => {
+const ProductCard = ({ allProducts, productIsLoading, productError, skeletonCount, localCartItems, wishlist }) => {
 
     const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
 
@@ -19,48 +19,12 @@ const ProductCard = ({ allProducts, productIsLoading, productError, skeletonCoun
     const isHomePath = location.pathname === '/';
     const [loading, setLoading] = useState(true);
 
-    const cart_id = localStorage?.getItem('cart_id') || null;
-    const customer_id = JSON?.parse(localStorage?.getItem('user'))?.id || null;
-    const token = localStorage?.getItem('accessToken') || null;
-
-    const [localCartItems, setLocalCartItems] = useState([]);
-    const { allCartItems, isLoading: cartIsLoading, error: cartErorr } = useSelector(
-        (state) => state.addToCart
-    );
-
-    const { wishlist } = useSelector((state) => state.wishlist);
-
-    useEffect(() => {
-        dispatch(getWishlist());
-    }, [dispatch]);
-
-    useEffect(() => {
-        if (allCartItems?.items) {
-            setLocalCartItems(allCartItems?.items);
-        }
-    }, [allCartItems]);
-
-    useEffect(() => {
-        if (token) {
-            const payload = {
-                status: true,
-            };
-            dispatch(getAllCartItems(customer_id, payload));
-        } else {
-            const payload = {
-                status: false,
-            };
-            dispatch(getAllCartItems(cart_id, payload));
-        }
-    }, [dispatch, cart_id, customer_id, token]);
-
     const isItemInwishlist = (itemId) => {
-        return wishlist.some((wishlistItem) => wishlistItem.product_id === itemId);
+        return wishlist?.some((wishlistItem) => wishlistItem.product_id === itemId);
     };
 
-
     const isItemInCart = (itemId) => {
-        return localCartItems.some((cartItem) => cartItem.item_id === itemId);
+        return localCartItems?.some((cartItem) => cartItem.item_id === itemId);
     };
 
     useEffect(() => {
@@ -87,7 +51,7 @@ const ProductCard = ({ allProducts, productIsLoading, productError, skeletonCoun
             ...(cart_id && { cart_id }),
             ...(customer_id && { customer_id })
         };
-        dispatch(addCartItems(cartItem, toast, navigate)); 
+        dispatch(addCartItems(cartItem, toast, navigate));
     };
 
     const handleAddWishlist = (product_id) => {
@@ -200,8 +164,6 @@ const ProductCard = ({ allProducts, productIsLoading, productError, skeletonCoun
                                 <FaRegHeart className='text-white text-[22px]' />
                             </button>
                         </div>
-
-                      
 
                         <div className='flex justify-center w-10 h-10 rounded-lg items-center bg-[#072320]'>
                             <button

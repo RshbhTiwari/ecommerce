@@ -54,6 +54,7 @@ export const getWishlist = () => async (dispatch) => {
         dispatch(startLoading());
         const response = await axios.get('/getWishlist', { headers: getHeaders() });
         dispatch(getWishlistSuccess(response?.data?.wishlistItems || []));
+        console.log("wishlistItems",response?.data)
     } catch (error) {
         dispatch(hasError(error?.response?.data?.message || "Failed to fetch wishlist"));
     }

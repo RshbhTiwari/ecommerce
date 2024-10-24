@@ -22,18 +22,16 @@ const BlogsingleData = {
 }
 
 
-export default function SingleBlogDetails({id}) {
+export default function SingleBlogDetails({id ,allCategoriesData,
+    categoryIsLoading,
+    categoryError,}) {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const [allBlogData, setAllBlogData] = useState([]);
-    const [allCategoriesData, setAllCategoriesData] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const { isLoading: categoryIsLoading, error: categoryError, categories } = useSelector(
-        (state) => state.category
-    );
 
     const { isLoading: blogIsLoading, error: BlogError, oneblog } = useSelector(
         (state) => state.blog
@@ -47,10 +45,6 @@ export default function SingleBlogDetails({id}) {
     }, []);
 
     useEffect(() => {
-        dispatch(fetchAllCategories());
-    }, [dispatch]);
-
-    useEffect(() => {
         dispatch(getOnebLog(id));
     }, [dispatch, id]);
 
@@ -59,12 +53,6 @@ export default function SingleBlogDetails({id}) {
             setAllBlogData(oneblog);
         }
     }, [oneblog]);
-
-    useEffect(() => {
-        if (categories?.length) {
-            setAllCategoriesData(categories);
-        }
-    }, [categories]);
 
     const categoriDetailsRow = (id) => {
         navigate(`/categories/${id}`);

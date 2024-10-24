@@ -14,12 +14,6 @@ import carouselcarddata from "../../../../data/carouselcarddata";
 import comLogo from '../../../../assets/header/tastydaily-0556409248.webp';
 import { HiMiniXMark } from "react-icons/hi2";
 import { HiBars3 } from "react-icons/hi2";
-import {
-    fetchAllCategories,
-    startLoading,
-    hasError,
-} from "../../../../redux/slices/category";
-import { useDispatch, useSelector } from 'react-redux';
 import defultimage from '../../../../assets/home/defultlogo.png';
 
 const BASE_IMAGE_URL = 'http://127.0.0.1:8000/storage/';
@@ -37,24 +31,10 @@ const settings = {
     slidesToScroll: 1,
 };
 
-export default function Nav() {
-    const dispatch = useDispatch();
+export default function Nav({allCategoriesData, categoriesIsLoading, categoriesErorr}) {
 
     const path = window.location.pathname;
     const [showDropdown, setShowDropdown] = useState(false);
-    const [allCategoriesData, setAllCategoriesData] = useState([]);
-    const { isLoading, error, categories } = useSelector(
-        (state) => state.category
-    );
-    useEffect(() => {
-        dispatch(fetchAllCategories());
-    }, [dispatch]);
-
-    useEffect(() => {
-        if (categories?.length) {
-            setAllCategoriesData(categories);
-        }
-    }, [categories]);
 
     const handleMouseEnter = (item) => {
         if (item.name === 'Shop') {
@@ -65,11 +45,6 @@ export default function Nav() {
     const handleMouseLeave = () => {
         setShowDropdown(false);
     };
-
-
-
-
-
 
     return (
         <>
@@ -128,7 +103,7 @@ export default function Nav() {
 
                                                                 <div className='sm:col-span-6 col-span-12 flex flex-col justify-center'>
 
-                                                                    {isLoading ? (
+                                                                    {categoriesIsLoading ? (
                                                                         <>
                                                                             {allCategoriesData.map((row, index) => (
                                                                                 <div className="animate-pulse py-2">
@@ -155,7 +130,7 @@ export default function Nav() {
                                                                 </div>
 
                                                                 <div className='sm:col-span-6 col-span-12 dropgrid'>
-                                                                    {isLoading ? (
+                                                                    {categoriesIsLoading ? (
                                                                         <><div className='p-4 bg-[#00A762] mt-6 rounded-lg flex items-center justify-center ' >
                                                                             <div className="animate-pulse shadow rounded-md">
                                                                                 <div className="w-[75px] h-[75px] bg-gray-300 mx-auto rounded-lg"></div>
