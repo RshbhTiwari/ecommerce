@@ -4,20 +4,27 @@ import * as Yup from 'yup';
 import { useForm, FormProvider, useFormContext } from 'react-hook-form';
 import { Btnone } from '../../basic/button';
 import { FaStar } from 'react-icons/fa';
+import { postReviews } from '../../../../redux/slices/reviews';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
-const SubmitReviewsfrom = () => {
-
+const SubmitReviewsfrom = ({id, setIsOpen}) => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [loading, setLoading] = useState(false);
     const schema = Yup.object().shape({
-        username: Yup.string().required('user name is required'),
+        firstname: Yup.string().required('user name is required'),
         email: Yup.string().email('Invalid email').required('Email is required'),
-        rating: Yup.string().required('Rating is required'), 
+        rating: Yup.string().required('Rating is required'),
         comment: Yup.string().required('Comment is required').min(10, 'Comment must be at least 10 characters'),
     });
 
     const methods = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
-            username: '',
+            firstname: '',
             rating: '',
             email: '',
             comment: '',
@@ -32,20 +39,33 @@ const SubmitReviewsfrom = () => {
     } = methods;
 
 
-    const onSubmit = (data) => {
-        reset({
-            username: '',
-            email: '',
-            rating: '',
-            comment: ''
-        });
+    
+    const onSubmit = async (data) => {
+        console.log("data", data)
+        try {
+            setLoading(true);
+            await new Promise((resolve) => setTimeout(resolve, 500));
+            const payload = {
+                product_id:id,
+                username: data?.firstname,
+                email: data?.email,
+                rating: data?.rating,
+                comment: data?.comment,
+            };
+
+            dispatch(postReviews(payload, toast, reset, setIsOpen));
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
     };
 
 
     return (
         <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmit)}>
-                
+
                 <RatingInput />
                 <UsernameInput />
                 <EmailInput />
@@ -65,17 +85,17 @@ const UsernameInput = () => {
 
     return (
         <div className='mt-3'>
-            <label className='block text-[#072320] font-dm text-lg capitalize font-medium' htmlFor="username">First Name
+            <label className='block text-[#072320] font-dm text-lg capitalize font-medium' htmlFor="firstname">First Name
                 <span className=' font-medium text-red-500'>*</span></label>
             <input
                 className='input_box w-full'
                 type="text"
-                id="username"
+                id="firstname"
                 placeholder='Enter User Name'
-                {...register('username')}
+                {...register('firstname')}
             />
-            {errors.username && (
-                <p className="text-red-500 mt-1">{errors.username.message}</p>
+            {errors.firstname && (
+                <p className="text-red-500 mt-1">{errors.firstname.message}</p>
             )}
         </div>
     );
@@ -149,9 +169,6 @@ const CommentInput = () => {
     const { register, formState: { errors } } = useFormContext();
 
     return (
-
-
-
         <div className="mt-3">
             <label className="block text-[#072320] font-dm text-lg capitalize font-medium">Comment
                 <span className=' font-medium text-red-500'>*</span></label>

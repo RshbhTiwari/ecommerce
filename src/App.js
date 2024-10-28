@@ -69,8 +69,6 @@ function App() {
   const itemCount = cartData.length;
 
 
-
-
   useEffect(() => {
     dispatch(getAddress(customer_id));
   }, [dispatch, customer_id]);

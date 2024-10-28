@@ -30,7 +30,6 @@ const HomePage = ({
 
     return (
         <>
-
             <HomeBanner />
 
             <div className="container mx-auto max-w-7xl  px-2 sm:px-6 lg:px-8">
@@ -71,7 +70,8 @@ const HomePage = ({
                         </div>
 
                         <div className="mt-4" data-aos="fade-up" data-aos-delay="200">
-                            <ProductCard skeletonCount={4}
+                            <ProductCard
+                                skeletonCount={4}
                                 allProducts={productsToDisplay}
                                 productIsLoading={productIsLoading}
                                 productError={productError}
@@ -91,9 +91,7 @@ const HomePage = ({
                 ) : null}
 
                 <div className="pb-10">
-
                     <ImageContent />
-
                 </div>
 
                 <div className="pb-10" data-aos="fade-up" data-aos-delay="200">

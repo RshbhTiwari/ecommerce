@@ -11,6 +11,7 @@ import contact from './slices/contactfrom';
 import blog from './slices/blog';
 import orders from './slices/orders';
 import codorder from './slices/codorder';
+import review from './slices/reviews';
 
 const store = configureStore({
     reducer: {
@@ -26,6 +27,7 @@ const store = configureStore({
         blog: blog,
         orders: orders,
         codorder:codorder,
+        review:review,
     },
 })
 

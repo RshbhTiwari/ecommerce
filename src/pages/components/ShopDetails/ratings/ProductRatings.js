@@ -2,18 +2,40 @@
 import { FaUserCircle } from "react-icons/fa";
 import { IoMdStar } from "react-icons/io";
 import { BiSolidLike } from "react-icons/bi";
-import { HeadingTitle, Paragraph } from "../../basic/title";
+import { Paragraph } from "../../basic/title";
 import ReviewsSidebar from './ReviewsSidebar';
 import SubmitReviewsfrom from './SubmitReviewsfrom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { RxCross2 } from "react-icons/rx";
+import { useDispatch, useSelector } from "react-redux";
+import { getReviews } from "../../../../redux/slices/reviews";
+import { useParams } from "react-router-dom";
 
 const ProductRatings = ({ title }) => {
+    const { id } = useParams();
+    const dispatch = useDispatch();
+
+    const [reviewsItems, setReviewsItems] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
+
+    const { isLoading: reviewsIsLoading, error: reviewsError, reviews } = useSelector((state) => state.review);
+
+    useEffect(() => {
+        dispatch(getReviews(id));
+    }, [dispatch, id]);
+
+    useEffect(() => {
+        if (reviews?.length) {
+            setReviewsItems(reviews);
+        }
+    }, [reviews]);
 
     const toggleSection = () => {
         setIsOpen(!isOpen);
     };
+
+    console.log("reviews", reviews)
+
     return (
 
         <div className="border-[2px] mt-8 w-full border-[#00A762] py-5 px-5  rounded-md shadow-md mx-auto">
@@ -37,7 +59,7 @@ const ProductRatings = ({ title }) => {
                     </div>
 
                     <div className='mt-6'>
-                        <SubmitReviewsfrom />
+                        <SubmitReviewsfrom id={id} setIsOpen={setIsOpen} />
                     </div>
 
                 </div>
